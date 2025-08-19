@@ -1,5 +1,5 @@
 import { ViteReactSSG } from 'vite-react-ssg'
-import { routes } from './App.tsx'
+import { routes } from './routes.ts'
 
 export const createRoot = ViteReactSSG(
   { routes },
