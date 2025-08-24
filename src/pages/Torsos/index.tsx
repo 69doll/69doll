@@ -1,9 +1,9 @@
-import Layout from "../../components/Layout"
+import ContentLayout from "../../components/ContentLayout"
 
 export const Component: React.FC = () => {
   return (
-    <Layout>
+    <ContentLayout>
 
-    </Layout>
+    </ContentLayout>
   )
 }

@@ -1,16 +1,15 @@
-import Layout from "../../components/Layout"
+import ContentLayout from "../../components/ContentLayout"
 import loaderData from "../../utils/loaderData"
 
 export const Component: React.FC = () => {
   return (<>
-    <Layout>
+    <ContentLayout>
       Sign-Up Page
-    </Layout>
+    </ContentLayout>
   </>)
 }
 
 export async function loader () {
   return loaderData()
     .setTitle('Sign Up | 69Doll')
-    .toObject()
 }

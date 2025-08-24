@@ -1,16 +1,25 @@
-import Layout from "../../components/Layout"
+import ContentLayout from "../../components/ContentLayout"
+import { NavigatePath } from "../../routes"
+import getSupportedLanguages from "../../utils/getSupporttedLanguages"
 import loaderData from "../../utils/loaderData"
 
 export const Component: React.FC = () => {
   return (
-    <Layout>
+    <ContentLayout>
 
-    </Layout>
+    </ContentLayout>
   )
+}
+
+export async function getStaticPaths () {
+  const fakerIds = ['accessory1', 'accessory2'] // Replace with actual logic to fetch IDs
+  return fakerIds
+    .map((id) => getSupportedLanguages()
+      .map((lang) => NavigatePath.ACCESSORY_DETAIL(lang, id)
+    )).flat()
 }
 
 export async function loader () {
   return loaderData()
     .setTitle('Accessory Detail | 69Doll')
-    .toObject()
 }

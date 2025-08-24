@@ -1,17 +1,16 @@
 import type React from "react"
-import Layout from "../../components/Layout"
+import ContentLayout from "../../components/ContentLayout"
 import loaderData from "../../utils/loaderData"
 
 export const Component: React.FC = () => {
   return (<>
-    <Layout>
+    <ContentLayout>
       404
-    </Layout>
+    </ContentLayout>
   </>)
 }
 
 export async function loader () {
   return loaderData()
     .setTitle('404 Not Found | 69Doll')
-    .toObject()
 }

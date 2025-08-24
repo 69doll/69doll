@@ -1,0 +1,58 @@
+.banner {
+  --uno-apply: p-y-[var(--69doll-padding-y)] p-x-[var(--69doll-padding-x)];
+}
+
+.bannerContainer {
+  --69doll-banner-content-height: 800px;
+  --uno-apply: flex-col-wrap m-x-[-10px];
+
+  @screen md {
+    & {
+      --uno-apply: flex-row-wrap;
+    }
+    > * {
+      --uno-apply: basis-[50%];
+    }
+    > :first-child {
+      .bannerContent {
+        --uno-apply: h-[var(--69doll-banner-content-height)];
+      }
+    }
+    > :not(:first-child) {
+      --uno-apply: flex-row-wrap;
+      .bannerContent {
+        --uno-apply: basis-[50%] h-[calc(var(--69doll-banner-content-height)/2)];
+      }
+    }
+  }
+}
+
+.bannerContent {
+  --69doll-banner-content-padding-x: 0px;
+  --69doll-banner-content-padding-y: 10px;
+  @screen md {
+    --69doll-banner-content-padding-x: 10px;
+  }
+
+  --uno-apply: w-full h-[150px] p-y-[var(--69doll-banner-content-padding-y)];
+  @screen md {
+    --uno-apply: p-[var(--69doll-banner-content-padding-x)] ;
+  }
+}
+
+.bannerContentContainer {
+  --uno-apply: cursor-pointer rounded-xl w-full h-full;
+}
+
+.bannerContentContainer {
+  --uno-apply: flex-row-nowrap justify-between items-end p-x-[20px];
+  > * {
+    --uno-apply: text-[25px] color-white h-[130px] flex items-center;
+    &:first-child {
+    --uno-apply: font-bold;
+    }
+    &:last-child * {
+      --uno-apply: text-[40px] font-bold i-material-symbols-arrow-right-alt bg-white;
+    }
+  }
+}
