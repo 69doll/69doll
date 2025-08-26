@@ -2,11 +2,11 @@ import css from './style.module.scss'
 import ImageBg from '../../../../components/ImageBg'
 
 const bannerUrls = [
-  'https://www.realdoll.com/wp-content/uploads/2018/01/tanya-realdoll2-configuration-1-1479771091.jpg',
-  'https://www.realdoll.com/wp-content/uploads/2018/01/tanya-realdoll2-configuration-1-1479771091.jpg',
-  'https://www.realdoll.com/wp-content/uploads/2018/01/tanya-realdoll2-configuration-1-1479771091.jpg',
-  'https://www.realdoll.com/wp-content/uploads/2018/01/tanya-realdoll2-configuration-1-1479771091.jpg',
-  'https://www.realdoll.com/wp-content/uploads/2018/01/tanya-realdoll2-configuration-1-1479771091.jpg',
+  'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp',
+  'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp',
+  'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp',
+  'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp',
+  'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp',
 ]
 
 const Banner: React.FC = () => {
@@ -15,10 +15,7 @@ const Banner: React.FC = () => {
       <div className={css.bannerContainer}>
         <div>
           <div className={css.bannerContent}>
-            <ImageBg className={css.bannerContentContainer} imageUrl={bannerUrls[0]}>
-              <div>DOLLS</div>
-              <div><div></div></div>
-            </ImageBg>
+            <ImageBg className={css.bannerContentContainer} imageUrl={bannerUrls[0]}></ImageBg>
           </div>
         </div>
         <div>

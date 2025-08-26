@@ -1,0 +1,7 @@
+.container {
+  --uno-apply: bg-center bg-no-repeat transition-all duration-300 ease-in-out;
+  background-size: 100%;
+}
+.container:not(.noAnimation):hover {
+  background-size: 110%;
+}

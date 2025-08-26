@@ -1,0 +1,26 @@
+.layout {
+  --uno-apply: flex-row-nowrap overflow-x-hidden;
+  &:has(.sider) {
+    --uno-apply: overflow-hidden;
+  }
+}
+
+.sider {
+  --uno-apply: h-[100dvh] w-screen z-[1500];
+}
+
+.container {
+  --uno-apply: flex-col-nowrap h-screen bg-white w-screen;
+  .layout:has(.sider) & {
+    margin-left: calc(-100vw);
+  }
+}
+.header {
+  --uno-apply: w-screen;
+}
+.body {
+  --uno-apply: w-screen;
+}
+.footer {
+  --uno-apply: w-screen;
+}

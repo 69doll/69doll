@@ -4,7 +4,7 @@
 
 .bannerContainer {
   --69doll-banner-content-height: 800px;
-  --uno-apply: flex-col-wrap m-x-[-10px];
+  --uno-apply: flex-col-wrap m-x-[-10px] w-full;
 
   @screen md {
     & {
@@ -15,13 +15,13 @@
     }
     > :first-child {
       .bannerContent {
-        --uno-apply: h-[var(--69doll-banner-content-height)];
+        // --uno-apply: h-[var(--69doll-banner-content-height)];
       }
     }
     > :not(:first-child) {
       --uno-apply: flex-row-wrap;
       .bannerContent {
-        --uno-apply: basis-[50%] h-[calc(var(--69doll-banner-content-height)/2)];
+        --uno-apply: basis-[50%];
       }
     }
   }
@@ -30,13 +30,21 @@
 .bannerContent {
   --69doll-banner-content-padding-x: 0px;
   --69doll-banner-content-padding-y: 10px;
+  --69doll-banner-content-height: 150px;
   @screen md {
     --69doll-banner-content-padding-x: 10px;
+    --69doll-banner-content-height: 400px;
   }
 
-  --uno-apply: w-full h-[150px] p-y-[var(--69doll-banner-content-padding-y)];
+  --uno-apply: w-full h-[var(--69doll-banner-content-height)] p-y-[var(--69doll-banner-content-padding-y)];
+  *:first-child > & {
+    --69doll-banner-content-height: 300px;
+  }
   @screen md {
-    --uno-apply: p-[var(--69doll-banner-content-padding-x)] ;
+    --uno-apply: p-[var(--69doll-banner-content-padding-x)];
+    *:first-child > & {
+      --69doll-banner-content-height: 800px;
+    }
   }
 }
 

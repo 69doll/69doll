@@ -1,3 +1,8 @@
+import LANGUAGE from "../constant/LANGUAGE";
+
 export default function getSupportedLanguages() {
-  return ['en-us', 'zh-cn']
+  return [
+    LANGUAGE.EN_US,
+    LANGUAGE.ZH_CN,
+  ];
 }

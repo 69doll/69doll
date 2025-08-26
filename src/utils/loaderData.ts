@@ -1,4 +1,5 @@
-const HEAD_KEY = Symbol('head')
+const HEAD_KEY = 'head'
+const DATA_URL_KEY = 'dataUrl'
 
 const loaderData = (oldData: Record<string|number|symbol, any> = {}) => {
   const data = oldData
@@ -20,8 +21,9 @@ const loaderData = (oldData: Record<string|number|symbol, any> = {}) => {
       data[key] = value
       return this
     },
-    get: (key: string | symbol) => data[key],
-    toObject: () => data,
+    get: <V = any>(key: string | symbol) => data[key] as V,
+    setDataUrl: (url: string) => data[DATA_URL_KEY] = url,
+    geDataUrl: () => data[DATA_URL_KEY] as string | undefined,
   }
 }
 

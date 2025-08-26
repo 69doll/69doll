@@ -1,0 +1,31 @@
+.container {
+  --uno-apply: flex-row-nowrap;
+}
+
+.menu {
+  --uno-apply: bg-white max-w-[80%] w-[500px] h-screen grow-0 shrink-0;
+  & + .menu {
+    --uno-apply: bg-gray;
+  }
+  &:has(+.menu) .close {
+    --uno-apply: hidden;
+  }
+  @screen lt-lg {
+    &:has(+.menu) {
+      --uno-apply: hidden;
+    }
+  }
+}
+
+.masking {
+  --uno-apply: bg-black h-screen grow-1 shrink-1 opacity-80 cursor-not-allowed;
+}
+
+.header {
+  --uno-apply: flex-row-nowrap justify-end items-center h-[var(--69doll-header-height)] w-full;
+}
+
+.close {
+  --69doll-icon-size: 40px;
+  --uno-apply: i-material-symbols-close mr-[var(--69doll-margin-x)];
+}

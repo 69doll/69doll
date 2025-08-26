@@ -31,7 +31,7 @@
 }
 
 .tags {
-  --uno-apply: flex-row-nowrap gap-[15px]
+  --uno-apply: flex-row-nowrap gap-[15px];
 }
 
 .tag {
@@ -53,12 +53,8 @@
 }
 
 .recommendListContainer {
-  --uno-apply: flex-row-nowrap w-[150vw];
+  --uno-apply: flex-row-nowrap w-[150vw] gap-[10px];
   > * {
-    --uno-apply: p-l-[10px];
-    &:first-child {
-      --uno-apply: p-l-0;
-    }
     > * {
       --uno-apply: size-full;
     }

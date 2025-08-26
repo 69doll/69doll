@@ -2,7 +2,7 @@ import type React from "react";
 import css from './style.module.scss'
 import classNames from "classnames";
 import TitleContainer from "../TitleContainer";
-import { useMeasure, useWindowSize } from "@uidotdev/usehooks";
+import { useWindowSize } from "@uidotdev/usehooks";
 import { useMemo, useState } from "react";
 import { ClientOnly } from "vite-react-ssg";
 import ImageBg from "../../../../components/ImageBg";
@@ -14,19 +14,26 @@ export interface IRecommendProps {
 }
 
 const Recommend: React.FC<IRecommendProps> = ({ title, tags, map }) => {
-  const countCard = 5
   const { width: windowWidth } = useWindowSize()
-  const [recommendListRef, { width: recommendListWidth }] = useMeasure<HTMLDivElement>()
-  const recommendCardWidth = useMemo(() => {
-    if (!recommendListWidth) return
-    return (recommendListWidth - 20 * 2) / countCard
-  }, [recommendListWidth])
-  const recommendCardStyle = useMemo(() => ({ width: recommendCardWidth }), [recommendCardWidth, windowWidth])
+  const countCard = useMemo(() => {
+    if (!windowWidth) return 5
+    if (windowWidth < 640) {
+      return 2
+    } else if (windowWidth < 768) {
+      return 3
+    } else if (windowWidth < 1024) {
+      return 4
+    }
+    return 5
+  }, [windowWidth])
   const [currentTagIndex, setCurrentTagIndex] = useState(0)
   const [currentPage, setCurrentCardIndex] = useState(1)
   const recommendCards = useMemo(() => {
-    return map[tags[currentTagIndex]]
+    return map[tags[currentTagIndex]] ?? []
   }, [currentTagIndex, currentPage])
+  const recommendCardStyle = useMemo(() => ({ width: recommendCards.length ? `${100 / recommendCards.length}%` : '100%' }), [windowWidth])
+  const recommendContainerStyle = useMemo(() => ({ width: recommendCards.length ? `${100 * recommendCards.length / countCard}%` : '100%' }), [countCard, windowWidth])
+
   const prev = () => currentPage !== 0 ? setCurrentCardIndex(currentPage - 1) : void 0
   const next = () => currentPage + countCard !== recommendCards.length - 1 ? setCurrentCardIndex(currentPage + 1) : void 0
   return (<>
@@ -56,12 +63,12 @@ const Recommend: React.FC<IRecommendProps> = ({ title, tags, map }) => {
           }
         </div>
       </TitleContainer>
-      <div ref={recommendListRef} className={css.recommendList}>
-        <div className={css.recommendListContainer}>
+      <div className={css.recommendList}>
+        <div className={css.recommendListContainer} style={recommendContainerStyle}>
           {
-            (map[tags[currentTagIndex]] ?? []).map((card) => <div>
+            recommendCards.map((card, index) => <div style={recommendCardStyle} key={index}>
               <div className={css.card}>
-                <ImageBg className={css.img} style={recommendCardStyle} imageUrl={card.imageUrl}></ImageBg>
+                <ImageBg className={css.img} imageUrl={card.imageUrl}></ImageBg>
                 <div className={css.label}>{ card.title }</div>
                 <div className={css.sublabel}>{ tags[currentTagIndex] }</div>
               </div>

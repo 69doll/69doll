@@ -1,0 +1,36 @@
+.container {
+  --uno-apply: flex-row-nowrap w-screen gap-x-2 h-[var(--69doll-header-height)];
+}
+
+.left, .center, .right {
+  --uno-apply: flex-row-nowrap items-center;
+}
+
+.left, .right {
+  --uno-apply: grow;
+}
+
+.left {
+  --uno-apply: justify-start text-[20px] gap-x-5 pl-[var(--69doll-padding-x)];
+}
+
+.center {
+  --uno-apply: grow-0 shrink-0 justify-center text-[20px];
+}
+
+.right {
+  --uno-apply: justify-end pr-[var(--69doll-padding-x)] gap-x-5;
+}
+
+.hamburger {
+  --uno-apply: i-material-symbols-menu;
+}
+.search {
+  --uno-apply: i-material-symbols-search-rounded;
+}
+.carts {
+  --uno-apply: i-material-symbols-shopping-cart-outline-sharp;
+}
+.account {
+  --uno-apply: i-material-symbols-account-circle-full;
+}

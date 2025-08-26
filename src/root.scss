@@ -1,0 +1,18 @@
+:root {
+  --69doll-header-height: 80px;
+  --69doll-padding-x: 40px;
+  --69doll-padding-y: 30px;
+  --69doll-margin-x: 40px;
+  --69doll-icon-size: 30px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.icon {
+  --uno-apply: color-black cursor-pointer;
+  font-size: var(--69doll-icon-size);
+}

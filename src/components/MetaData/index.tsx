@@ -3,12 +3,12 @@ import { Head } from "vite-react-ssg";
 import loaderData from "../../utils/loaderData";
 
 export default function MetaData() {
-  const data = loaderData(useLoaderData() as any)
+  const data = useLoaderData() as ReturnType<typeof loaderData>
   return (
     <Head>
-      <title>{data.getTitle() ?? "69Doll"}</title>
+      <title>{data?.getTitle?.() ?? "69Doll"}</title>
       {
-        (data.getMetaData() ?? []).map((meta: any) => {
+        (data?.getMetaData?.() ?? []).map((meta: any) => {
           return <meta {...meta} />
         })
       }

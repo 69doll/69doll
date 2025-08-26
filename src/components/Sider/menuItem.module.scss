@@ -1,0 +1,13 @@
+.menuItem {
+  --uno-apply: flex-row-nowrap justify-between items-center h-[50px] w-full cursor-pointer;
+  :first-child {
+    --uno-apply: ml-[var(--69doll-margin-x)];
+  }
+  :last-child {
+    --uno-apply: mr-[var(--69doll-margin-x)];
+  }
+  &:hover .next {
+    --69doll-icon-size: 40px;
+    --uno-apply: i-material-symbols-arrow-right-alt;
+  }
+}
