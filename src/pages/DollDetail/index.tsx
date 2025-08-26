@@ -1,5 +1,5 @@
 import ContentLayout from "../../components/ContentLayout"
-import { NavigatePath } from "../../routes"
+import { NavigateRealPath } from "../../routes"
 import getSupportedLanguages from "../../utils/getSupporttedLanguages"
 import loaderData from "../../utils/loaderData"
 
@@ -15,8 +15,9 @@ export async function getStaticPaths () {
   const fakerIds = ['doll1', 'doll2'] // Replace with actual logic to fetch IDs
   return fakerIds
     .map((id) => getSupportedLanguages()
-      .map((lang) => NavigatePath.DOLL_DETAIL(lang, id)
-    )).flat()
+      .map((lang) => NavigateRealPath.DOLL_DETAIL(id, { lang }))
+      .concat([NavigateRealPath.DOLL_DETAIL(id)])
+    ).flat()
 }
 
 export async function loader () {
