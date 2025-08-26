@@ -1,0 +1,46 @@
+.container {
+  --uno-apply: w-screen;
+}
+
+.title {
+  --uno-apply: w-screen text-[30px] p-x-[30px];
+}
+
+.formContainer {
+  --uno-apply: w-screen min-h-[60vh] flex-col-nowrap justify-center items-center gap-[20px];
+  > * {
+    --uno-apply: w-[400px] max-w-screen;
+  }
+}
+
+.actions {
+  --uno-apply: flex-row-nowrap justify-center items-center gap-[30px];
+  > * {
+    --uno-apply: text-center text-[22px] w-[100px] h-[40px] leading-[40px] cursor-pointer;
+  }
+}
+
+.formItemContainer {
+  .formItemLabel {
+    --uno-apply: h-[18px] text-[12px] leading-[18px];
+  }
+  input {
+    --uno-apply: w-full h-[45px] leading-[45px] text-[20px] p-x-[15px];
+  }
+}
+
+.remember {
+  --uno-apply: flex flex-row items-center h-[60px] cursor-pointer gap-[10px];
+  input[type='checkbox'] {
+    --uno-apply: h-[20px] w-[20px] bg-white;
+    outline: none;
+  }
+}
+
+.actionBtn {
+  --uno-apply: h-[60px] bg-gray color-white leading-[60px] text-[15px] text-center cursor-pointer;
+}
+
+.forgot {
+  --uno-apply: h-[60px] text-[15px] leading-[60px] text-center cursor-pointer;
+}

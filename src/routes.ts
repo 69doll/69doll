@@ -1,22 +1,25 @@
 import type { RouteRecord } from 'vite-react-ssg'
 import { compile } from 'path-to-regexp'
 import getSupportedLanguages from './utils/getSupporttedLanguages.ts'
+import LANGUAGE from './constant/LANGUAGE.ts'
+
+const langOptional = '{/:lang}'
 
 export const NavigatePath = {
   get INDEX() { return '/' },
   get NOT_FOUND() { return '/404' },
-  get HOME() { return `{/:lang}/home` },
-  get FORGOT() { return `{/:lang}/forgot` },
-  get SIGNIN() { return `{/:lang}/signin` },
-  get SIGNUP() { return `{/:lang}/signup` },
-  get CARTS() { return `{/:lang}/carts` },
-  get DOLLS() { return `{/:lang}/dolls` },
+  get HOME() { return `${langOptional}/home` },
+  get FORGOT() { return `${langOptional}/forgot` },
+  get SIGNIN() { return `${langOptional}/signin` },
+  get SIGNUP() { return `${langOptional}/signup` },
+  get CARTS() { return `${langOptional}/carts` },
+  get DOLLS() { return `${langOptional}/dolls` },
   get DOLL_DETAIL() { return `${NavigatePath.DOLLS}/:id` },
-  get FACES() { return `{/:lang}/faces` },
+  get FACES() { return `${langOptional}/faces` },
   get FACE_DETAIL() { return `${NavigatePath.FACES}/:id` },
-  get TORSOS() { return `{/:lang}/torsos` },
+  get TORSOS() { return `${langOptional}/torsos` },
   get TORSO_DETAIL() { return `${NavigatePath.TORSOS}/:id` },
-  get ACCESSORIES() { return `{/:lang}/accessories` },
+  get ACCESSORIES() { return `${langOptional}/accessories` },
   get ACCESSORY_DETAIL() { return `${NavigatePath.ACCESSORIES}/:id` },
 }
 
@@ -29,82 +32,73 @@ export const NavigateRealPath = {
   SIGNUP: (opts?: { lang?: string }) => compile(NavigatePath.SIGNUP)({ ...(opts ?? {}) }),
   CARTS: (opts?: { lang?: string }) => compile(NavigatePath.CARTS)({ ...(opts ?? {}) }),
   DOLLS: (opts?: { lang?: string }) => compile(NavigatePath.DOLLS)({ ...(opts ?? {}) }),
-  DOLL_DETAIL: (id: string, opts?: { lang?: string }): string => compile(NavigatePath.DOLL_DETAIL)({ id, ...(opts ?? {}) }),
+  DOLL_DETAIL: (opts: { id: string, lang?: string }) => compile(NavigatePath.DOLL_DETAIL)({ ...opts }),
   FACES: (opts?: { lang?: string }) => compile(NavigatePath.FACES)({ ...(opts ?? {}) }),
-  FACE_DETAIL: (id: string, opts?: { lang?: string }): string => compile(NavigatePath.FACE_DETAIL)({ id, ...(opts ?? {}) }),
+  FACE_DETAIL: (opts: { id: string, lang?: string }) => compile(NavigatePath.FACE_DETAIL)({ ...opts }),
   TORSOS: (opts?: { lang?: string }) => compile(NavigatePath.TORSOS)({ ...(opts ?? {}) }),
-  TORSO_DETAIL: (id: string, opts?: { lang?: string }): string => compile(NavigatePath.TORSO_DETAIL)({ id, ...(opts ?? {}) }),
+  TORSO_DETAIL: (opts: { id: string, lang?: string }) => compile(NavigatePath.TORSO_DETAIL)({ ...opts }),
   ACCESSORIES: (opts?: { lang?: string }) => compile(NavigatePath.ACCESSORIES)({ ...(opts ?? {}) }),
-  ACCESSORY_DETAIL: (id: string, opts?: { lang?: string }): string => compile(NavigatePath.ACCESSORY_DETAIL)({ id, ...(opts ?? {}) }),
+  ACCESSORY_DETAIL: (opts: { id: string, lang?: string }) => compile(NavigatePath.ACCESSORY_DETAIL)({ ...opts }),
+}
+
+const flatLanguageRoutes = <O extends Record<any, any>>(key: keyof typeof NavigatePath, routeOptions = {} as O, paramOptions: any[] = []) => {
+  return [[LANGUAGE.AUTO], getSupportedLanguages()].map((langs) => {
+    const isAutoLang = langs[0] === LANGUAGE.AUTO
+    return {
+      path: NavigatePath[key].replace(langOptional, isAutoLang ? '' : `/:lang`),
+      getStaticPaths: () => langs.map((lang) => {
+        if (paramOptions.length === 0) return [NavigateRealPath[key]({ lang: isAutoLang ? undefined : lang } as any)]
+        return paramOptions.map((paramOption) => NavigateRealPath[key]({ lang: isAutoLang ? undefined : lang, ...paramOption } as any))
+      }).flat(),
+      ...routeOptions,
+    }
+  })
 }
 
 export const routes: RouteRecord[] = [
   {
     path: NavigatePath.INDEX,
-    lazy: () => import('./pages/SignInUp/index.tsx'),
-    // lazy: () => import('./pages/Home/index.tsx'),
-  },
-  {
-    path: NavigatePath.HOME,
     lazy: () => import('./pages/Home/index.tsx'),
-    getStaticPaths: () => getSupportedLanguages().map((lang) => NavigateRealPath.HOME({ lang })).concat([NavigateRealPath.HOME()]),
   },
-  {
-    path: NavigatePath.FORGOT,
+  ...flatLanguageRoutes('HOME', {
+    lazy: () => import('./pages/Home/index.tsx'),
+  }),
+  ...flatLanguageRoutes('FORGOT', {
     lazy: () => import('./pages/Forgot/index.tsx'),
-    getStaticPaths: () => getSupportedLanguages().map((lang) => NavigateRealPath.FORGOT({ lang })).concat([NavigateRealPath.FORGOT()]),
-  },
-  {
-    path: NavigatePath.SIGNIN,
+  }),
+  ...flatLanguageRoutes('SIGNIN', {
     lazy: () => import('./pages/SignInUp/index.tsx'),
-    getStaticPaths: () => getSupportedLanguages().map((lang) => NavigateRealPath.SIGNIN({ lang })).concat([NavigateRealPath.SIGNIN()]),
-  },
-  {
-    path: NavigatePath.SIGNUP,
+  }),
+  ...flatLanguageRoutes('SIGNUP', {
     lazy: () => import('./pages/SignInUp/index.tsx'),
-    getStaticPaths: () => getSupportedLanguages().map((lang) => NavigateRealPath.SIGNUP({ lang })).concat([NavigateRealPath.SIGNUP()]),
-  },
-  {
-    path: NavigatePath.CARTS,
+  }),
+  ...flatLanguageRoutes('CARTS', {
     lazy: () => import('./pages/Carts/index.tsx'),
-    getStaticPaths: () => getSupportedLanguages().map((lang) => NavigateRealPath.CARTS({ lang })).concat([NavigateRealPath.CARTS()]),
-  },
-  {
-    path: NavigatePath.DOLLS,
+  }),
+  ...flatLanguageRoutes('DOLLS', {
     lazy: () => import('./pages/Dolls/index.tsx'),
-    getStaticPaths: () => getSupportedLanguages().map((lang) => NavigateRealPath.DOLLS({ lang })).concat([NavigateRealPath.DOLLS()]),
-  },
-  {
-    path: NavigatePath.DOLL_DETAIL,
+  }),
+  ...flatLanguageRoutes('DOLL_DETAIL', {
     lazy: () => import('./pages/DollDetail/index.tsx'),
-  },
-  {
-    path: NavigatePath.FACES,
+  }, [{ id: 'doll1' }, { id: 'doll2' }]),
+  ...flatLanguageRoutes('FACES', {
     lazy: () => import('./pages/Faces/index.tsx'),
-    getStaticPaths: () => getSupportedLanguages().map((lang) => NavigateRealPath.FACES({ lang })).concat([NavigateRealPath.FACES()]),
-  },
-  {
-    path: NavigatePath.FACE_DETAIL,
+  }),
+  ...flatLanguageRoutes('FACE_DETAIL', {
     lazy: () => import('./pages/FaceDetail/index.tsx'),
-  },
-  {
-    path: NavigatePath.TORSOS,
+  }, [{ id: 'face1' }, { id: 'face2' }]),
+  ...flatLanguageRoutes('TORSOS', {
     lazy: () => import('./pages/Torsos/index.tsx'),
-    getStaticPaths: () => getSupportedLanguages().map((lang) => NavigateRealPath.TORSOS({ lang })).concat([NavigateRealPath.TORSOS()]),
-  },
-  {
-    path: NavigatePath.TORSO_DETAIL,
-    lazy: () => import('./pages/TorsoDetail/index.tsx'),
-  },
-  {
-    path: NavigatePath.ACCESSORIES,
+  }),
+  ...flatLanguageRoutes('TORSO_DETAIL', {
+    lazy: () => import('./pages/FaceDetail/index.tsx'),
+  }, [{ id: 'torso1' }, { id: 'torso2' }]),
+  ...flatLanguageRoutes('ACCESSORIES', {
     lazy: () => import('./pages/Accessories/index.tsx'),
-    getStaticPaths: () => getSupportedLanguages().map((lang) => NavigateRealPath.ACCESSORIES({ lang })).concat([NavigateRealPath.ACCESSORIES()]),
-  },
-  {
-    path: NavigatePath.ACCESSORY_DETAIL,
+  }),
+  ...flatLanguageRoutes('ACCESSORY_DETAIL', {
     lazy: () => import('./pages/AccessoryDetail/index.tsx'),
-  },
+  }, [{ id: 'accessory1' }, { id: 'accessory2' }]),
   {
     path: NavigatePath.NOT_FOUND,
     lazy: () => import('./pages/404/index.tsx'),

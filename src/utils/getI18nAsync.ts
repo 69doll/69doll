@@ -8,7 +8,7 @@ interface I18nFnMap<T, FN = () => T | Promise<T | { default: T }>> {
 
 export default async function getI18nAsync<T extends object>(fnMap: I18nFnMap<T>, lang: LANGUAGE) {
   const fn = fnMap[transformI18nKey(lang)]
-  let p = fn()
+  const p = fn()
   let m: T | { default: T }
   let data: T
   if (isPromise(p)) {

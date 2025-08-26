@@ -6,6 +6,7 @@ enum LANGUAGE {
   ZH_TW = 'zh-tw',
   ZH_HANT = 'zh-hant',
   ZH_HANS = 'zh-hans',
+  AUTO = 'auto',
 }
 
 export default LANGUAGE
