@@ -1,5 +1,6 @@
-const HEAD_KEY = 'head'
-const DATA_URL_KEY = 'dataUrl'
+const HEAD_KEY = '__head__'
+const DATA_URL_KEY = '__dataUrl__'
+const I18N_KEY = '__i18n__'
 
 const loaderData = (oldData: Record<string|number|symbol, any> = {}) => {
   const data = oldData
@@ -24,6 +25,11 @@ const loaderData = (oldData: Record<string|number|symbol, any> = {}) => {
     get: <V = any>(key: string | symbol) => data[key] as V,
     setDataUrl: (url: string) => data[DATA_URL_KEY] = url,
     geDataUrl: () => data[DATA_URL_KEY] as string | undefined,
+    setI18n(content: object) {
+      data[I18N_KEY] = content
+      return this
+    },
+    getI18n: () => data[I18N_KEY] ?? {},
   }
 }
 

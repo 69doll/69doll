@@ -1,0 +1,15 @@
+import { useEffect, useMemo, useState } from "react";
+import getI18nAsync from "../utils/getI18nAsync";
+import useCurrentLanguage from "./useCurrentLanguage";
+import { useLoaderData } from "react-router-dom";
+import loaderData from "../utils/loaderData";
+
+export default function useI18n <T extends object>(i18nMap: Parameters<typeof getI18nAsync<T>>[0]) {
+  const defaultLoaderData = useLoaderData() as ReturnType<typeof loaderData>
+  const currentLanguage = useCurrentLanguage()
+  const [i18n, setI18n] = useState<T>()
+  useEffect(() => {
+    getI18nAsync(i18nMap, currentLanguage).then((content) => setI18n(content))
+  }, [currentLanguage])
+  return useMemo(() => i18n ?? defaultLoaderData?.getI18n(), [i18n])
+}
