@@ -1,13 +1,13 @@
 import type { RouteRecord } from 'vite-react-ssg'
 import { compile } from 'path-to-regexp'
-import getSupportedLanguages from './utils/getSupporttedLanguages.ts'
-import LANGUAGE from './constant/LANGUAGE.ts'
+import getSupportedLanguages from './utils/getSupportedLanguages'
+import SUPPORTED_LANGUAGE from './constant/SUPPORTED_LANGUAGE'
 
 const langOptional = '{/:lang}'
 
 export const NavigatePath = {
   get INDEX() { return '/' },
-  get NOT_FOUND() { return '/404' },
+  get NOT_FOUND() { return `${langOptional}/404` },
   get HOME() { return `${langOptional}/home` },
   get FORGOT() { return `${langOptional}/forgot` },
   get SIGNIN() { return `${langOptional}/signin` },
@@ -25,7 +25,7 @@ export const NavigatePath = {
 
 export const NavigateRealPath = {
   INDEX: () => NavigatePath.INDEX,
-  NOT_FOUND: () => NavigatePath.NOT_FOUND,
+  NOT_FOUND: (opts?: { lang?: string }) => compile(NavigatePath.NOT_FOUND)({ ...(opts ?? {}) }),
   HOME: (opts?: { lang?: string }) => compile(NavigatePath.HOME)({ ...(opts ?? {}) }),
   FORGOT: (opts?: { lang?: string }) => compile(NavigatePath.FORGOT)({ ...(opts ?? {}) }),
   SIGNIN: (opts?: { lang?: string }) => compile(NavigatePath.SIGNIN)({ ...(opts ?? {}) }),
@@ -42,8 +42,8 @@ export const NavigateRealPath = {
 }
 
 const flatLanguageRoutes = <O extends Record<any, any>>(key: keyof typeof NavigatePath, routeOptions = {} as O, paramOptions: any[] = []) => {
-  return [[LANGUAGE.AUTO], getSupportedLanguages()].map((langs) => {
-    const isAutoLang = langs[0] === LANGUAGE.AUTO
+  return [[SUPPORTED_LANGUAGE.AUTO], getSupportedLanguages()].map((langs) => {
+    const isAutoLang = langs[0] === SUPPORTED_LANGUAGE.AUTO
     return {
       path: NavigatePath[key].replace(langOptional, isAutoLang ? '' : `/:lang`),
       getStaticPaths: () => langs.map((lang) => {
@@ -67,10 +67,10 @@ export const routes: RouteRecord[] = [
     lazy: () => import('./pages/Forgot/index.tsx'),
   }),
   ...flatLanguageRoutes('SIGNIN', {
-    lazy: () => import('./pages/SignInUp/index.tsx'),
+    lazy: () => import('./pages/SignIn/index.tsx'),
   }),
   ...flatLanguageRoutes('SIGNUP', {
-    lazy: () => import('./pages/SignInUp/index.tsx'),
+    lazy: () => import('./pages/SignUp/index.tsx'),
   }),
   ...flatLanguageRoutes('CARTS', {
     lazy: () => import('./pages/Carts/index.tsx'),
@@ -99,8 +99,7 @@ export const routes: RouteRecord[] = [
   ...flatLanguageRoutes('ACCESSORY_DETAIL', {
     lazy: () => import('./pages/AccessoryDetail/index.tsx'),
   }, [{ id: 'accessory1' }, { id: 'accessory2' }]),
-  {
-    path: NavigatePath.NOT_FOUND,
+  ...flatLanguageRoutes('NOT_FOUND', {
     lazy: () => import('./pages/404/index.tsx'),
-  },
+  }),
 ]

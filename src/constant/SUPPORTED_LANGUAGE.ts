@@ -1,0 +1,10 @@
+import LANGUAGE from "./LANGUAGE";
+
+/* @ts-ignore  */
+enum SUPPORTED_LANGUAGE {
+  AUTO = LANGUAGE.AUTO,
+  EN_US = LANGUAGE.EN_US,
+  ZH_CN = LANGUAGE.ZH_CN,
+}
+
+export default SUPPORTED_LANGUAGE

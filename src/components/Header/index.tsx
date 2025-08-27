@@ -7,7 +7,7 @@ import { ClientOnly } from "vite-react-ssg"
 
 const Header: React.FC = () => {
   const [_, __, toggleSider] = useDisplaySider()
-  const jump = useJumpPage()
+  const jumper = useJumpPage()
   return (<>
     <div className={css.container}>
       <ClientOnly>
@@ -20,13 +20,13 @@ const Header: React.FC = () => {
           )
         }
       </ClientOnly>
-      <div className={css.center}><b onClick={() => jump.HOME()}>69Doll</b></div>
+      <div className={css.center}><b onClick={() => jumper.HOME()}>69Doll</b></div>
       <ClientOnly>
         {
           () => (
             <div className={css.right}>
               <div className={classNames('icon', css.search)}></div>
-              <div className={classNames('icon', css.account)}></div>
+              <div className={classNames('icon', css.account)} onClick={() => jumper.SIGNIN()}></div>
               <div className={classNames('icon', css.carts)}></div>
             </div>
           )
