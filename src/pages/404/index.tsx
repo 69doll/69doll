@@ -1,11 +1,14 @@
 import type React from "react"
 import ContentLayout from "../../components/ContentLayout"
 import loaderData from "../../utils/loaderData"
+import Doll69Center from "../../components/Doll69Center"
 
 export const Component: React.FC = () => {
   return (<>
     <ContentLayout>
-      404
+      <Doll69Center style={{ width: '100%', height: '80vh', fontSize: '45px' }}>
+        404 Not Found
+      </Doll69Center>
     </ContentLayout>
   </>)
 }

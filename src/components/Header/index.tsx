@@ -27,7 +27,7 @@ const Header: React.FC = () => {
             <div className={css.right}>
               <div className={classNames('icon', css.search)}></div>
               <div className={classNames('icon', css.account)} onClick={() => jumper.SIGNIN()}></div>
-              <div className={classNames('icon', css.carts)}></div>
+              <div className={classNames('icon', css.carts)} onClick={() => jumper.CARTS()}></div>
             </div>
           )
         }
