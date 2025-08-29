@@ -13,6 +13,10 @@
 }
 
 .icon {
-  --uno-apply: color-black cursor-pointer;
+  --uno-apply: color-black cursor-pointer transition-all;
   font-size: var(--69doll-icon-size);
+}
+
+.pointer {
+  --uno-apply: cursor-pointer;
 }

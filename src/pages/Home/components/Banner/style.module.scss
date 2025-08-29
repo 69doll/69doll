@@ -64,18 +64,21 @@
 }
 
 .bannerContentContainer {
-  --uno-apply: cursor-pointer rounded-xl w-full h-full;
+  --uno-apply: rounded-xl w-full h-full;
 }
 
 .bannerContentContainer {
   --uno-apply: flex-row-nowrap justify-between items-end p-x-[15px];
   > * {
     --uno-apply: text-[25px] color-white h-[130px] flex items-center;
+    @screen md {
+      --uno-apply: h-[80px];
+    }
     &:first-child {
-    --uno-apply: font-bold;
+    --uno-apply: font-bold color-main;
     }
     &:last-child * {
-      --uno-apply: text-[35px] font-bold i-material-symbols-arrow-right-alt bg-white;
+      --uno-apply: text-[35px] font-bold i-material-symbols-arrow-right-alt color-icon-main;
     }
   }
 }

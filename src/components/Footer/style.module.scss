@@ -1,5 +1,5 @@
 .container {
-  --uno-apply: flex-col-wrap p-y-[var(--69doll-padding-y)] p-x-[var(--69doll-padding-x)];
+  --uno-apply: flex-col-wrap p-y-[var(--69doll-padding-y)] p-x-[var(--69doll-padding-x)] color-main;
 }
 
 .body {
@@ -67,6 +67,10 @@
   --uno-apply: p-t-[15px] basis-full flex-col-wrap flex-col-reverse items-center border border-t-solid border-t border-gray/50;
   @screen md {
     --uno-apply: flex-row-nowrap justify-between;
+  }
+
+  > * {
+    --uno-apply: p-b-[5px];
   }
 }
 

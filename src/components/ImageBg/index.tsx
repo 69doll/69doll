@@ -17,7 +17,7 @@ const ImageBg: React.FC<ImageBgProps> = ({ children, classNames = [], imageUrl, 
     }
   }, [imageUrl, style])
   return <Doll69Div
-    classNames={[css.container, { 'noAnimation': noAnimation }, ...classNames]}
+    classNames={[css.imageBg, { [css.noAnimation]: noAnimation }, ...classNames]}
     style={divStyle}
     {...props}
   >{ children }</Doll69Div>

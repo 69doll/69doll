@@ -19,6 +19,7 @@ const Footer: React.FC = () => {
         </div>
         <div className={css.menu}>
           <div className={css.menuItem}>
+            <div className={css.item}>Shop</div>
             <div className={css.item} onClick={() => jumper.FACES()}>Faces</div>
             <div className={css.item} onClick={() => jumper.DOLLS()}>Dolls</div>
             <div className={css.item} onClick={() => jumper.TORSOS()}>Torsos</div>

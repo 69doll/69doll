@@ -3,7 +3,7 @@
 }
 
 .title {
-  --uno-apply: w-screen text-[30px] p-x-[30px];
+  --uno-apply: w-screen text-[30px] p-x-[30px] color-main;
 }
 
 .formContainer {
@@ -14,15 +14,28 @@
 }
 
 .actions {
-  --uno-apply: flex-row-nowrap justify-center items-center gap-[30px];
-  > * {
-    --uno-apply: text-center text-[22px] w-[100px] h-[40px] leading-[40px] cursor-pointer;
+  --uno-apply: flex-row-nowrap justify-center gap-[30px];
+}
+.action {
+  --uno-apply: flex justify-center w-[100px] cursor-pointer;
+}
+.content {
+  --uno-apply: w-fit h-[40px] text-center text-[22px] color-main leading-[40px] transition-all;
+
+  .action:hover &, .action.active & {
+    --uno-apply: border-b-[2px] border-b-solid;
+  }
+  .action.active & {
+    --uno-apply: border-active;
+  }
+  .action:hover & {
+    --uno-apply: border-b-[1px] border-active-hover;
   }
 }
 
 .formItemContainer {
   .formItemLabel {
-    --uno-apply: h-[18px] text-[12px] leading-[18px];
+    --uno-apply: h-[18px] text-[12px] leading-[18px] color-main;
   }
   input {
     --uno-apply: w-full h-[45px] leading-[45px] text-[20px] p-x-[15px];
@@ -30,17 +43,20 @@
 }
 
 .remember {
-  --uno-apply: flex flex-row items-center h-[60px] cursor-pointer gap-[10px];
+  --uno-apply: flex flex-row items-center h-[60px] cursor-pointer gap-[10px] color-main;
   input[type='checkbox'] {
-    --uno-apply: h-[20px] w-[20px] bg-white;
+    --uno-apply: h-[20px] w-[20px] bg-main-rev;
     outline: none;
+    &:checked {
+      --uno-apply: bg-active;
+    }
   }
 }
 
 .actionBtn {
-  --uno-apply: h-[60px] bg-gray color-white leading-[60px] text-[15px] text-center cursor-pointer;
+  --uno-apply: h-[60px] bg-active hover:bg-active-hover color-main leading-[60px] text-[15px] text-center cursor-pointer transition-all;
 }
 
 .forgot {
-  --uno-apply: h-[60px] text-[15px] leading-[60px] text-center cursor-pointer;
+  --uno-apply: h-[60px] text-[15px] leading-[60px] text-center cursor-pointer color-hint hover:color-hint-hover transition-all;
 }

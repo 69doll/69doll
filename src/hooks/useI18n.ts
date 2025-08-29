@@ -9,7 +9,10 @@ export default function useI18n <T extends object>(i18nMap: Parameters<typeof ge
   const currentLanguage = useCurrentLanguage()
   const [i18n, setI18n] = useState<T>()
   useEffect(() => {
-    getI18nAsync(i18nMap, currentLanguage).then((content) => setI18n(content))
+    const existI18n = defaultLoaderData.getI18n(currentLanguage)
+    if (!existI18n) {
+      getI18nAsync(i18nMap, currentLanguage).then((content) => setI18n(content))
+    }
   }, [currentLanguage])
-  return useMemo(() => i18n ?? defaultLoaderData?.getI18n(), [i18n])
+  return useMemo(() => defaultLoaderData?.getI18n(currentLanguage) ?? i18n, [currentLanguage])
 }

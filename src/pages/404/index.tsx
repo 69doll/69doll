@@ -5,6 +5,7 @@ import Doll69Center from "../../components/Doll69Center"
 import getI18nAsync from "../../utils/getI18nAsync"
 import SUPPORTED_LANGUAGE from "../../constant/SUPPORTED_LANGUAGE"
 import useI18n from "../../hooks/useI18n.ts"
+import transformI18nKey from "../../utils/transformI18nKey.ts"
 
 export const i18nMap = {
   [SUPPORTED_LANGUAGE.ZH_CN]: () => import('./i18n/zh-cn.ts'),
@@ -26,5 +27,5 @@ export async function loader ({ params }: any) {
   const i18n = await getI18nAsync(i18nMap, params.lang)
   return loaderData()
     .setTitle(`${i18n['404']} | 69Doll`)
-    .setI18n(i18n)
+    .setI18n(transformI18nKey(params.lang), i18n)
 }

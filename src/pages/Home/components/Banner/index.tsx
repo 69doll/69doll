@@ -1,53 +1,109 @@
 import css from './style.module.scss'
 import ImageBg from '../../../../components/ImageBg'
 import useJumpPage from '../../../../hooks/useJumpPage'
+import Doll69If from '../../../../components/Doll69If'
+import { useMemo } from 'react'
+import { match } from 'ts-pattern'
 
-const bannerUrls = [
-  'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp',
-  'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp',
-  'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp',
-  'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp',
-  'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp',
-]
+const DEFAULT_MENU_LIST = [
+  { imageUrl: '', routeKey: 'DOLLS' },
+  { imageUrl: '', routeKey: 'FACES' },
+  { imageUrl: '', routeKey: 'TORSOS' },
+  { imageUrl: '', routeKey: 'ACCESSORIES' },
+] as const
 
-const Banner: React.FC = () => {
+interface IBannerProps {
+  revealList: Array<{ imageUrl: string } & ({ routeKey: keyof ReturnType<typeof useJumpPage>, routeObject?: Record<string, string> })>,
+  menuList: typeof DEFAULT_MENU_LIST,
+}
+
+const Banner: React.FC<IBannerProps> = ({ revealList = [], menuList: paramMenuList = [] }) => {
   const jumper = useJumpPage()
+  const i18n = useMemo(() => ({
+    dolls: 'DOLLS',
+    faces: 'FACES',
+    torsos: 'TORSOS',
+    accessories: 'ACCESSORIES',
+  }), [])
+  const menuList = useMemo(() => {
+    return DEFAULT_MENU_LIST.map((menuObj, index) => {
+      return Object.assign(
+        {},
+        menuObj,
+        paramMenuList[index] ?? {},
+        {
+          title: match(index)
+            .with(0, () => i18n.dolls)
+            .with(1, () => i18n.faces)
+            .with(2, () => i18n.torsos)
+            .with(3, () => i18n.accessories)
+            .otherwise(() => ''),
+        },
+      )
+    })
+  }, [i18n])
   return (
     <div className={css.banner}>
       <div className={css.bannerContainer}>
-        <div className={css.bannerRecommend}>
-          <div className={css.bannerContent}>
-            <ImageBg className={css.bannerContentContainer} imageUrl={bannerUrls[0]}></ImageBg>
+        <Doll69If display={revealList.length}>
+          <div className={css.bannerRecommend}>
+            <div className={css.bannerContent}>
+              {
+                revealList.map((revealObj, index) => {
+                  const hasClickFn = !!revealObj.routeKey
+                  const onClickFn = () => {
+                    return hasClickFn ? jumper[revealObj.routeKey](revealObj.routeObject ?? {} as any) : undefined
+                  }
+                  return <ImageBg
+                    key={index}
+                    classNames={[css.bannerContentContainer, { 'pointer': hasClickFn }]}
+                    imageUrl={revealObj.imageUrl}
+                    onClick={onClickFn}
+                    noAnimation={!hasClickFn}
+                  ></ImageBg>
+                })
+              }
+            </div>
           </div>
-        </div>
+        </Doll69If>
         <div>
           <div className={css.bannerItems}>
-            <div className={css.bannerContent}>
-              <ImageBg className={css.bannerContentContainer} imageUrl={bannerUrls[1]} onClick={() => jumper.DOLLS()}>
-                <div>DOLLS</div>
-                <div><div></div></div>
-              </ImageBg>
-            </div>
-            <div className={css.bannerContent}>
-              <ImageBg className={css.bannerContentContainer} imageUrl={bannerUrls[2]} onClick={() => jumper.FACES()}>
-                <div>FACES</div>
-                <div><div></div></div>
-              </ImageBg>
-            </div>
+            {
+              [
+                menuList[0],
+                menuList[1],
+              ].map((menuObj) => {
+                return <div className={css.bannerContent}>
+                  <ImageBg
+                    classNames={[css.bannerContentContainer, 'pointer']}
+                    imageUrl={menuObj.imageUrl}
+                    onClick={() => jumper[menuObj.routeKey]()}
+                  >
+                    <div>{ menuObj.title }</div>
+                    <div><div></div></div>
+                  </ImageBg>
+                </div>
+              })
+            }
           </div>
           <div className={css.bannerItems}>
-            <div className={css.bannerContent}>
-              <ImageBg className={css.bannerContentContainer} imageUrl={bannerUrls[3]} onClick={() => jumper.TORSOS()}>
-                <div>TORSOS</div>
-                <div><div></div></div>
-              </ImageBg>
-            </div>
-            <div className={css.bannerContent}>
-              <ImageBg className={css.bannerContentContainer} imageUrl={bannerUrls[4]} onClick={() => jumper.ACCESSORIES()}>
-                <div>ACCESSORIES</div>
-                <div><div></div></div>
-              </ImageBg>
-            </div>
+            {
+              [
+                menuList[2],
+                menuList[3],
+              ].map((menuObj) => {
+                return <div className={css.bannerContent}>
+                  <ImageBg
+                    classNames={[css.bannerContentContainer, 'pointer']}
+                    imageUrl={menuObj.imageUrl}
+                    onClick={() => jumper[menuObj.routeKey]()}
+                  >
+                    <div>{ menuObj.title }</div>
+                    <div><div></div></div>
+                  </ImageBg>
+                </div>
+              })
+            }
           </div>
         </div>
       </div>

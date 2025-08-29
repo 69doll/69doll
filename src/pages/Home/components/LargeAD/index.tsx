@@ -1,15 +1,21 @@
 import type React from "react";
 import css from './style.module.scss'
+import ImageBg from "../../../../components/ImageBg";
 
 export interface ILargeADProps {
   imageUrl: string;
+  onClick?: () => any,
 }
 
-const LargeAD: React.FC<ILargeADProps> = ({ imageUrl }) => {
+const LargeAD: React.FC<ILargeADProps> = ({ imageUrl, onClick }) => {
   return (<>
     <div className={css.large}>
-      <div className={css.background}  style={{ backgroundImage: `url(${imageUrl})` }}>
-      </div>
+      <ImageBg
+        className={css.background}
+        imageUrl={imageUrl}
+        noAnimation={!onClick}
+        onClick={onClick}
+      ></ImageBg>
     </div>
   </>)
 }

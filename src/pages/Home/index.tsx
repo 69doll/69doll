@@ -10,6 +10,18 @@ const mockImageUrl = 'https://cdnfile.sspai.com/2025/08/21/article/307f922504424
 
 const mockData = [
   {
+    component: 'banner',
+    revealList: [{
+      imageUrl: mockImageUrl,
+    }],
+    menuList: [
+      { imageUrl: mockImageUrl },
+      { imageUrl: mockImageUrl },
+      { imageUrl: mockImageUrl },
+      { imageUrl: mockImageUrl },
+    ],
+  },
+  {
     component: 'recommend',
     title: 'DOLLS',
     tags: ['Featured', 'ReaDoll', 'RealDoll (Robots)'],
@@ -33,11 +45,11 @@ export const Component: React.FC = () => {
   const data = useLoaderData() as ReturnType<typeof loaderData>
   return (
     <ContentLayout>
-      <Banner />
       {
         (data?.get?.<any[]>('data') ?? mockData).map((d, index) => {
           const { component, ...props } = d
           return match(d)
+            .with({ component: 'banner' }, () => <Banner key={index} {...props} />)
             .with({ component: 'recommend' }, () => <Recommend key={index} {...props} />)
             .with({ component: 'largeAD' }, () => <LargeAD key={index} {...props} />)
             .otherwise(() => <></>)
