@@ -10,7 +10,7 @@ interface IMenuItemProps {
   active?: boolean,
 }
 
-const MenuItem: React.FC<React.PropsWithChildren<Doll69DivAttributes & IMenuItemProps>> = ({ children, onClick, onMouseOver, classNames = [], active = false }) => {
+const MenuItem: React.FC<React.PropsWithChildren<Doll69DivAttributes & IMenuItemProps>> = ({ children, onClick, onMouseOver, active = false }) => {
   return (
     <Doll69Div classNames={[css.menuItem, { [css.active]: active} ]} onClick={onClick}>
       <div>{children}</div>
