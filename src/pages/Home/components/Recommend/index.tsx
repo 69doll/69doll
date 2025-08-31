@@ -57,6 +57,7 @@ const Recommend: React.FC<IRecommendProps> = ({ title, tags, map }) => {
         <div className={css.tags}>
           {
             tags.map((tag, index) => <div
+              key={index}
               className={classNames(css.tag, { [css.active]: currentTagIndex === index })}
               onClick={() => (currentTagIndex !== index && setCurrentTagIndex(index))}
             >{tag}</div>)

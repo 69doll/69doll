@@ -1,6 +1,7 @@
 import type React from "react"
 import css from './menuItem.module.scss'
 import classNames from "classnames"
+import Doll69If from "../Doll69If"
 
 interface IMenuItemProps {
   onMouseOver?: React.MouseEventHandler<HTMLDivElement>
@@ -11,7 +12,9 @@ const MenuItem: React.FC<React.PropsWithChildren & IMenuItemProps> = ({ children
   return (
     <div className={css.menuItem} onClick={onClick}>
       <div>{children}</div>
-      { onMouseOver ? <div className={classNames('icon', css.next)}></div> : void 0 }
+      <Doll69If display={!!onMouseOver}>
+        <div className={classNames('icon', css.next)}></div>
+      </Doll69If>
     </div>
   )
 }

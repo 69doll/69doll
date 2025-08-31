@@ -72,8 +72,8 @@ const Banner: React.FC<IBannerProps> = ({ revealList = [], menuList: paramMenuLi
               [
                 menuList[0],
                 menuList[1],
-              ].map((menuObj) => {
-                return <div className={css.bannerContent}>
+              ].map((menuObj, index) => {
+                return <div className={css.bannerContent} key={index}>
                   <ImageBg
                     classNames={[css.bannerContentContainer, 'pointer']}
                     imageUrl={menuObj.imageUrl}
@@ -91,8 +91,8 @@ const Banner: React.FC<IBannerProps> = ({ revealList = [], menuList: paramMenuLi
               [
                 menuList[2],
                 menuList[3],
-              ].map((menuObj) => {
-                return <div className={css.bannerContent}>
+              ].map((menuObj, index) => {
+                return <div className={css.bannerContent} key={index}>
                   <ImageBg
                     classNames={[css.bannerContentContainer, 'pointer']}
                     imageUrl={menuObj.imageUrl}

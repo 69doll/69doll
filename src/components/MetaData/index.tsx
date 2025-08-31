@@ -46,11 +46,11 @@ export default function MetaData() {
       <html lang={lang} />
       <title>{data?.getTitle?.() ?? "69Doll"}</title>
       {
-        defaultLinks.map((linkObj) => <link {...linkObj} />)
+        defaultLinks.map((linkObj, index) => <link {...linkObj} key={`link-${index}`} />)
       }
       {
-        (data?.getMetaData?.() ?? []).map((meta: any) => {
-          return <meta {...meta} />
+        (data?.getMetaData?.() ?? []).map((meta: any, index) => {
+          return <meta key={`meta-${index}`} {...meta} />
         })
       }
     </Head>

@@ -4,6 +4,7 @@ import { useDisplaySider } from "./hook"
 import { useState } from "react"
 import MenuItem from "./MenuItem"
 import classNames from "classnames"
+import Doll69If from "../Doll69If"
 
 const Sider: React.FC = () => {
   const [_, __, toggleSider] = useDisplaySider()
@@ -19,15 +20,13 @@ const Sider: React.FC = () => {
         <MenuItem onClick={() => setDisplaySubSider(true)} onMouseOver={() => setDisplaySubSider(true)}>TORSOS</MenuItem>
         <MenuItem onClick={() => setDisplaySubSider(true)} onMouseOver={() => setDisplaySubSider(true)}>ACCESSORIES</MenuItem>
       </div>
-      {
-        isDisplaySubSider ?
+      <Doll69If display={isDisplaySubSider}>
         <div className={css.menu}>
           <div className={css.header}>
             <div className={classNames('icon', css.close)} onClick={() => setDisplaySubSider(false)}></div>
           </div>
-        </div> :
-        void 0
-      }
+        </div>
+      </Doll69If>
       <div className={css.masking} onClick={() => toggleSider()}></div>
     </div>
   </>)
