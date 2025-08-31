@@ -1,3 +1,4 @@
-import createGlobalToggle from "../../hooks/createGlobalToggle";
+import { useContext } from "react";
+import { context as DisplayContext } from "../../context/SiderDisplay";
 
-export const useDisplaySider = createGlobalToggle(false)
+export const useDisplaySider = () => useContext(DisplayContext)

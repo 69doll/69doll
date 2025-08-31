@@ -1,19 +1,19 @@
+import { useState } from "react"
 import type React from "react"
+import classNames from "classnames"
 import css from './style.module.scss'
 import { useDisplaySider } from "./hook"
-import { useState } from "react"
 import MenuItem from "./MenuItem"
-import classNames from "classnames"
 import Doll69If from "../Doll69If"
 
 const Sider: React.FC = () => {
-  const [_, __, toggleSider] = useDisplaySider()
+  const [_, setDisplaySider] = useDisplaySider()
   const [isDisplaySubSider, setDisplaySubSider] = useState(false)
   return (<>
     <div className={css.container}>
       <div className={css.menu}>
         <div className={css.header}>
-          <div className={classNames('icon', css.close)} onClick={() => toggleSider()}></div>
+          <div className={classNames('icon', css.close)} onClick={() => setDisplaySider(false)}></div>
         </div>
         <MenuItem onClick={() => setDisplaySubSider(true)} onMouseOver={() => setDisplaySubSider(true)}>FACES</MenuItem>
         <MenuItem onClick={() => setDisplaySubSider(true)} onMouseOver={() => setDisplaySubSider(true)}>DOLLS</MenuItem>
@@ -27,7 +27,7 @@ const Sider: React.FC = () => {
           </div>
         </div>
       </Doll69If>
-      <div className={css.masking} onClick={() => toggleSider()}></div>
+      <div className={css.masking} onClick={() => setDisplaySider(false)}></div>
     </div>
   </>)
 }

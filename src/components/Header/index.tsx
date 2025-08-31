@@ -4,19 +4,20 @@ import { ClientOnly } from "vite-react-ssg"
 import css from './style.module.scss'
 import { useDisplaySider } from "../Sider/hook"
 import useJumpPage from "../../hooks/useJumpPage"
+import Doll69Div from "../Doll69Div"
 
 const Header: React.FC = () => {
-  const [_, __, toggleSider] = useDisplaySider()
+  const [_, setDisplaySider] = useDisplaySider()
   const jumper = useJumpPage()
   return (<>
     <div className={css.container}>
       <ClientOnly>
         {
           () => (
-            <div className={css.left}>
-              <div className={classNames('icon', css.hamburger)} onClick={() => toggleSider()}></div>
+            <Doll69Div classNames={['pointer', css.left]} onClick={() => setDisplaySider(true)}>
+              <div className={classNames('icon', css.hamburger)}></div>
               <b>SHOP</b>
-            </div>
+            </Doll69Div>
           )
         }
       </ClientOnly>
