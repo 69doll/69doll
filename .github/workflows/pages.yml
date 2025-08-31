@@ -38,6 +38,10 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
+      - run: |
+          echo '' > .env.production
+          echo "VITE_API_CDN_DOMAIN=${{ vars.VITE_API_CDN_DOMAIN }}" >> .env.production
+          echo "VITE_API_CDN_SERVICE=${{ vars.VITE_API_CDN_SERVICE }}" >> .env.production
       - run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
