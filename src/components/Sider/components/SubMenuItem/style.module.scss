@@ -1,0 +1,21 @@
+.subMenuItem {
+  --uno-apply: w-[200px] flex-col-nowrap items-center;
+
+  > *:nth-child(1) {
+    --sub-menu-size: 110px;
+    --uno-apply: size-[var(--sub-menu-size)] rounded-[calc(var(--sub-menu-size)/2)];
+  }
+  &:hover > *:nth-child(1) {
+    --uno-apply: bg-active bg-blend-overlay;
+  }
+
+  > *:nth-child(2) {
+    --uno-apply: h-[45px] leading-[45px];
+  }
+  > *:nth-child(3) {
+    --uno-apply: h-[25px] leading-[25px];
+  }
+  > *:nth-child(4) {
+    --uno-apply: h-[25px] leading-[25px];
+  }
+}

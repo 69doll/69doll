@@ -23,7 +23,7 @@ export const Component: React.FC = () => {
   }, []), [cardCount])
   const [ref, { width: containerWidth }] = useMeasure()
   const cardStyle = useMemo(() => ({
-    width: containerWidth ? `${(containerWidth - 25 * (cardCount - 1)) / cardCount}px` : 0,
+    width: containerWidth ? `${(containerWidth - 25 * (cardCount - 1) - 80) / cardCount}px` : 0,
   }), [cardCount, containerWidth])
   const jumper = useJumpPage()
   return (

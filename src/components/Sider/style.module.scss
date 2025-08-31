@@ -3,10 +3,7 @@
 }
 
 .menu {
-  --uno-apply: bg-white max-w-[80%] w-[500px] h-screen grow-0 shrink-0;
-  & + .menu {
-    --uno-apply: bg-gray;
-  }
+  --uno-apply: bg-white max-w-[80vw] w-[500px] h-screen grow-0 shrink-0 overflow-y-scroll;
   &:has(+.menu) .close {
     --uno-apply: hidden;
   }
@@ -14,6 +11,16 @@
     &:has(+.menu) {
       --uno-apply: hidden;
     }
+  }
+}
+
+.submenu {
+  --uno-apply:  bg-gray;
+  @screen lg {
+    --uno-apply: w-[700px] max-w-[calc(900vw-500px)];
+  }
+  > *:not(.header) {
+    --uno-apply: flex-row-wrap justify-around gap-y-[40px];
   }
 }
 

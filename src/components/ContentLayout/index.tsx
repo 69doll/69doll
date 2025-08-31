@@ -14,20 +14,20 @@ const ContentLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
     <>
       <DisplayContext.Provider value={[isDisplaySider, setDisplaySider as any]}>
         <MetaData />
-        <div className={css.layout}>
+        <div className={css.layout} onScroll={isDisplaySider ? () => false : undefined}>
           <Doll69If display={isDisplaySider}>
-            <div className={css.sider}><Sider></Sider></div>
+            <aside className={css.sider}><Sider></Sider></aside>
           </Doll69If>
           <div className={css.container}>
-            <div className={css.header}>
+            <header className={css.header}>
               <Header />
-            </div>
-            <div className={css.body}>
+            </header>
+            <main className={css.body}>
               { children }
-            </div>
-            <div className={css.footer}>
+            </main>
+            <footer className={css.footer}>
               <Footer />
-            </div>
+            </footer>
           </div>
         </div>
       </DisplayContext.Provider>

@@ -1,7 +1,7 @@
 import type React from "react"
-import css from './menuItem.module.scss'
 import classNames from "classnames"
-import Doll69If from "../Doll69If"
+import Doll69If from "../../../Doll69If"
+import css from './style.module.scss'
 
 interface IMenuItemProps {
   onMouseOver?: React.MouseEventHandler<HTMLDivElement>

@@ -1,6 +1,7 @@
 import type React from "react"
 import css from './style.module.scss'
 import useJumpPage from "../../hooks/useJumpPage"
+import Doll69Div from "../Doll69Div"
 
 const Footer: React.FC = () => {
   const jumper = useJumpPage()
@@ -20,10 +21,10 @@ const Footer: React.FC = () => {
         <div className={css.menu}>
           <div className={css.menuItem}>
             <div className={css.item}>Shop</div>
-            <div className={css.item} onClick={() => jumper.FACES()}>Faces</div>
-            <div className={css.item} onClick={() => jumper.DOLLS()}>Dolls</div>
-            <div className={css.item} onClick={() => jumper.TORSOS()}>Torsos</div>
-            <div className={css.item} onClick={() => jumper.ACCESSORIES()}>Accessories</div>
+            <Doll69Div classNames={['pointer', css.item]} onClick={() => jumper.FACES()}>Faces</Doll69Div>
+            <Doll69Div classNames={['pointer', css.item]} onClick={() => jumper.DOLLS()}>Dolls</Doll69Div>
+            <Doll69Div classNames={['pointer', css.item]} onClick={() => jumper.TORSOS()}>Torsos</Doll69Div>
+            <Doll69Div classNames={['pointer', css.item]} onClick={() => jumper.ACCESSORIES()}>Accessories</Doll69Div>
           </div>
           <div className={css.menuItem}>
             <div className={css.item}>AFFILIATE</div>
@@ -32,7 +33,7 @@ const Footer: React.FC = () => {
           <div className={css.menuItem}>
             <div className={css.item}>CUSTOMER CARE</div>
             <div className={css.item}>FAQ</div>
-            <div className={css.item} onClick={() => jumper.SIGNIN()}>My Account</div>
+            <Doll69Div classNames={['pointer', css.item]} onClick={() => jumper.SIGNIN()}>My Account</Doll69Div>
             <div className={css.item}>Order Policies</div>
             <div className={css.item}>Care Guides</div>
           </div>

@@ -1,18 +1,21 @@
 .layout {
   --uno-apply: flex-row-nowrap overflow-x-hidden bg-main;
   &:has(.sider) {
-    --uno-apply: overflow-hidden;
+    --uno-apply: h-dvh overflow-y-hidden;
+    > footer {
+      --uno-apply: hidden;
+    }
   }
 }
 
 .sider {
-  --uno-apply: min-h-[100dvh] w-screen z-[1500];
+  --uno-apply: h-[100dvh] w-screen z-[1500];
 }
 
 .container {
   --uno-apply: flex-col-nowrap w-screen;
   .layout:has(.sider) & {
-    margin-left: calc(-100vw);
+    --uno-apply: m-l-[calc(-100vw)];
   }
 }
 .header {
