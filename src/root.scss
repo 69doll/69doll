@@ -20,3 +20,13 @@
 .pointer {
   --uno-apply: cursor-pointer;
 }
+
+.section {
+  --uno-apply: p-y-[var(--69doll-padding-y)] p-x-[var(--69doll-padding-x)];
+  @screen lt-md {
+    --uno-apply: p-y-[calc(var(--69doll-padding-y)/2)];
+  }
+  &:first-child {
+    --uno-apply: p-t-[0px];
+  }
+}

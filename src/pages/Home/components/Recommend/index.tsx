@@ -1,11 +1,11 @@
 import type React from "react";
-import css from './style.module.scss'
-import classNames from "classnames";
-import TitleContainer from "../TitleContainer";
-import { useWindowSize } from "@uidotdev/usehooks";
 import { useMemo, useState } from "react";
+import classNames from "classnames";
 import { ClientOnly } from "vite-react-ssg";
+import css from './style.module.scss'
+import TitleContainer from "../TitleContainer";
 import ImageBg from "../../../../components/ImageBg";
+import useCardCount from "../../../../hooks/useCardCount";
 
 export interface IRecommendProps {
   title: string;
@@ -14,25 +14,14 @@ export interface IRecommendProps {
 }
 
 const Recommend: React.FC<IRecommendProps> = ({ title, tags, map }) => {
-  const { width: windowWidth } = useWindowSize()
-  const countCard = useMemo(() => {
-    if (!windowWidth) return 5
-    if (windowWidth < 640) {
-      return 2
-    } else if (windowWidth < 768) {
-      return 3
-    } else if (windowWidth < 1024) {
-      return 4
-    }
-    return 5
-  }, [windowWidth])
+  const countCard = useCardCount()
   const [currentTagIndex, setCurrentTagIndex] = useState(0)
   const [currentPage, setCurrentCardIndex] = useState(1)
   const recommendCards = useMemo(() => {
     return map[tags[currentTagIndex]] ?? []
   }, [currentTagIndex, currentPage])
-  const recommendCardStyle = useMemo(() => ({ width: recommendCards.length ? `${100 / recommendCards.length}%` : '100%' }), [windowWidth])
-  const recommendContainerStyle = useMemo(() => ({ width: recommendCards.length ? `${100 * recommendCards.length / countCard}%` : '100%' }), [countCard, windowWidth])
+  const recommendCardStyle = useMemo(() => ({ width: recommendCards.length ? `${100 / recommendCards.length}%` : '100%' }), [countCard])
+  const recommendContainerStyle = useMemo(() => ({ width: recommendCards.length ? `${100 * recommendCards.length / countCard}%` : '100%' }), [countCard])
 
   const prev = () => currentPage !== 0 ? setCurrentCardIndex(currentPage - 1) : void 0
   const next = () => currentPage + countCard !== recommendCards.length - 1 ? setCurrentCardIndex(currentPage + 1) : void 0
@@ -69,7 +58,7 @@ const Recommend: React.FC<IRecommendProps> = ({ title, tags, map }) => {
           {
             recommendCards.map((card, index) => <div style={recommendCardStyle} key={index}>
               <div className={css.card}>
-                <ImageBg className={css.img} imageUrl={card.imageUrl}></ImageBg>
+                <ImageBg className={css.img} imageUrl={card.imageUrl} parentHover={true}></ImageBg>
                 <div className={css.label}>{ card.title }</div>
                 <div className={css.sublabel}>{ tags[currentTagIndex] }</div>
               </div>

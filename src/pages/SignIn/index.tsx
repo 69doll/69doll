@@ -1,15 +1,15 @@
 import type React from "react"
 import { useMemo } from "react"
+import { useMatches } from "react-router-dom"
 import { ClientOnly } from "vite-react-ssg"
 import ContentLayout from "../../components/ContentLayout"
-import loaderData from "../../utils/loaderData"
-import SUPPORTED_LANGUAGE from "../../constant/SUPPORTED_LANGUAGE"
-import getI18nAsync from "../../utils/getI18nAsync.ts"
-import css from './style.module.scss'
-import { useMatches } from "react-router-dom"
-import useJumpPage from "../../hooks/useJumpPage.ts"
 import Doll69Div from "../../components/Doll69Div/index.tsx"
 import Doll69If from "../../components/Doll69If/index.tsx"
+import SUPPORTED_LANGUAGE from "../../constant/SUPPORTED_LANGUAGE"
+import useJumpPage from "../../hooks/useJumpPage.ts"
+import getI18nAsync from "../../utils/getI18nAsync.ts"
+import loaderData from "../../utils/loaderData"
+import css from './style.module.scss'
 
 export const i18nMap = {
   [SUPPORTED_LANGUAGE.ZH_CN]: () => import('./i18n/zh-cn.ts'),
@@ -24,7 +24,7 @@ export const Component: React.FC = () => {
     <ContentLayout>
       <ClientOnly>
         {() => <>
-          <div className={css.container}>
+          <Doll69Div classNames={['section', css.container]}>
             <div className={css.title}>My Account</div>
             <div className={css.formContainer}>
               <div className={css.actions}>
@@ -71,7 +71,7 @@ export const Component: React.FC = () => {
                 <div className={css.actionBtn}>REGISTER</div>
               </Doll69If>
             </div>
-          </div>
+          </Doll69Div>
         </>}
       </ClientOnly>
     </ContentLayout>

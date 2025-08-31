@@ -1,15 +1,15 @@
 .container {
-  --uno-apply: w-screen;
+  --uno-apply: w-full;
 }
 
 .title {
-  --uno-apply: w-screen text-[30px] p-x-[30px] color-main;
+  --uno-apply: w-full text-[30px] color-main;
 }
 
 .formContainer {
-  --uno-apply: w-screen min-h-[60vh] flex-col-nowrap justify-center items-center gap-[20px];
+  --uno-apply: w-full min-h-[60vh] flex-col-nowrap justify-center items-center gap-[20px];
   > * {
-    --uno-apply: w-[400px] max-w-screen;
+    --uno-apply: w-[400px] max-w-full;
   }
 }
 

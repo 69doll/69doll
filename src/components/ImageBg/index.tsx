@@ -5,11 +5,20 @@ import css from './style.module.scss'
 interface IImageBgAttributes {
   imageUrl: string;
   noAnimation?: boolean,
+  parentHover?: boolean,
 }
 
 type ImageBgProps = React.PropsWithChildren<Doll69DivAttributes & IImageBgAttributes>
 
-const ImageBg: React.FC<ImageBgProps> = ({ children, classNames = [], imageUrl, style = {}, noAnimation = false, ...props }) => {
+const ImageBg: React.FC<ImageBgProps> = ({
+  children,
+  classNames = [],
+  imageUrl,
+  style = {},
+  noAnimation = false,
+  parentHover = false,
+  ...props
+}) => {
   const divStyle = useMemo(() => {
     return {
       backgroundImage: `url(${imageUrl})`,
@@ -17,7 +26,12 @@ const ImageBg: React.FC<ImageBgProps> = ({ children, classNames = [], imageUrl, 
     }
   }, [imageUrl, style])
   return <Doll69Div
-    classNames={[css.imageBg, { [css.noAnimation]: noAnimation }, ...classNames]}
+    classNames={[
+      css.imageBg,
+      { [css.noAnimation]: noAnimation },
+      { [css.parentHover]: parentHover },
+      ...classNames,
+    ]}
     style={divStyle}
     {...props}
   >{ children }</Doll69Div>

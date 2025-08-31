@@ -1,0 +1,24 @@
+.title:has(~ .container) {
+  --uno-apply: color-main text-[40px] leading-[40px] h-[40px];
+}
+
+.container {
+  --uno-apply: flex-col-nowrap gap-[40px];
+  > * {
+    --uno-apply: flex-row-nowrap gap-[25px];
+    > * {
+      --uno-apply: cursor-pointer;
+    }
+  }
+}
+
+.image {
+  --uno-apply: h-[400px] rounded-md bg-white;
+}
+
+.image + .title {
+  --uno-apply: color-main text-[25px] leading-[40px] h-[40px] m-t-[15px];
+  *:hover > & {
+    --uno-apply: color-active;
+  }
+}

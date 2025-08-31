@@ -1,9 +1,9 @@
 import type React from "react"
+import classNames from "classnames"
+import { ClientOnly } from "vite-react-ssg"
 import css from './style.module.scss'
 import { useDisplaySider } from "../Sider/hook"
 import useJumpPage from "../../hooks/useJumpPage"
-import classNames from "classnames"
-import { ClientOnly } from "vite-react-ssg"
 
 const Header: React.FC = () => {
   const [_, __, toggleSider] = useDisplaySider()
@@ -20,7 +20,9 @@ const Header: React.FC = () => {
           )
         }
       </ClientOnly>
-      <div className={css.center}><b onClick={() => jumper.HOME()}>69Doll</b></div>
+      <div className={css.center}>
+        <b className='pointer' onClick={() => jumper.HOME()}>69Doll</b>
+      </div>
       <ClientOnly>
         {
           () => (

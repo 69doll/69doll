@@ -2,6 +2,7 @@ import type { RouteRecord } from 'vite-react-ssg'
 import { compile } from 'path-to-regexp'
 import getSupportedLanguages from './utils/getSupportedLanguages'
 import SUPPORTED_LANGUAGE from './constant/SUPPORTED_LANGUAGE'
+import { mockDollsList } from './mock.ts'
 
 const langOptional = '{/:lang}'
 
@@ -80,7 +81,7 @@ export const routes: RouteRecord[] = [
   }),
   ...flatLanguageRoutes('DOLL_DETAIL', {
     lazy: () => import('./pages/DollDetail/index.tsx'),
-  }, [{ id: 'doll1' }, { id: 'doll2' }]),
+  }, mockDollsList.map((item) => ({ id: item.id }))),
   ...flatLanguageRoutes('FACES', {
     lazy: () => import('./pages/Faces/index.tsx'),
   }),

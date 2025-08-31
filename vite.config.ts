@@ -29,6 +29,8 @@ export default defineConfig({
         'color-icon-main': 'bg-main-rev',
         'color-hint': 'color-gray/75',
         'color-hint-hover': 'color-gray/905',
+        'color-active': 'color-red/75',
+        'color-active-hover': 'color-red/90',
         'border-main': 'border-white',
         'border-main-rev': 'border-black',
         'border-active': 'border-red/75',
