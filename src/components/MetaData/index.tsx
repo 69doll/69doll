@@ -39,7 +39,7 @@ export default function MetaData() {
       { width: 152, height: 152 },
       { width: 180, height: 180 },
     ].map((resize) => ({ rel: "apple-touch-icon", sizes: `${resize.width}x${resize.height}`, href: getImageUrl("/favicon.png", { cdn: true, resize: resize }) })),
-    { rel: "apple-touch-icon", href: "/favicon-57.png" },
+    { rel: "apple-touch-icon", href: getImageUrl("/favicon.png", { cdn: true }) },
   ]
   return (
     <Head>
