@@ -15,13 +15,17 @@
 }
 
 .submenu {
-  --uno-apply:  bg-gray;
+  --uno-apply:  bg-gray p-b-[40px];
   @screen lg {
     --uno-apply: w-[700px] max-w-[calc(900vw-500px)];
   }
   > *:not(.header) {
-    --uno-apply: flex-row-wrap justify-around gap-y-[40px];
+    --uno-apply: flex-row-wrap justify-around gap-y-[40px] m-b-[20px];
   }
+}
+
+.actionBtn {
+  --uno-apply: h-[60px] min-w-[200px] bg-active hover:bg-active-hover color-main leading-[60px] text-[15px] text-center cursor-pointer transition-all;
 }
 
 .masking {

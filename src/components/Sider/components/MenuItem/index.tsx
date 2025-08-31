@@ -1,21 +1,23 @@
 import type React from "react"
-import classNames from "classnames"
+import Doll69Div from "../../../Doll69Div"
+import type { Doll69DivAttributes } from "../../../Doll69Div"
 import Doll69If from "../../../Doll69If"
 import css from './style.module.scss'
 
 interface IMenuItemProps {
   onMouseOver?: React.MouseEventHandler<HTMLDivElement>
   onClick?: React.MouseEventHandler<HTMLDivElement>
+  active?: boolean,
 }
 
-const MenuItem: React.FC<React.PropsWithChildren & IMenuItemProps> = ({ children, onClick, onMouseOver }) => {
+const MenuItem: React.FC<React.PropsWithChildren<Doll69DivAttributes & IMenuItemProps>> = ({ children, onClick, onMouseOver, classNames = [], active = false }) => {
   return (
-    <div className={css.menuItem} onClick={onClick}>
+    <Doll69Div classNames={[css.menuItem, { [css.active]: active} ]} onClick={onClick}>
       <div>{children}</div>
       <Doll69If display={!!onMouseOver}>
-        <div className={classNames('icon', css.next)}></div>
+        <Doll69Div classNames={['icon', css.next]}></Doll69Div>
       </Doll69If>
-    </div>
+    </Doll69Div>
   )
 }
 

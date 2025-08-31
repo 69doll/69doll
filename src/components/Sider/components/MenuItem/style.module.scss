@@ -6,7 +6,7 @@
   :last-child {
     --uno-apply: mr-[var(--69doll-margin-x)];
   }
-  &:hover .next {
+  &:hover .next, &.active .next {
     --69doll-icon-size: 40px;
     --uno-apply: i-material-symbols-arrow-right-alt;
   }
