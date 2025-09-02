@@ -33,6 +33,7 @@ export default defineConfig({
         'color-active-hover': 'color-red/90',
         'border-main': 'border-white',
         'border-main-rev': 'border-black',
+        'border-hint': 'border-gray/75',
         'border-active': 'border-red/75',
         'border-active-hover': 'border-red/90',
       },

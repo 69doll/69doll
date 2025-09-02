@@ -14,7 +14,7 @@ export interface IRecommendProps {
 }
 
 const Recommend: React.FC<IRecommendProps> = ({ title, tags, map }) => {
-  const countCard = useCardCount()
+  const countCard = useCardCount([2, 3, 4, 5, 5, 5])
   const [currentTagIndex, setCurrentTagIndex] = useState(0)
   const [currentPage, setCurrentCardIndex] = useState(1)
   const recommendCards = useMemo(() => {

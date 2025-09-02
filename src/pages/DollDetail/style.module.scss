@@ -1,0 +1,10 @@
+.wrapper {
+  --uno-apply: p-t-[var(--69doll-padding-y)] grid grid-flow-row justify-center border-t border-t-solid border-hint;
+}
+
+.finalAmountLabel {
+  --uno-apply: color-hint text-center text-[15px];
+}
+.finalAmount {
+  --uno-apply: color-hint text-center h-[60px] leading-[60px] text-[30px];
+}

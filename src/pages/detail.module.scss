@@ -1,0 +1,67 @@
+:root {
+  --doll-detail-image-size: 120px;
+}
+
+.detailPage {
+  --uno-apply: m-t-[50px] color-main;
+}
+
+.content {
+  @screen md {
+    --uno-apply: grid grid-flow-col gap-[30px];
+    grid-template-columns: 50% 50%;
+  }
+}
+
+.gallery {
+  --uno-apply: grid gap-[10px];
+  @screen lt-md {
+    > *:first-child {
+      --uno-apply: row-start-2;
+    }
+  }
+  @screen md {
+    grid-template-columns: var(--doll-detail-image-size) auto;
+  }
+  .images {
+    @screen lt-md {
+      --uno-apply: w-full overflow-x-auto;
+    }
+    @screen md {
+      --uno-apply: max-h-[70dvh] overflow-y-auto;
+    }
+    .wrapper {
+      --uno-apply: grid gap-[5px];
+      @screen lt-md {
+        --uno-apply: w-max grid-flow-col;
+        grid-template-columns: repeat(auto-fill, var(--doll-detail-image-size));
+      }
+      @screen md {
+        --uno-apply: w-[var(--doll-detail-image-size)] grid-flow-row;
+        grid-template-rows: repeat(auto-fill, var(--doll-detail-image-size));
+      }
+      > * {
+        --uno-apply: size-[var(--doll-detail-image-size)] border-[2px] border-solid border-hint;
+        &.active {
+          --uno-apply: border-[3px] border-active;
+        }
+        &:not(.active):hover {
+          --uno-apply: border-active-hover;
+        }
+      }
+    }
+  }
+  .preview {
+    --uno-apply: w-full;
+    @screen lt-md {
+      --uno-apply: h-[350px];
+    }
+    @screen md {
+      --uno-apply: bg-top;
+    }
+  }
+}
+
+.details {
+  --uno-apply: color-main;
+}

@@ -1,3 +1,5 @@
+import { fill } from 'es-toolkit'
+
 export const mockLargeImageUrl = 'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp'
 
 export const mockHomeData = [
@@ -31,8 +33,71 @@ export const mockHomeData = [
     component: 'largeAD',
     imageUrl: mockLargeImageUrl,
   }
-]
+] as const
 
-export const mockDollsList = Array(23)
-  .fill({ imageUrl: mockLargeImageUrl })
+export const mockDollsList = fill(Array(23), { imageUrl: mockLargeImageUrl })
   .map((obj, index) => (Object.assign({}, obj, { id: `doll${index}`, title: `Doll ${index + 1}.0` })))
+
+export const mockDollDetails = mockDollsList.map((obj) => {
+  const { imageUrl, ...others } = obj
+  return {
+    ...others,
+    imageUrls: fill(Array(15), imageUrl),
+    rate: 10,
+    reviewers: 37,
+    amount: 9000,
+    optionals: [
+      {
+        id: crypto.randomUUID(),
+        title: 'LIMITED PROMOTION',
+        perRow: [4, 4, 4, 4, 4, 4],
+        min: 1,
+        max: 1,
+        options: [
+          { name: 'Customize', value: 'customize', id: 'customize' },
+          { name: 'noChange', value: 'default', id: 'default', amount: -1000, default: true },
+        ],
+      },
+      {
+        id: crypto.randomUUID(),
+        title: 'FEMALE FACE 1',
+        min: 1,
+        max: 1,
+        perRow: [4, 4, 4, 4, 4, 4],
+        options: fill(Array(10), { name: 'Face1', id: 'Face1', imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl })
+          .map((obj, index) => ({ ...obj, id: crypto.randomUUID(), name: `Face${index}`, value: `Face${index}`, default: index === 0 })),
+      },
+      {
+        id: crypto.randomUUID(),
+        title: 'FEMALE FACE 2',
+        min: 1,
+        max: 1,
+        perRow: [3, 3, 6, 6, 6, 6],
+        options: fill(Array(10), { name: 'Face1', id: 'Face1', imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl })
+          .map((obj, index) => ({ ...obj, id: crypto.randomUUID(), name: `Face${index}`, value: `Face${index}`, default: index === 0 })),
+        additions: [
+          {
+            id: crypto.randomUUID(),
+            title: 'FEMALE Opts 1',
+            min: 0,
+            max: 2,
+            perRow: [4, 4, 6, 6, 6, 6],
+            options: [
+              { name: 'Opts1', id: crypto.randomUUID(), imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl },
+              { name: 'Opts2', id: crypto.randomUUID(), imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl, default: true },
+              { name: 'Opts3', id: crypto.randomUUID(), imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl },
+              { name: 'Opts4', id: crypto.randomUUID(), imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl },
+              { name: 'Opts5', id: crypto.randomUUID(), imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl },
+              { name: 'Opts6', id: crypto.randomUUID(), imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl },
+              { name: 'Opts7', id: crypto.randomUUID(), imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl },
+              { name: 'Opts8', id: crypto.randomUUID(), imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl },
+              { name: 'Opts9', id: crypto.randomUUID(), imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl },
+              { name: 'Opts0', id: crypto.randomUUID(), imageUrl: mockLargeImageUrl, detailImageUrl: mockLargeImageUrl },
+            ],
+          },
+        ],
+      },
+    ],
+    detailUrls: fill(Array(5), mockLargeImageUrl),
+  }
+})

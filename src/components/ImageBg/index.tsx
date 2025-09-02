@@ -4,6 +4,8 @@ import css from './style.module.scss'
 
 interface IImageBgAttributes {
   imageUrl: string;
+  brightness?: boolean,
+  scale?: boolean,
   noAnimation?: boolean,
   parentHover?: boolean,
 }
@@ -15,6 +17,8 @@ const ImageBg: React.FC<ImageBgProps> = ({
   classNames = [],
   imageUrl,
   style = {},
+  brightness = false,
+  scale = true,
   noAnimation = false,
   parentHover = false,
   ...props
@@ -28,6 +32,8 @@ const ImageBg: React.FC<ImageBgProps> = ({
   return <Doll69Div
     classNames={[
       css.imageBg,
+      { [css.brightness]: brightness },
+      { [css.scale]: scale },
       { [css.noAnimation]: noAnimation },
       { [css.parentHover]: parentHover },
       ...classNames,

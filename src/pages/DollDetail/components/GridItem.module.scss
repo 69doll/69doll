@@ -1,0 +1,18 @@
+.container {
+  --uno-apply: flex-col-nowrap gap-y-[10px];
+}
+
+.image {
+  --uno-apply: size-[100px] rounded-[50px] border-[2px] border-solid border-hint;
+  .container.active & {
+    --uno-apply: border-[3px] border-active;
+  }
+  .container:not(.active):hover & {
+    --uno-apply: border-active-hover;
+  }
+}
+
+.name {
+  --uno-apply: text-center text-balance p-x-[5px];
+}
+

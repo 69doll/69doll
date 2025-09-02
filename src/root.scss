@@ -30,3 +30,22 @@
     --uno-apply: p-t-[0px];
   }
 }
+
+.grid {
+  --uno-apply: grid;
+  &.col-2 {
+    grid-template-columns: repeat(2, 50%);
+  }
+  &.col-3 {
+    grid-template-columns: repeat(3, 33.33%);
+  }
+  &.col-4 {
+    grid-template-columns: repeat(4, 25%);
+  }
+  &.col-5 {
+    grid-template-columns: repeat(5, 20%);
+  }
+  &.col-6 {
+    grid-template-columns: repeat(6, 16.66%);
+  }
+}

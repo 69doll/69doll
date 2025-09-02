@@ -3,6 +3,7 @@ import { useMemo } from "react"
 import { useMatches } from "react-router-dom"
 import { ClientOnly } from "vite-react-ssg"
 import ContentLayout from "../../components/ContentLayout"
+import Doll69Button from "../../components/Doll69Button/index.tsx"
 import Doll69Div from "../../components/Doll69Div/index.tsx"
 import Doll69If from "../../components/Doll69If/index.tsx"
 import SUPPORTED_LANGUAGE from "../../constant/SUPPORTED_LANGUAGE"
@@ -58,7 +59,9 @@ export const Component: React.FC = () => {
                   <input type="checkbox" name="" id="" />
                   <label>Remember me</label>
                 </div>
-                <div className={css.actionBtn}>LOGIN</div>
+                <Doll69Button>
+                  LOGIN
+                </Doll69Button>
                 <div className={css.forgot}>LOST YOUR PASSWORD?</div>
               </Doll69If>
               <Doll69If display={!isSignIn}>
@@ -68,7 +71,9 @@ export const Component: React.FC = () => {
                     <input type="text" />
                   </div>
                 </div>
-                <div className={css.actionBtn}>REGISTER</div>
+                <Doll69Button>
+                  REGISTER
+                </Doll69Button>
               </Doll69If>
             </div>
           </Doll69Div>

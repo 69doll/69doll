@@ -1,0 +1,8 @@
+.actionBtn {
+  & {
+    --uno-apply: cursor-pointer h-[60px] leading-[60px] text-[15px] text-center;
+  }
+  & {
+    --uno-apply: transition-all bg-active hover:bg-active-hover color-main;
+  }
+}

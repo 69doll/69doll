@@ -14,7 +14,7 @@ import css from './style.module.scss'
 export const Component: React.FC = () => {
   const defaultLoaderData = useLoaderData() as ReturnType<typeof loaderData>
   const list: typeof mockDollsList = defaultLoaderData.get('data') ?? mockDollsList
-  const cardCount = useCardCount()
+  const cardCount = useCardCount([2, 3, 4, 5, 5, 5])
   const cardGroup = useMemo(() => list.reduce<Array<typeof list>>((l, item, index) => {
     const key = Math.floor(index / cardCount)
     l[key] ??= []

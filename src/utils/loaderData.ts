@@ -1,8 +1,10 @@
 import type SUPPORTED_LANGUAGE from "../constant/SUPPORTED_LANGUAGE"
+import transformI18nKey from "./transformI18nKey"
 
 const HEAD_KEY = '__head__'
 const DATA_URL_KEY = '__dataUrl__'
 const I18N_KEY = '__i18n__'
+const DATA_KEY = '__data__'
 
 const loaderData = (oldData: Record<string|number|symbol, any> = {}) => {
   const data = oldData
@@ -32,7 +34,13 @@ const loaderData = (oldData: Record<string|number|symbol, any> = {}) => {
       data[I18N_KEY][lang] = content
       return this
     },
-    getI18n (lang?: SUPPORTED_LANGUAGE) { return lang ? data[I18N_KEY][lang] ?? {} : lang },
+    getI18n (lang?: SUPPORTED_LANGUAGE) { return lang ? data[I18N_KEY][lang] ?? {} : {} },
+    setData(lang: string, content: any) {
+      data[DATA_KEY] ??= {}
+      data[DATA_KEY][transformI18nKey(lang)] = content
+      return this
+    },
+    getData (lang?: string) { return lang ? data[DATA_KEY][transformI18nKey(lang)] ?? undefined : undefined },
   }
 }
 

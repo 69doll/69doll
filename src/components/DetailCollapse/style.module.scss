@@ -1,0 +1,58 @@
+.detailCollapse {
+  --uno-apply: w-full m-b-[30px];
+  & {
+    --uno-apply: m-b-[10px];
+    & & .action {
+      --uno-apply: hidden;
+    }
+  }
+}
+
+.header {
+  & {
+    --uno-apply: grid grid-flow-col gap-[15px] items-center;
+  }
+  & {
+    --uno-apply: h-[50px] leading-[50px];
+  }
+  & {
+    --uno-apply: border-b border-gray border-b-solid;
+  }
+  grid-template-columns: auto auto 30px;
+
+  &:has(.action:hover) .title {
+    --uno-apply: color-main;
+  }
+}
+
+.title {
+  --uno-apply: color-gray text-[16px];
+}
+
+.hint {
+  --uno-apply: color-gray text-right text-[14px];
+}
+
+.icon {
+  --uno-apply: color-gray;
+  .action:hover & {
+    --uno-apply: color-main;
+  }
+  &.add {
+    --uno-apply: size-[20px] i-material-symbols-add;
+  }
+  &.minus {
+    --uno-apply: size-[20px] i-material-symbols-check-indeterminate-small;
+  }
+}
+
+.body {
+  --uno-apply: p-y-[10px] w-full h-fit;
+  .detailCollapse.isCollapse & {
+    --uno-apply: h-[0px];
+  }
+}
+
+.title, .icon, .body {
+  --uno-apply: transition-all duration-300 ease-in-out;
+}

@@ -1,11 +1,12 @@
 import type React from "react"
 import css from './style.module.scss'
+import Doll69Div, { type Doll69DivProps } from "../Doll69Div"
 
-const Doll69Center: React.FC<React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>> = ({ children, ...props }) => {
+const Doll69Center: React.FC<Doll69DivProps> = ({ children, classNames = [], ...props }) => {
   return (<>
-    <div className={css.container} {...props}>
+    <Doll69Div classNames={[css.container, ...classNames]} {...props}>
       { children }
-    </div>
+    </Doll69Div>
   </>)
 }
 
