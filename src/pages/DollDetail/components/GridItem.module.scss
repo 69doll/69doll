@@ -2,14 +2,18 @@
   --uno-apply: flex-col-nowrap gap-y-[10px];
 }
 
-.image {
-  --uno-apply: size-[100px] rounded-[50px] border-[2px] border-solid border-hint;
+.imageWrapper {
+  --uno-apply: p-[2px] rounded-[100px] border-[2px] border-solid border-hint overflow-hidden;
   .container.active & {
     --uno-apply: border-[3px] border-active;
   }
   .container:not(.active):hover & {
     --uno-apply: border-active-hover;
   }
+}
+
+.image {
+  --uno-apply: size-[100px] rounded-[100px];
 }
 
 .name {

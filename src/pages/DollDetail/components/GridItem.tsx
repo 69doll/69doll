@@ -16,11 +16,13 @@ interface GridItemProps {
 const GridItem: React.FC<GridItemProps> = ({ data, currentIds, onClick }) => {
   return <>
     <Doll69Center classNames={['pointer', css.container, { [css.active]: currentIds.includes(data.id) }]} onClick={() => onClick?.(data.id)}>
-      <ImageBg
-        classNames={[css.image]}
-        imageUrl={data.imageUrl}
-      >
-      </ImageBg>
+      <div className={css.imageWrapper}>
+        <ImageBg
+          classNames={[css.image]}
+          imageUrl={data.imageUrl}
+        >
+        </ImageBg>
+      </div>
       <div className={css.name}>{ data.name }</div>
     </Doll69Center>
   </>
