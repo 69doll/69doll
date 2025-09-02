@@ -49,7 +49,7 @@
 .body {
   --uno-apply: p-y-[10px] w-full h-fit;
   .detailCollapse.isCollapse & {
-    --uno-apply: h-[0px];
+    --uno-apply: h-[0px] p-[0px];
   }
 }
 

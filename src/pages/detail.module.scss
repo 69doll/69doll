@@ -1,5 +1,5 @@
 :root {
-  --doll-detail-image-size: 120px;
+  --doll-detail-image-size: 100px;
 }
 
 .detailPage {
@@ -9,7 +9,7 @@
 .content {
   @screen md {
     --uno-apply: grid grid-flow-col gap-[30px];
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 48% 52%;
   }
 }
 

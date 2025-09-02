@@ -3,7 +3,8 @@
 }
 
 .imageWrapper {
-  --uno-apply: p-[2px] rounded-[100px] border-[2px] border-solid border-hint overflow-hidden;
+  --doll-detail-option-image-size: 95px;
+  --uno-apply: p-[2px] rounded-[var(--doll-detail-option-image-size)] border-[2px] border-solid border-hint overflow-hidden;
   .container.active & {
     --uno-apply: border-[3px] border-active;
   }
@@ -13,7 +14,7 @@
 }
 
 .image {
-  --uno-apply: size-[100px] rounded-[100px];
+  --uno-apply: size-[var(--doll-detail-option-image-size)] rounded-[var(--doll-detail-option-image-size)];
 }
 
 .name {
