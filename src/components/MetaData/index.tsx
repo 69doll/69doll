@@ -9,7 +9,7 @@ import SUPPORTED_LANGUAGE from "../../constant/SUPPORTED_LANGUAGE";
 import getImageUrl from "../../utils/getImageUrl";
 
 export default function MetaData() {
-  const data = useLoaderData() as ReturnType<typeof loaderData>
+  const data = loaderData(useLoaderData() as any)
   const currentLanguage = useCurrentLanguage()
   const lang = useMemo(
     () => match(currentLanguage)

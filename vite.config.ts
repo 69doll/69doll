@@ -5,6 +5,9 @@ import { presetWind3, presetIcons, transformerDirectives } from 'unocss'
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    minify: !!process.env.CI,
+  },
   plugins: [
     ReactPlugin(),
     UnoCSSPlugin({

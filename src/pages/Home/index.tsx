@@ -12,7 +12,7 @@ export const Component: React.FC = () => {
   return (
     <ContentLayout>
       {
-        data.map((d: any, index) => {
+        data?.map((d: any, index) => {
           const { component, ...props } = d
           return match(d)
             .with({ component: 'banner' }, () => <Banner key={index} {...props} />)
@@ -28,4 +28,5 @@ export const Component: React.FC = () => {
 export async function loader ({ params }: any) {
   return loaderData()
     .setData(params.lang, mockHomeData)
+    .toObject()
 }

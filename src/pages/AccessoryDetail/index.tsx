@@ -13,4 +13,5 @@ export const Component: React.FC = () => {
 export async function loader () {
   return loaderData()
     .setTitle('Accessory Detail | 69Doll')
+    .toObject()
 }

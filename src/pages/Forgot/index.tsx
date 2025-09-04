@@ -13,4 +13,5 @@ export const Component: React.FC = () => {
 export async function loader () {
   return loaderData()
     .setTitle('Forgot | 69Doll')
+    .toObject()
 }

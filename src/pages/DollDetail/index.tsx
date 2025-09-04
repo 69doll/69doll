@@ -36,7 +36,7 @@ export const Component: React.FC = () => {
   }
   const [results, setResults] = useState(getDefaultResults())
   const primaryKey = useMemo(() => optionals.find((optionObj) => optionObj.options.find(({ id }: any) => id === 'default'))?.id, [optionals])
-  const primaryIds = useMemo(() => results[primaryKey][0], [results, primaryKey])
+  const primaryIds = useMemo(() => results[primaryKey]?.[0] ?? [], [results, primaryKey])
   const refs = useRef<any[]>([])
   const allCollapse = () => refs.current.forEach(({ collapse, id }) => (primaryKey !== id) && collapse())
   const setValue = (key: string, index: number, ids: string[]) => {
@@ -160,7 +160,7 @@ export const Component: React.FC = () => {
         <Doll69Div classNames={['section', css.details]}>
           <div className={css.wrapper}>
             {
-              (data?.detailUrls ?? []).map((url: string) => <img src={url} />)
+              (data?.detailUrls ?? []).map((url: string, index: number) => <img src={url} key={index} />)
             }
           </div>
         </Doll69Div>
@@ -170,7 +170,9 @@ export const Component: React.FC = () => {
 }
 
 export async function loader ({ params }: LoaderFunctionArgs) {
+  const data = mockDollDetails.find(({ id }) => id === params.id)
   return loaderData()
-    .setTitle('Doll Detail | 69Doll')
-    .setData(params.lang as any, mockDollDetails.find(({ id }) => id === params.id))
+    .setTitle(`${data?.title} | 69Doll`)
+    .setData(params.lang as any, data)
+    .toObject()
 }

@@ -9,6 +9,8 @@ const DATA_KEY = '__data__'
 const loaderData = (oldData: Record<string|number|symbol, any> = {}) => {
   const data = oldData
   return {
+    toObject () { return data },
+    toJSON () { return JSON.stringify(data) },
     setTitle(title: string) {
       data[HEAD_KEY] ??= {}
       data[HEAD_KEY].title = title
@@ -40,7 +42,7 @@ const loaderData = (oldData: Record<string|number|symbol, any> = {}) => {
       data[DATA_KEY][transformI18nKey(lang)] = content
       return this
     },
-    getData (lang?: string) { return lang ? data[DATA_KEY][transformI18nKey(lang)] ?? undefined : undefined },
+    getData (lang?: string) { return lang ? data[DATA_KEY]?.[transformI18nKey(lang)] : undefined },
   }
 }
 

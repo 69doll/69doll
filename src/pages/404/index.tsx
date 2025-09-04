@@ -28,4 +28,5 @@ export async function loader ({ params }: any) {
   return loaderData()
     .setTitle(`${i18n['404']} | 69Doll`)
     .setI18n(transformI18nKey(params.lang), i18n)
+    .toObject()
 }

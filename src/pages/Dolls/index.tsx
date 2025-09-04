@@ -1,5 +1,4 @@
 import { useMemo } from "react"
-import { useLoaderData } from "react-router-dom"
 import { useMeasure } from "@uidotdev/usehooks"
 import ContentLayout from "../../components/ContentLayout"
 import Doll69Div from "../../components/Doll69Div"
@@ -10,17 +9,17 @@ import getImageUrl from "../../utils/getImageUrl"
 import loaderData from "../../utils/loaderData"
 import { mockDollsList } from "../../mock"
 import css from './style.module.scss'
+import usePageData from "../../hooks/usePageData"
 
 export const Component: React.FC = () => {
-  const defaultLoaderData = useLoaderData() as ReturnType<typeof loaderData>
-  const list: typeof mockDollsList = defaultLoaderData.get('data') ?? mockDollsList
+  const list = usePageData((setter) => setter(mockDollsList)) as typeof mockDollsList
   const cardCount = useCardCount([2, 3, 4, 5, 5, 5])
-  const cardGroup = useMemo(() => list.reduce<Array<typeof list>>((l, item, index) => {
+  const cardGroup = useMemo(() => (list ?? []).reduce<Array<typeof list>>((l, item, index) => {
     const key = Math.floor(index / cardCount)
     l[key] ??= []
     l[key].push(item)
     return l
-  }, []), [cardCount])
+  }, []), [cardCount, list])
   const [ref, { width: containerWidth }] = useMeasure()
   const cardStyle = useMemo(() => ({
     width: containerWidth ? `${(containerWidth - 25 * (cardCount - 1) - 80) / cardCount}px` : 0,
@@ -55,8 +54,9 @@ export const Component: React.FC = () => {
   )
 }
 
-export async function loader () {
+export async function loader({ params }: any) {
   return loaderData()
     .setTitle('Dolls | 69Doll')
-    .set('data', mockDollsList)
+    .setData(params.lang, mockDollsList)
+    .toObject()
 }

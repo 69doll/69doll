@@ -5,7 +5,7 @@ import { useLoaderData } from "react-router-dom";
 import loaderData from "../utils/loaderData";
 
 export default function useI18n <T extends object>(i18nMap: Parameters<typeof getI18nAsync<T>>[0]) {
-  const defaultLoaderData = useLoaderData() as ReturnType<typeof loaderData>
+  const defaultLoaderData = loaderData(useLoaderData() as any)
   const currentLanguage = useCurrentLanguage()
   const [i18n, setI18n] = useState<T>()
   useEffect(() => {

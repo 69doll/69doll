@@ -33,7 +33,7 @@ const GridItems: React.FC<GridItemsProps> = ({ items, min, max, perRow, currentI
   return <>
     <Doll69Div classNames={['grid', `col-${count}`, css.container]}>
       {
-        items.map((d) => <GridItem data={d} onClick={onItemClick} currentIds={currentIds}></GridItem>)
+        items.map((d, index) => <GridItem key={index} data={d} onClick={onItemClick} currentIds={currentIds}></GridItem>)
       }
     </Doll69Div>
   </>
