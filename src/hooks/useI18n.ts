@@ -14,5 +14,5 @@ export default function useI18n <T extends object>(i18nMap: Parameters<typeof ge
       getI18nAsync(i18nMap, currentLanguage).then((content) => setI18n(content))
     }
   }, [currentLanguage])
-  return useMemo(() => defaultLoaderData?.getI18n(currentLanguage) ?? i18n, [currentLanguage])
+  return useMemo(() => defaultLoaderData?.getI18n(currentLanguage) ?? i18n, [currentLanguage]) as T
 }

@@ -6,10 +6,10 @@ import ImageBg from "../../components/ImageBg"
 import useCardCount from "../../hooks/useCardCount"
 import useJumpPage from "../../hooks/useJumpPage"
 import getImageUrl from "../../utils/getImageUrl"
-import loaderData from "../../utils/loaderData"
 import { mockDollsList } from "../../mock"
 import css from './style.module.scss'
 import usePageData from "../../hooks/usePageData"
+import { genLoaderData } from "../../data"
 
 export const Component: React.FC = () => {
   const list = usePageData((setter) => setter(mockDollsList)) as typeof mockDollsList
@@ -55,8 +55,8 @@ export const Component: React.FC = () => {
 }
 
 export async function loader({ params }: any) {
-  return loaderData()
-    .setTitle('Dolls | 69Doll')
-    .setData(params.lang, mockDollsList)
-    .toObject()
+  return genLoaderData(params.lang, {
+    pageName: 'Dolls',
+    data: mockDollsList,
+  })
 }

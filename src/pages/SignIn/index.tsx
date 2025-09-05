@@ -9,8 +9,8 @@ import Doll69If from "../../components/Doll69If/index.tsx"
 import SUPPORTED_LANGUAGE from "../../constant/SUPPORTED_LANGUAGE"
 import useJumpPage from "../../hooks/useJumpPage.ts"
 import getI18nAsync from "../../utils/getI18nAsync.ts"
-import loaderData from "../../utils/loaderData"
 import css from './style.module.scss'
+import { genLoaderData } from "../../data.ts"
 
 export const i18nMap = {
   [SUPPORTED_LANGUAGE.ZH_CN]: () => import('./i18n/zh-cn.ts'),
@@ -85,7 +85,8 @@ export const Component: React.FC = () => {
 
 export async function loader({ params }: any) {
   const i18n = await getI18nAsync(i18nMap, params.lang)
-  return loaderData()
-    .setTitle(`${i18n.signIn} | 69Doll`)
-    .toObject()
+  return genLoaderData(params.lang, {
+    pageName: i18n.signIn,
+    i18n,
+  })
 }

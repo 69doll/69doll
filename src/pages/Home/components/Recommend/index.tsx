@@ -58,7 +58,12 @@ const Recommend: React.FC<IRecommendProps> = ({ title, tags, map }) => {
           {
             recommendCards.map((card, index) => <div style={recommendCardStyle} key={index}>
               <div className={css.card}>
-                <ImageBg className={css.img} imageUrl={card.imageUrl} parentHover={true}></ImageBg>
+                <ImageBg
+                  lazy={true}
+                  className={css.img}
+                  imageUrl={card.imageUrl}
+                  parentHover={true}
+                ></ImageBg>
                 <div className={css.label}>{ card.title }</div>
                 <div className={css.sublabel}>{ tags[currentTagIndex] }</div>
               </div>

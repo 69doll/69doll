@@ -11,6 +11,7 @@ const LargeAD: React.FC<ILargeADProps> = ({ imageUrl, onClick }) => {
   return (<>
     <div className={css.large}>
       <ImageBg
+        lazy={true}
         className={css.background}
         imageUrl={imageUrl}
         noAnimation={!onClick}

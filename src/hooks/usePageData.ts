@@ -8,10 +8,10 @@ export default function usePageData<V = any>(cb: (setter: (v: V) => any) => any)
   const currentLanguage = useCurrentLanguage()
   const [data, setData] = useState<V>()
   useEffect(() => {
-    const existData = defaultLoaderData?.getData(currentLanguage)
+    const existData = defaultLoaderData.getData(currentLanguage)
     if (!existData) {
       cb(setData)
     }
   }, [currentLanguage])
-  return useMemo(() => defaultLoaderData?.getData?.(currentLanguage) ?? data, [currentLanguage, data])
+  return useMemo(() => defaultLoaderData.getData(currentLanguage) ?? data, [currentLanguage, data])
 }

@@ -1,6 +1,6 @@
 import ContentLayout from "../../components/ContentLayout"
 import Doll69ComingSoon from "../../components/Doll69ComingSoon"
-import loaderData from "../../utils/loaderData"
+import { genLoaderData } from "../../data"
 
 export const Component: React.FC = () => {
   return (<>
@@ -10,8 +10,8 @@ export const Component: React.FC = () => {
   </>)
 }
 
-export async function loader () {
-  return loaderData()
-    .setTitle('Forgot | 69Doll')
-    .toObject()
+export async function loader ({ params }: any) {
+  return genLoaderData(params.lang, {
+    pageName: 'Forgot',
+  })
 }

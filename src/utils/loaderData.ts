@@ -1,48 +1,55 @@
 import type SUPPORTED_LANGUAGE from "../constant/SUPPORTED_LANGUAGE"
-import transformI18nKey from "./transformI18nKey"
+import type { I18n, LoaderData } from "../data"
 
-const HEAD_KEY = '__head__'
-const DATA_URL_KEY = '__dataUrl__'
-const I18N_KEY = '__i18n__'
-const DATA_KEY = '__data__'
-
-const loaderData = (oldData: Record<string|number|symbol, any> = {}) => {
+const loaderData = <O = any>(oldData: LoaderData<O> = {}) => {
   const data = oldData
   return {
     toObject () { return data },
     toJSON () { return JSON.stringify(data) },
-    setTitle(title: string) {
-      data[HEAD_KEY] ??= {}
-      data[HEAD_KEY].title = title
+    setDataUrl: (url: string) => data.dataUrl = url,
+    getDataUrl () { return data.dataUrl },
+    setSystemName (lang: SUPPORTED_LANGUAGE, content: string) {
+      data.systemName ??= {}
+      data.systemName[lang] = content
       return this
     },
-    getTitle () { return data[HEAD_KEY]?.title as string | undefined },
-    setMetaData(object: object) {
-      data[HEAD_KEY] ??= {}
-      data[HEAD_KEY].metaData ??= []
-      data[HEAD_KEY].metaData.push(object)
+    getSystemName (lang: SUPPORTED_LANGUAGE) { return data?.systemName?.[lang] },
+    setPageName (lang: SUPPORTED_LANGUAGE, content: string) {
+      data.pageName ??= {}
+      data.pageName[lang] = content
       return this
     },
-    getMetaData (): any[] { return data[HEAD_KEY]?.metaData ?? [] },
-    set(key: string | symbol, value: any) {
-      data[key] = value
+    getPageName (lang: SUPPORTED_LANGUAGE) { return data?.pageName?.[lang] },
+    setTitle (lang: SUPPORTED_LANGUAGE, content: string) {
+      data.title ??= {}
+      data.title[lang] = content
       return this
     },
-    get: <V = any>(key: string | symbol) => data[key] as V,
-    setDataUrl: (url: string) => data[DATA_URL_KEY] = url,
-    getDataUrl () { return data[DATA_URL_KEY] as string | undefined },
-    setI18n(lang: SUPPORTED_LANGUAGE, content: object) {
-      data[I18N_KEY] ??= {}
-      data[I18N_KEY][lang] = content
+    getTitle (lang: SUPPORTED_LANGUAGE) { return data?.title?.[lang] },
+    setDescription (lang: SUPPORTED_LANGUAGE, content: string) {
+      data.description ??= {}
+      data.description[lang] = content
       return this
     },
-    getI18n (lang?: SUPPORTED_LANGUAGE) { return lang ? data[I18N_KEY][lang] ?? {} : {} },
-    setData(lang: string, content: any) {
-      data[DATA_KEY] ??= {}
-      data[DATA_KEY][transformI18nKey(lang)] = content
+    getDescription (lang: SUPPORTED_LANGUAGE) { return data?.description?.[lang] },
+    setKeywords (lang: SUPPORTED_LANGUAGE, content: string) {
+      data.keywords ??= {}
+      data.keywords[lang] = content
       return this
     },
-    getData (lang?: string) { return lang ? data[DATA_KEY]?.[transformI18nKey(lang)] : undefined },
+    getKeywords (lang: SUPPORTED_LANGUAGE) { return data?.keywords?.[lang] },
+    setI18n (lang: SUPPORTED_LANGUAGE, content: I18n) {
+      data.i18n ??= {}
+      data.i18n[lang] = content
+      return this
+    },
+    getI18n (lang: SUPPORTED_LANGUAGE) { return data?.i18n?.[lang] },
+    setData (lang: SUPPORTED_LANGUAGE, content: O) {
+      data.data ??= {}
+      data.data[lang] = content
+      return this
+    },
+    getData (lang: SUPPORTED_LANGUAGE) { return data?.data?.[lang] },
   }
 }
 

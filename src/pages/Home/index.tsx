@@ -1,11 +1,11 @@
 import { match } from "ts-pattern"
 import ContentLayout from "../../components/ContentLayout"
 import { mockHomeData } from "../../mock"
-import loaderData from "../../utils/loaderData"
 import Banner from "./components/Banner"
 import LargeAD from "./components/LargeAD"
 import Recommend from "./components/Recommend"
 import usePageData from "../../hooks/usePageData"
+import { genLoaderData } from "../../data"
 
 export const Component: React.FC = () => {
   const data = usePageData<typeof mockHomeData>((set) => set(mockHomeData))
@@ -26,7 +26,7 @@ export const Component: React.FC = () => {
 }
 
 export async function loader ({ params }: any) {
-  return loaderData()
-    .setData(params.lang, mockHomeData)
-    .toObject()
+  return genLoaderData(params.lang, {
+    data: mockHomeData,
+  })
 }

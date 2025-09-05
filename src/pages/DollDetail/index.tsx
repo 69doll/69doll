@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react"
-import { useParams, type LoaderFunctionArgs } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { cloneDeep, sum } from "es-toolkit"
 import ContentLayout from "../../components/ContentLayout"
 import DetailCollapse from "../../components/DetailCollapse"
@@ -7,11 +7,11 @@ import Doll69Div from "../../components/Doll69Div"
 import ImageBg from "../../components/ImageBg"
 import usePageData from "../../hooks/usePageData"
 import { mockDollDetails } from "../../mock"
-import loaderData from "../../utils/loaderData"
 import cssDetail from '../detail.module.scss'
 import GridItems from "./components/GridItems"
 import Doll69Button from "../../components/Doll69Button"
 import css from './style.module.scss'
+import { genLoaderData } from "../../data"
 
 export const Component: React.FC = () => {
   const { id: dollId } = useParams()
@@ -91,6 +91,7 @@ export const Component: React.FC = () => {
                     imageUrl={imageUrl}
                     key={index}
                     onClick={() => setImageIndex(index)}
+                    lazy={index > 5}
                   />)
                 }
               </div>
@@ -169,10 +170,10 @@ export const Component: React.FC = () => {
   )
 }
 
-export async function loader ({ params }: LoaderFunctionArgs) {
+export async function loader({ params }: any) {
   const data = mockDollDetails.find(({ id }) => id === params.id)
-  return loaderData()
-    .setTitle(`${data?.title} | 69Doll`)
-    .setData(params.lang as any, data)
-    .toObject()
+  return genLoaderData(params.lang, {
+    pageName: data?.title,
+    data: data,
+  })
 }
