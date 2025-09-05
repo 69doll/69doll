@@ -42,12 +42,34 @@ jobs:
           echo '' > .env.production
           echo "VITE_API_CDN_DOMAIN=${{ vars.VITE_API_CDN_DOMAIN }}" >> .env.production
           echo "VITE_API_CDN_SERVICE=${{ vars.VITE_API_CDN_SERVICE }}" >> .env.production
+      - run: |
+          echo '' > .env.staging
+          echo "VITE_API_CDN_DOMAIN=${{ vars.VITE_API_CDN_DOMAIN }}" >> .env.staging
+          echo "VITE_API_CDN_SERVICE=${{ vars.VITE_API_CDN_SERVICE }}" >> .env.staging
       - run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
+          name: 'github-pages-production'
           path: './dist'
-      - name: Deploy to GitHub Pages
+      - name: Deploy Production to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Deploy Production to Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME}} --branch master
+      - run: npm run build -- --mode staging
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: 'github-pages-staging'
+          path: './dist'
+      - name: Deploy Staging to Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME}} --branch staging
