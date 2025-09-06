@@ -20,6 +20,7 @@ export const i18nMap = {
 export const Component: React.FC = () => {
   const matches = useMatches()
   const isSignIn = useMemo(() => matches[0].pathname.includes('/signin'), [matches])
+  const isSignUp = useMemo(() => matches[0].pathname.includes('/signup'), [matches])
   const jumper = useJumpPage()
   return (<>
     <ContentLayout>
@@ -28,20 +29,22 @@ export const Component: React.FC = () => {
           <Doll69Div classNames={['section', css.container]}>
             <div className={css.title}>My Account</div>
             <div className={css.formContainer}>
-              <div className={css.actions}>
-                <Doll69Div
-                  classNames={[css.action, { [css.active]: isSignIn }]}
-                  onClick={() => isSignIn || jumper.SIGNIN()}
-                >
-                  <div className={css.content}>Login</div>
-                </Doll69Div>
-                <Doll69Div
-                  classNames={[css.action, { [css.active]: !isSignIn }]}
-                  onClick={() => !isSignIn || jumper.SIGNUP()}
-                >
-                  <div className={css.content}>Register</div>
-                </Doll69Div>
-              </div>
+              <Doll69If display={isSignIn || isSignUp}>
+                <div className={css.actions}>
+                  <Doll69Div
+                    classNames={[css.action, { [css.active]: isSignIn }]}
+                    onClick={() => isSignIn || jumper.SIGNIN()}
+                  >
+                    <div className={css.content}>Login</div>
+                  </Doll69Div>
+                  <Doll69Div
+                    classNames={[css.action, { [css.active]: !isSignIn }]}
+                    onClick={() => !isSignIn || jumper.SIGNUP()}
+                  >
+                    <div className={css.content}>Register</div>
+                  </Doll69Div>
+                </div>
+              </Doll69If>
               <Doll69If display={isSignIn}>
                 <div className={css.formItemContainer}>
                   <div className={css.formItemLabel}>Username</div>
@@ -62,9 +65,9 @@ export const Component: React.FC = () => {
                 <Doll69Button>
                   LOGIN
                 </Doll69Button>
-                <div className={css.forgot}>LOST YOUR PASSWORD?</div>
+                <div className={css.forgot} onClick={() => jumper.FORGOT()}>LOST YOUR PASSWORD?</div>
               </Doll69If>
-              <Doll69If display={!isSignIn}>
+              <Doll69If display={isSignUp}>
                 <div className={css.formItemContainer}>
                   <div className={css.formItemLabel}>Email address</div>
                   <div>
@@ -73,6 +76,17 @@ export const Component: React.FC = () => {
                 </div>
                 <Doll69Button>
                   REGISTER
+                </Doll69Button>
+              </Doll69If>
+              <Doll69If display={!isSignIn && !isSignUp}>
+                <div className={css.formItemContainer}>
+                  <div className={css.formItemLabel}>Email address</div>
+                  <div>
+                    <input type="text" />
+                  </div>
+                </div>
+                <Doll69Button>
+                  Reset Password
                 </Doll69Button>
               </Doll69If>
             </div>

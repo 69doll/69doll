@@ -1,17 +1,13 @@
-import ContentLayout from "../../components/ContentLayout"
-import Doll69ComingSoon from "../../components/Doll69ComingSoon"
-import { genLoaderData } from "../../data"
+import getI18nAsync from "../../utils/getI18nAsync.ts"
+import { i18nMap } from '../SignIn'
+import { genLoaderData } from "../../data.ts"
 
-export const Component: React.FC = () => {
-  return (<>
-    <ContentLayout>
-      <Doll69ComingSoon />
-    </ContentLayout>
-  </>)
-}
+export { Component } from '../SignIn'
 
 export async function loader ({ params }: any) {
+  const i18n = await getI18nAsync(i18nMap, params.lang)
   return genLoaderData(params.lang, {
-    pageName: 'Forgot',
+    pageName: i18n.forgot,
+    i18n,
   })
 }
