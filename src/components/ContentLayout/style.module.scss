@@ -1,6 +1,6 @@
 .layout {
   --uno-apply: flex-row-nowrap overflow-x-hidden bg-main;
-  &:has(.sider) {
+  &:has(.leftSider), &:has(.rightSider) {
     --uno-apply: h-dvh overflow-y-hidden;
     > footer {
       --uno-apply: hidden;
@@ -12,10 +12,17 @@
   --uno-apply: h-[100dvh] w-screen z-[1500];
 }
 
+.leftSider, .rightSider {
+  @extend .sider;
+}
+
 .container {
   --uno-apply: flex-col-nowrap w-screen;
-  .layout:has(.sider) & {
-    --uno-apply: m-l-[calc(-100vw)];
+  .layout:has(.leftSider) & {
+    --uno-apply: m-l-[-100vw];
+  }
+  .layout:has(.rightSider) & {
+    --uno-apply: m-r-[-100vw];
   }
 }
 .header {

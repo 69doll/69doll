@@ -8,7 +8,7 @@ import MetaData from "../MetaData"
 import Sider from "../Sider"
 import Doll69If from "../Doll69If"
 
-const ContentLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
+const ContentLayout: React.FC<React.PropsWithChildren & { rightSide?: React.ReactNode }> = ({ children, rightSide }) => {
   const [isDisplaySider, setDisplaySider] = useState(false)
   return (
     <>
@@ -16,7 +16,7 @@ const ContentLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         <MetaData />
         <div className={css.layout} onScroll={isDisplaySider ? () => false : undefined}>
           <Doll69If display={isDisplaySider}>
-            <aside className={css.sider}><Sider></Sider></aside>
+            <aside className={css.leftSider}><Sider></Sider></aside>
           </Doll69If>
           <div className={css.container}>
             <header className={css.header}>
@@ -29,6 +29,9 @@ const ContentLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
               <Footer />
             </footer>
           </div>
+          <Doll69If display={!!rightSide}>
+            <aside className={css.rightSide}>{rightSide}</aside>
+          </Doll69If>
         </div>
       </DisplayContext.Provider>
     </>
