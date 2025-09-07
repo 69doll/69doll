@@ -99,13 +99,17 @@ export const Component: React.FC = () => {
             <ImageBg imageUrl={imageUrls[imageIndex]} className={cssDetail.preview}></ImageBg>
           </div>
           <div className={cssDetail.details}>
-            <div>
-              <div>{ data.title }</div>
-              <div>{ data.rate }</div>
-              <div>{ data.reviewers }reviewers</div>
-            </div>
-            <div onClick={() => setValue(primaryKey, 0, ['default'])}>
-              Reset All Options
+            <div className={css.details}>
+              <div className={css.info}>
+                <div className={css.name}>{ data.title }</div>
+                {/* <div className={css.rate}>{ data.rate }</div> */}
+                <div className={css.reviewer}>{ data.reviewers } Reviewers</div>
+              </div>
+              <div className={css.hand}>HANDMADE<br/>PRODUCT</div>
+              <div className={css.handInfo}>Each of our products are handmade to order, ono-of-a-kind, piece of custom artwork, therefore, coloring and detailing will vary for each piece.</div>
+              <div className={css.reset} onClick={() => setValue(primaryKey, 0, ['default'])}>
+                Reset All Options
+              </div>
             </div>
             {
               optionals.map((optionalObj, oIndex) => {

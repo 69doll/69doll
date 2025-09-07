@@ -8,3 +8,40 @@
 .finalAmount {
   --uno-apply: color-hint text-center h-[60px] leading-[60px] text-[30px];
 }
+
+.details {
+  --uno-apply: grid gap-[20px] p-x-[35px];
+  grid-template-columns: 180px auto;
+  grid-template-rows: auto auto 24px;
+}
+
+.info {
+  --uno-apply: flex-col-nowrap justify-center gap-[5px];
+  > * {
+    --uno-apply: text-center;
+  }
+}
+
+.name {
+  --uno-apply: color-main text-[30px];
+}
+
+.reviewer {
+  --uno-apply: color-active text-[15px];
+}
+
+.hand {
+  --uno-apply: color-active text-right p-r-[20px] border-r border-r-gray border-r-solid;
+  grid-row-start: 2;
+}
+
+.handInfo {
+  --uno-apply: color-gray/50 text-[14px] text-balance;
+  grid-row-start: 2;
+}
+
+.reset {
+  --uno-apply: ;
+  grid-row-start: 3;
+  grid-column-start: 2;
+}
