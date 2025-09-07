@@ -1,5 +1,5 @@
 import type React from "react"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { useMatches } from "react-router-dom"
 import { ClientOnly } from "vite-react-ssg"
 import ContentLayout from "../../components/ContentLayout"
@@ -11,6 +11,8 @@ import useJumpPage from "../../hooks/useJumpPage.ts"
 import getI18nAsync from "../../utils/getI18nAsync.ts"
 import css from './style.module.scss'
 import { genLoaderData } from "../../data.ts"
+import { API_BASE_URL } from "../../constant.ts"
+import useQuery from "../../hooks/useQuery.ts"
 
 export const i18nMap = {
   [SUPPORTED_LANGUAGE.ZH_CN]: () => import('./i18n/zh-cn.ts'),
@@ -21,6 +23,22 @@ export const Component: React.FC = () => {
   const matches = useMatches()
   const isSignIn = useMemo(() => matches[0].pathname.includes('/signin'), [matches])
   const isSignUp = useMemo(() => matches[0].pathname.includes('/signup'), [matches])
+  const [method, url] = useMemo(() => {
+    switch (true) {
+      case isSignIn: return ['POST', '/api/auth/login']
+      case isSignUp: return ['POST', '/api/user/register']
+      default: return ['POST', '/api/user/reset_password']
+    }
+  }, [isSignIn, isSignUp])
+  const [formData, setFormData] = useState({})
+  const { isLoading, refetch } = useQuery(
+    new URL(url, API_BASE_URL),
+    {
+      method,
+      body: JSON.stringify(formData),
+      fetchOnMount: false,
+    }
+  )
   const jumper = useJumpPage()
   return (<>
     <ContentLayout>
@@ -49,20 +67,20 @@ export const Component: React.FC = () => {
                 <div className={css.formItemContainer}>
                   <div className={css.formItemLabel}>Username</div>
                   <div>
-                    <input type="text" />
+                    <input type="text" onChange={(e) => setFormData({ ...formData, email: e.target.value })} disabled={isLoading}/>
                   </div>
                 </div>
                 <div className={css.formItemContainer}>
                   <div className={css.formItemLabel}>Password</div>
                   <div>
-                    <input type="password" />
+                    <input type="password" onChange={(e) => setFormData({ ...formData, password: e.target.value })} disabled={isLoading}/>
                   </div>
                 </div>
                 <div className={css.remember}>
                   <input type="checkbox" name="" id="" />
                   <label>Remember me</label>
                 </div>
-                <Doll69Button>
+                <Doll69Button onClick={() => refetch()} loading={isLoading}>
                   LOGIN
                 </Doll69Button>
                 <div className={css.forgot} onClick={() => jumper.FORGOT()}>LOST YOUR PASSWORD?</div>
@@ -71,10 +89,16 @@ export const Component: React.FC = () => {
                 <div className={css.formItemContainer}>
                   <div className={css.formItemLabel}>Email address</div>
                   <div>
-                    <input type="text" />
+                    <input type="text" onChange={(e) => setFormData({ ...formData, email: e.target.value })} disabled={isLoading}/>
                   </div>
                 </div>
-                <Doll69Button>
+                <div className={css.formItemContainer}>
+                  <div className={css.formItemLabel}>Password</div>
+                  <div>
+                    <input type="password" onChange={(e) => setFormData({ ...formData, password: e.target.value })} disabled={isLoading}/>
+                  </div>
+                </div>
+                <Doll69Button onClick={() => refetch()} loading={isLoading}>
                   REGISTER
                 </Doll69Button>
               </Doll69If>
@@ -82,10 +106,10 @@ export const Component: React.FC = () => {
                 <div className={css.formItemContainer}>
                   <div className={css.formItemLabel}>Email address</div>
                   <div>
-                    <input type="text" />
+                    <input type="text" onChange={(e) => setFormData({ ...formData, email: e.target.value })} disabled={isLoading}/>
                   </div>
                 </div>
-                <Doll69Button>
+                <Doll69Button onClick={() => refetch()} loading={isLoading}>
                   Reset Password
                 </Doll69Button>
               </Doll69If>
