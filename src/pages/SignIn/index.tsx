@@ -3,18 +3,18 @@ import { useEffect, useMemo, useState } from "react"
 import { useMatches } from "react-router-dom"
 import { ClientOnly } from "vite-react-ssg"
 import SHA1 from 'crypto-js/sha1'
+import { useLocalStorage } from "@uidotdev/usehooks"
 import ContentLayout from "../../components/ContentLayout"
 import Doll69Button from "../../components/Doll69Button/index.tsx"
 import Doll69Div from "../../components/Doll69Div/index.tsx"
 import Doll69If from "../../components/Doll69If/index.tsx"
 import SUPPORTED_LANGUAGE from "../../constant/SUPPORTED_LANGUAGE"
-import useJumpPage from "../../hooks/useJumpPage.ts"
-import getI18nAsync from "../../utils/getI18nAsync.ts"
-import css from './style.module.scss'
-import { genLoaderData } from "../../data.ts"
 import { API_BASE_URL } from "../../constant.ts"
+import useJumpPage from "../../hooks/useJumpPage.ts"
 import useQuery from "../../hooks/useQuery.ts"
-import { useLocalStorage } from "@uidotdev/usehooks"
+import getI18nAsync from "../../utils/getI18nAsync.ts"
+import { genLoaderData } from "../../data.ts"
+import css from './style.module.scss'
 
 export const i18nMap = {
   [SUPPORTED_LANGUAGE.ZH_CN]: () => import('./i18n/zh-cn.ts'),
@@ -32,7 +32,7 @@ export const Component: React.FC = () => {
       default: return ['POST', '/api/user/reset_password']
     }
   }, [isSignIn, isSignUp])
-  const [isRemember, setRemember] = useLocalStorage('signin.remember', false)
+  const [isRemember, setRemember] = import.meta.env.SSR ? useState(false) : useLocalStorage('signin.remember', false)
   const [isRememberMe, setRememberMe] = useState(isRemember)
   const [formData, setFormData] = useState({})
   useEffect(() => setFormData({}), [matches])
@@ -91,10 +91,14 @@ export const Component: React.FC = () => {
                     <input type="password" onChange={(e) => setFormData({ ...formData, password: SHA1(e.target.value).toString() })} disabled={isLoading}/>
                   </div>
                 </div>
-                <div className={css.remember}>
-                  <input type="checkbox" name="" id="" defaultChecked={isRememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
-                  <label>Remember me</label>
-                </div>
+                <ClientOnly>
+                  {
+                    () => <div className={css.remember}>
+                      <input type="checkbox" name="" id="" defaultChecked={isRememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+                      <label>Remember me</label>
+                    </div>
+                  }
+                </ClientOnly>
                 <Doll69Button onClick={() => signIn()} loading={isLoading}>
                   LOGIN
                 </Doll69Button>
