@@ -36,6 +36,9 @@ export const Component: React.FC = () => {
     {
       method,
       body: JSON.stringify(formData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
       fetchOnMount: false,
     }
   )
@@ -73,7 +76,7 @@ export const Component: React.FC = () => {
                 <div className={css.formItemContainer}>
                   <div className={css.formItemLabel}>Password</div>
                   <div>
-                    <input type="password" onChange={(e) => setFormData({ ...formData, password: e.target.value })} disabled={isLoading}/>
+                    <input type="password" onChange={(e) => setFormData({ ...formData, rawPassword: e.target.value })} disabled={isLoading}/>
                   </div>
                 </div>
                 <div className={css.remember}>
