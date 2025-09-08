@@ -1,7 +1,8 @@
 import type React from "react"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useMatches } from "react-router-dom"
 import { ClientOnly } from "vite-react-ssg"
+import { SHA1 } from 'crypto-js'
 import ContentLayout from "../../components/ContentLayout"
 import Doll69Button from "../../components/Doll69Button/index.tsx"
 import Doll69Div from "../../components/Doll69Div/index.tsx"
@@ -31,6 +32,7 @@ export const Component: React.FC = () => {
     }
   }, [isSignIn, isSignUp])
   const [formData, setFormData] = useState({})
+  useEffect(() => setFormData({}), [matches])
   const { isLoading, refetch } = useQuery(
     new URL(url, API_BASE_URL),
     {
@@ -76,7 +78,7 @@ export const Component: React.FC = () => {
                 <div className={css.formItemContainer}>
                   <div className={css.formItemLabel}>Password</div>
                   <div>
-                    <input type="password" onChange={(e) => setFormData({ ...formData, rawPassword: e.target.value })} disabled={isLoading}/>
+                    <input type="password" onChange={(e) => setFormData({ ...formData, password: SHA1(e.target.value).toString() })} disabled={isLoading}/>
                   </div>
                 </div>
                 <div className={css.remember}>
@@ -98,7 +100,7 @@ export const Component: React.FC = () => {
                 <div className={css.formItemContainer}>
                   <div className={css.formItemLabel}>Password</div>
                   <div>
-                    <input type="password" onChange={(e) => setFormData({ ...formData, password: e.target.value })} disabled={isLoading}/>
+                    <input type="password" onChange={(e) => setFormData({ ...formData, rawPassword: SHA1(e.target.value).toString() })} disabled={isLoading}/>
                   </div>
                 </div>
                 <Doll69Button onClick={() => refetch()} loading={isLoading}>
