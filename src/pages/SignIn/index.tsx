@@ -2,7 +2,7 @@ import type React from "react"
 import { useEffect, useMemo, useState } from "react"
 import { useMatches } from "react-router-dom"
 import { ClientOnly } from "vite-react-ssg"
-import { SHA1 } from 'crypto-js'
+import SHA1 from 'crypto-js/sha1'
 import ContentLayout from "../../components/ContentLayout"
 import Doll69Button from "../../components/Doll69Button/index.tsx"
 import Doll69Div from "../../components/Doll69Div/index.tsx"
