@@ -14,6 +14,7 @@ import css from './style.module.scss'
 import { genLoaderData } from "../../data.ts"
 import { API_BASE_URL } from "../../constant.ts"
 import useQuery from "../../hooks/useQuery.ts"
+import { useLocalStorage } from "@uidotdev/usehooks"
 
 export const i18nMap = {
   [SUPPORTED_LANGUAGE.ZH_CN]: () => import('./i18n/zh-cn.ts'),
@@ -31,6 +32,8 @@ export const Component: React.FC = () => {
       default: return ['POST', '/api/user/reset_password']
     }
   }, [isSignIn, isSignUp])
+  const [isRemember, setRemember] = useLocalStorage('signin.remember', false)
+  const [isRememberMe, setRememberMe] = useState(isRemember)
   const [formData, setFormData] = useState({})
   useEffect(() => setFormData({}), [matches])
   const { isLoading, refetch } = useQuery(
@@ -44,6 +47,13 @@ export const Component: React.FC = () => {
       fetchOnMount: false,
     }
   )
+  const signIn = async () => {
+    await refetch()
+    setFormData({})
+    setRemember(isRememberMe)
+  }
+  const signUp = refetch
+  const forgotMe = refetch
   const jumper = useJumpPage()
   return (<>
     <ContentLayout>
@@ -82,10 +92,10 @@ export const Component: React.FC = () => {
                   </div>
                 </div>
                 <div className={css.remember}>
-                  <input type="checkbox" name="" id="" />
+                  <input type="checkbox" name="" id="" defaultChecked={isRememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
                   <label>Remember me</label>
                 </div>
-                <Doll69Button onClick={() => refetch()} loading={isLoading}>
+                <Doll69Button onClick={() => signIn()} loading={isLoading}>
                   LOGIN
                 </Doll69Button>
                 <div className={css.forgot} onClick={() => jumper.FORGOT()}>LOST YOUR PASSWORD?</div>
@@ -103,7 +113,7 @@ export const Component: React.FC = () => {
                     <input type="password" onChange={(e) => setFormData({ ...formData, rawPassword: SHA1(e.target.value).toString() })} disabled={isLoading}/>
                   </div>
                 </div>
-                <Doll69Button onClick={() => refetch()} loading={isLoading}>
+                <Doll69Button onClick={() => signUp()} loading={isLoading}>
                   REGISTER
                 </Doll69Button>
               </Doll69If>
@@ -114,7 +124,7 @@ export const Component: React.FC = () => {
                     <input type="text" onChange={(e) => setFormData({ ...formData, email: e.target.value })} disabled={isLoading}/>
                   </div>
                 </div>
-                <Doll69Button onClick={() => refetch()} loading={isLoading}>
+                <Doll69Button onClick={() => forgotMe()} loading={isLoading}>
                   Reset Password
                 </Doll69Button>
               </Doll69If>
