@@ -23,9 +23,9 @@ concurrency:
 
 jobs:
   # Single deploy job since we're just deploying
-  deploy:
+  deploy-production:
     environment:
-      name: github-pages
+      name: production
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
@@ -42,10 +42,7 @@ jobs:
           echo '' > .env.production
           echo "VITE_API_CDN_DOMAIN=${{ vars.VITE_API_CDN_DOMAIN }}" >> .env.production
           echo "VITE_API_CDN_SERVICE=${{ vars.VITE_API_CDN_SERVICE }}" >> .env.production
-      - run: |
-          echo '' > .env.staging
-          echo "VITE_API_CDN_DOMAIN=${{ vars.VITE_API_CDN_DOMAIN }}" >> .env.staging
-          echo "VITE_API_CDN_SERVICE=${{ vars.VITE_API_CDN_SERVICE }}" >> .env.staging
+          echo "VITE_API_CDN_BASE_URL=${{ vars.VITE_API_CDN_BASE_URL }}" >> .env.production
       - run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -64,6 +61,26 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME}} --branch master
+  deploy-staging:
+    environment:
+      name: staging
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: |
+          echo '' > .env.staging
+          echo "VITE_API_CDN_DOMAIN=${{ vars.VITE_API_CDN_DOMAIN }}" >> .env.staging
+          echo "VITE_API_CDN_SERVICE=${{ vars.VITE_API_CDN_SERVICE }}" >> .env.staging
+          echo "VITE_API_CDN_BASE_URL=${{ vars.VITE_API_CDN_BASE_URL }}" >> .env.staging
       - run: npm run build -- --mode staging
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
