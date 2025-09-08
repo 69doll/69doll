@@ -26,7 +26,7 @@ jobs:
   deploy-production:
     environment:
       name: production
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.deployment-url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -50,13 +50,13 @@ jobs:
           name: 'github-pages-production'
           path: './dist'
       - name: Deploy Production to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
         with:
           token: ${{ github.token}}
           artifact_name: 'github-pages-production'
       - name: Deploy Production to Cloudflare
         uses: cloudflare/wrangler-action@v3
+        id: deployment
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -64,7 +64,7 @@ jobs:
   deploy-staging:
     environment:
       name: staging
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.deployment-url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -89,6 +89,7 @@ jobs:
           path: './dist'
       - name: Deploy Staging to Cloudflare
         uses: cloudflare/wrangler-action@v3
+        id: deployment
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
