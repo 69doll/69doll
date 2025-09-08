@@ -1,0 +1,34 @@
+.list {
+  --uno-apply: grid justify-around;
+  grid-template-columns: repeat(3, 30%);
+  @screen lg {
+    grid-template-columns: repeat(4, 25%);
+  }
+  @screen xl {
+    grid-template-columns: repeat(5, 20%);
+  }
+  > * {
+    --uno-apply: p-y-[15px] color-main;
+    & {
+      --uno-apply: flex-col-nowrap text-center items-center gap-y-[3px];
+    }
+  }
+}
+
+.image {
+  --uno-apply: h-[300px] w-[200px] rounded-xl;
+}
+
+.title {
+  --uno-apply: color-main;
+  &:hover {
+    --uno-apply: color-active;
+  }
+}
+.subTitle, .amount {
+  --uno-apply: color-gray;
+}
+
+.new {
+  --uno-apply: p-y-[2px] p-x-[6px] w-fit leading-[18px] text-[12px] bg-active color-main text-center;
+}

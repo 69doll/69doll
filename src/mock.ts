@@ -36,7 +36,7 @@ export const mockHomeData = [
 ] as const
 
 export const mockDollsList = fill(Array(23), { imageUrl: mockLargeImageUrl })
-  .map((obj, index) => (Object.assign({}, obj, { id: `doll${index}`, title: `Doll ${index + 1}.0` })))
+  .map((obj, index) => (Object.assign({}, obj, { id: `doll-${index}`, title: `Doll ${index + 1}.0` })))
 
 export const mockDollDetails = mockDollsList.map((obj) => {
   const { imageUrl, ...others } = obj
@@ -101,3 +101,12 @@ export const mockDollDetails = mockDollsList.map((obj) => {
     detailUrls: fill(Array(5), mockLargeImageUrl),
   }
 })
+
+export const mockFacesList = fill(Array(23), { imageUrl: mockLargeImageUrl })
+  .map((obj, index) => (Object.assign({}, obj, { id: `face-${index}`, title: `Face ${index + 1}`, subTitle: 'Face', amount: 1234, isNew: Math.random() > 0.5 })))
+
+export const mockTorsosList = fill(Array(23), { imageUrl: mockLargeImageUrl })
+  .map((obj, index) => (Object.assign({}, obj, { id: `torso-${index}`, title: `Torso ${index + 1}`, subTitle: 'Torso', amount: 1234, isNew: Math.random() > 0.5 })))
+
+export const mockAccessoriesList = fill(Array(23), { imageUrl: mockLargeImageUrl })
+  .map((obj, index) => (Object.assign({}, obj, { id: `accessory-${index}`, title: `Accessory ${index + 1}`, subTitle: 'Accessory', amount: 1234, isNew: Math.random() > 0.5 })))

@@ -165,7 +165,7 @@ export const Component: React.FC = () => {
         <Doll69Div classNames={['section', css.details]}>
           <div className={css.wrapper}>
             {
-              (data?.detailUrls ?? []).map((url: string, index: number) => <img src={url} key={index} />)
+              (data?.detailUrls ?? []).map((url: string, index: number) => <img src={url} loading="lazy" key={index} />)
             }
           </div>
         </Doll69Div>
