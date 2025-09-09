@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 
-export default function useQuery<D>(input: string | URL | Request, options?: RequestInit & { fetchOnMount: boolean }) {
-  const { fetchOnMount = true } = options || {}
+interface UseQueryOptions extends Omit<RequestInit, 'body'> {
+  fetchOnMount?: boolean,
+  body?: RequestInit['body'] | object,
+}
+
+export default function useQuery<D>(input: string | URL | Request, options?: UseQueryOptions) {
+  const { fetchOnMount = true, ...otherOptions } = options || {}
   const [data, setData] = useState<D>()
   const [error, setError] = useState(undefined)
   const [isLoading, setLoading] = useState(false)
@@ -9,7 +14,10 @@ export default function useQuery<D>(input: string | URL | Request, options?: Req
   const refetch = async () => {
     setLoading(true)
     setDone(false)
-    return fetch(input, options)
+    const realOptions = otherOptions as RequestInit
+    realOptions.body = typeof realOptions.body === 'object' ? JSON.stringify(realOptions.body) : realOptions.body
+    realOptions.headers = { 'Content-Type': 'application/json', ...(realOptions.headers ?? {}) }
+    return fetch(input, realOptions)
       .then((res) => setData(res.json() as any))
       .catch((e) => setError(e))
       .finally(() => {

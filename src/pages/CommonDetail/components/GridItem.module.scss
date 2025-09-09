@@ -1,0 +1,23 @@
+.container {
+  --uno-apply: flex-col-nowrap gap-y-[10px];
+}
+
+.imageWrapper {
+  --doll-detail-option-image-size: 95px;
+  --uno-apply: p-[2px] rounded-[var(--doll-detail-option-image-size)] border-[2px] border-solid border-hint overflow-hidden;
+  .container.active & {
+    --uno-apply: border-[3px] border-active;
+  }
+  .container:not(.active):hover & {
+    --uno-apply: border-active-hover;
+  }
+}
+
+.image {
+  --uno-apply: size-[var(--doll-detail-option-image-size)] rounded-[var(--doll-detail-option-image-size)];
+}
+
+.name {
+  --uno-apply: text-center text-balance p-x-[5px];
+}
+

@@ -1,17 +1,21 @@
-import ContentLayout from "../../components/ContentLayout"
-import Doll69ComingSoon from "../../components/Doll69ComingSoon"
+import { useParams } from "react-router-dom"
+import usePageData from "../../hooks/usePageData"
 import { genLoaderData } from "../../data"
+import { mockAccessoryDetails } from "../../mock"
+import CommonDetail from "../CommonDetail"
 
 export const Component: React.FC = () => {
+  const { id: accessoryId } = useParams()
+  const data = usePageData((setter) => setter(mockAccessoryDetails.find(({ id }) => id === accessoryId)))
   return (
-    <ContentLayout>
-      <Doll69ComingSoon />
-    </ContentLayout>
+    <CommonDetail data={data} />
   )
 }
 
 export async function loader({ params }: any) {
+  const data = mockAccessoryDetails.find(({ id }) => id === params.id)
   return genLoaderData(params.lang, {
-    pageName: 'Accessory Detail',
+    pageName: data?.title,
+    data: data,
   })
 }

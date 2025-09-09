@@ -1,7 +1,7 @@
 import type React from "react"
 import { useMemo, useState } from "react"
 import classNames from "classnames"
-import { mockDollsList } from "../../mock"
+import { mockAccessoriesList, mockDollsList, mockFacesList, mockTorsosList } from "../../mock"
 import useJumpPage from "../../hooks/useJumpPage"
 import { useDisplaySider } from "./hook"
 import css from './style.module.scss'
@@ -20,6 +20,7 @@ const Sider: React.FC = () => {
       title: 'FACES',
       onItemClick: (...opts: Parameters<typeof jumper['FACE_DETAIL']>) => jumper.FACE_DETAIL(...opts),
       onClick: () => jumper.FACES(),
+      list: mockFacesList,
     },
     {
       title: 'DOLLS',
@@ -31,11 +32,13 @@ const Sider: React.FC = () => {
       title: 'TORSOS',
       onItemClick: (...opts: Parameters<typeof jumper['TORSO_DETAIL']>) => jumper.TORSO_DETAIL(...opts),
       onClick: () => jumper.TORSOS(),
+      list: mockTorsosList,
     },
     {
       title: 'ACCESSORIES',
       onItemClick: (...opts: Parameters<typeof jumper['ACCESSORY_DETAIL']>) => jumper.ACCESSORY_DETAIL(...opts),
       onClick: () => jumper.ACCESSORIES(),
+      list: mockAccessoriesList,
     },
   ], [])
   const menuItem = useMemo(() => menuList[menuIndex], [menuIndex])

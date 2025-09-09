@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react"
 import { useMatches } from "react-router-dom"
 import { ClientOnly } from "vite-react-ssg"
 import SHA1 from 'crypto-js/sha1'
-import { useLocalStorage } from "@uidotdev/usehooks"
 import ContentLayout from "../../components/ContentLayout"
 import Doll69Button from "../../components/Doll69Button/index.tsx"
 import Doll69Div from "../../components/Doll69Div/index.tsx"
@@ -15,6 +14,7 @@ import useQuery from "../../hooks/useQuery.ts"
 import getI18nAsync from "../../utils/getI18nAsync.ts"
 import { genLoaderData } from "../../data.ts"
 import css from './style.module.scss'
+import useLocalStorage from "../../hooks/useLocalStorage.ts"
 
 export const i18nMap = {
   [SUPPORTED_LANGUAGE.ZH_CN]: () => import('./i18n/zh-cn.ts'),
@@ -25,14 +25,17 @@ export const Component: React.FC = () => {
   const matches = useMatches()
   const isSignIn = useMemo(() => matches[0].pathname.includes('/signin'), [matches])
   const isSignUp = useMemo(() => matches[0].pathname.includes('/signup'), [matches])
-  const [method, url] = useMemo(() => {
-    switch (true) {
-      case isSignIn: return ['POST', '/api/auth/login']
-      case isSignUp: return ['POST', '/api/user/register']
-      default: return ['POST', '/api/user/reset_password']
-    }
-  }, [isSignIn, isSignUp])
-  const [isRemember, setRemember] = import.meta.env.SSR ? useState(false) : useLocalStorage('signin.remember', false)
+  const [[method, url], setHttpInfo] = useState<[string, string]>(['', ''])
+  const changeSignIn = () => {
+    setHttpInfo(['POST', '/api/auth/login'])
+  }
+  const changeSignUp = () => {
+    setHttpInfo(['POST', '/api/auth/register'])
+  }
+  const changeForgot = () => {
+    setHttpInfo(['POST', '/api/user/reset_password'])
+  }
+  const [isRemember, setRemember] = useLocalStorage('signin.remember', false)
   const [isRememberMe, setRememberMe] = useState(isRemember)
   const [formData, setFormData] = useState({})
   useEffect(() => setFormData({}), [matches])
@@ -40,20 +43,30 @@ export const Component: React.FC = () => {
     new URL(url, API_BASE_URL),
     {
       method,
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      body: formData,
       fetchOnMount: false,
-    }
+    },
   )
   const signIn = async () => {
+    changeSignIn()
     await refetch()
     setFormData({})
     setRemember(isRememberMe)
   }
-  const signUp = refetch
-  const forgotMe = refetch
+  const signUp = async () => {
+    changeSignUp()
+    await refetch()
+    changeSignIn()
+    setFormData({
+      email: (formData as any).email,
+      rawPassword: (formData as any).password,
+    })
+    await refetch()
+  }
+  const forgotMe = async () => {
+    changeForgot()
+    await refetch()
+  }
   const jumper = useJumpPage()
   return (<>
     <ContentLayout>

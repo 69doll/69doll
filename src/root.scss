@@ -34,18 +34,18 @@
 .grid {
   --uno-apply: grid;
   &.col-2 {
-    grid-template-columns: repeat(2, 50%);
+    grid-template-columns: repeat(2, 1fr);
   }
   &.col-3 {
-    grid-template-columns: repeat(3, 33.33%);
+    grid-template-columns: repeat(3, 1fr);
   }
   &.col-4 {
-    grid-template-columns: repeat(4, 25%);
+    grid-template-columns: repeat(4, 1fr);
   }
   &.col-5 {
-    grid-template-columns: repeat(5, 20%);
+    grid-template-columns: repeat(5, 1fr);
   }
   &.col-6 {
-    grid-template-columns: repeat(6, 16.66%);
+    grid-template-columns: repeat(6, 1fr);
   }
 }

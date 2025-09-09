@@ -47,7 +47,7 @@
 }
 
 .body {
-  --uno-apply: p-y-[10px] w-full h-fit;
+  --uno-apply: p-t-[25px] p-b-[10px] w-full h-fit;
   .detailCollapse.isCollapse & {
     --uno-apply: h-[0px] p-[0px];
   }
