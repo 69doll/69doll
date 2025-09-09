@@ -14,6 +14,9 @@
   grid-template-columns: 180px auto;
   grid-template-rows: auto auto 24px;
 }
+.detailContent {
+  --uno-apply: text-center;
+}
 
 .info {
   --uno-apply: flex-col-nowrap justify-center gap-[5px];

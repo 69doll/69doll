@@ -64,7 +64,7 @@ export const Component: React.FC = () => {
     }).flat()
   }, [optionals])
   const finalAmount = useMemo(() => {
-    const currentAmount = data.amount
+    const currentAmount = data?.amount ?? 0
     const ids = Object.values(results).flat(2)
     const optionAmounts = allOptions
       .filter((o: any) => typeof o.amount === 'number' && ids.includes(o.id))
@@ -79,7 +79,7 @@ export const Component: React.FC = () => {
     <ContentLayout>
       <div className={cssDetail.detailPage}>
         <div className={'section'}>
-          {`Home > Dolls > ${data.title}`}
+          {`Home > Dolls > ${data?.title}`}
         </div>
         <Doll69Div classNames={['section', cssDetail.content]}>
           <div className={cssDetail.gallery}>
@@ -101,9 +101,9 @@ export const Component: React.FC = () => {
           <div className={cssDetail.details}>
             <div className={css.details}>
               <div className={css.info}>
-                <div className={css.name}>{ data.title }</div>
+                <div className={css.name}>{ data?.title }</div>
                 {/* <div className={css.rate}>{ data.rate }</div> */}
-                <div className={css.reviewer}>{ data.reviewers } Reviewers</div>
+                <div className={css.reviewer}>{ data?.reviewers } Reviewers</div>
               </div>
               <div className={css.hand}>HANDMADE<br/>PRODUCT</div>
               <div className={css.handInfo}>Each of our products are handmade to order, ono-of-a-kind, piece of custom artwork, therefore, coloring and detailing will vary for each piece.</div>
@@ -120,7 +120,7 @@ export const Component: React.FC = () => {
                   .join(', ')
                 return <DetailCollapse
                   ref={(el) => (refs.current[oIndex] = { ...el, id: optionalObj.id }) as any}
-                  title={optionalObj.title}
+                  title={optionalObj?.title}
                   hint={hint}
                   key={oIndex}
                   disabled={isDefault && optionalObj.id !== primaryKey }
@@ -135,7 +135,7 @@ export const Component: React.FC = () => {
                   />
                   {
                     (optionalObj.additions ?? []).map((additionObj: any, aIndex: number) => <DetailCollapse
-                      title={additionObj.title}
+                      title={additionObj?.title}
                       key={aIndex}
                     >
                       <GridItems
@@ -162,7 +162,7 @@ export const Component: React.FC = () => {
             <Doll69Button onClick={() => undefined}>Add Cart</Doll69Button>
           </div>
         </Doll69Div>
-        <Doll69Div classNames={['section', css.details]}>
+        <Doll69Div classNames={['section', css.detailContent]}>
           <div className={css.wrapper}>
             {
               (data?.detailUrls ?? []).map((url: string, index: number) => <img src={url} loading="lazy" key={index} />)

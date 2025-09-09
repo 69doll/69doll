@@ -9,7 +9,7 @@
 .content {
   @screen md {
     --uno-apply: grid grid-flow-col gap-[30px];
-    grid-template-columns: 48% 52%;
+    grid-template-columns: 48% auto;
   }
 }
 
