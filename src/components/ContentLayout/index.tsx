@@ -7,6 +7,8 @@ import Header from "../Header"
 import MetaData from "../MetaData"
 import Sider from "../Sider"
 import css from './style.module.scss'
+import ImageBg from "../ImageBg"
+import { backgroundImage } from "../../mock"
 
 const ContentLayout: React.FC = () => {
   const isDisplaySider = useIsDisplaySider()
@@ -17,7 +19,11 @@ const ContentLayout: React.FC = () => {
         <Doll69If display={isDisplaySider}>
           <aside className={css.sider}><Sider /></aside>
         </Doll69If>
-        <div className={css.container}>
+        <ImageBg
+          className={css.container}
+          imageUrl={backgroundImage}
+          noAnimation={true}
+        >
           <header className={css.header}>
             <Header />
           </header>
@@ -27,7 +33,7 @@ const ContentLayout: React.FC = () => {
           <footer className={css.footer}>
             <Footer />
           </footer>
-        </div>
+        </ImageBg>
       </div>
     </>
   )

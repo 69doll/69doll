@@ -1,6 +1,9 @@
 import { fill } from 'es-toolkit'
+import getImageUrl from './utils/getImageUrl'
 
 export const mockLargeImageUrl = 'https://cdnfile.sspai.com/2025/08/21/article/307f9225044241c6fdd4b4710311a61d.jpeg?imageView2/2/w/1120/q/40/interlace/1/ignore-error/1/format/webp'
+
+export const backgroundImage = getImageUrl('/expansion_20250903235835295.JPEG', { cdn: true, resize: { width: 1080 } })
 
 export const mockDollsList = fill(Array(23), { imageUrl: mockLargeImageUrl })
   .map((obj, index) => (Object.assign({}, obj, { id: `doll-${index}`, title: `Doll ${index + 1}.0` })))

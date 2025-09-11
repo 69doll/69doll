@@ -40,7 +40,7 @@ const ImageBg: React.FC<ImageBgProps> = ({
   const divStyle = useMemo(() => {
     return Object.assign(
       {},
-      isDisplayImage && { backgroundImage: `url(${imageUrl})`, },
+      isDisplayImage && imageUrl && { backgroundImage: `url(${imageUrl})`, },
       style,
     )
   }, [imageUrl, style, lazy, entry])
