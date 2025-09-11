@@ -1,5 +1,4 @@
 import type React from "react"
-import ContentLayout from "../../components/ContentLayout"
 import Doll69Center from "../../components/Doll69Center"
 import getI18nAsync from "../../utils/getI18nAsync"
 import SUPPORTED_LANGUAGE from "../../constant/SUPPORTED_LANGUAGE"
@@ -14,11 +13,9 @@ export const i18nMap = {
 export const Component: React.FC = () => {
   const i18n = useI18n(i18nMap)
   return (<>
-    <ContentLayout>
-      <Doll69Center style={{ width: '100%', height: '80vh', fontSize: '45px' }}>
-        { i18n['404'] }
-      </Doll69Center>
-    </ContentLayout>
+    <Doll69Center style={{ width: '100%', height: '80vh', fontSize: '45px' }}>
+      { i18n['404'] }
+    </Doll69Center>
   </>)
 }
 

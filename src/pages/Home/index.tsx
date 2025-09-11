@@ -1,5 +1,4 @@
 import { match } from "ts-pattern"
-import ContentLayout from "../../components/ContentLayout"
 import { mockHomeData } from "../../mock"
 import Banner from "./components/Banner"
 import LargeAD from "./components/LargeAD"
@@ -10,7 +9,7 @@ import { genLoaderData } from "../../data"
 export const Component: React.FC = () => {
   const data = usePageData<typeof mockHomeData>((set) => set(mockHomeData))
   return (
-    <ContentLayout>
+    <>
       {
         data?.map((d: any, index) => {
           const { component, ...props } = d
@@ -21,7 +20,7 @@ export const Component: React.FC = () => {
             .otherwise(() => <></>)
         })
       }
-    </ContentLayout>
+    </>
   )
 }
 

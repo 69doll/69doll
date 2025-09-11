@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { cloneDeep, intersection, sum } from "es-toolkit"
-import ContentLayout from "../../components/ContentLayout"
 import DetailCollapse from "../../components/DetailCollapse"
 import Doll69Button from "../../components/Doll69Button"
 import Doll69Div from "../../components/Doll69Div"
@@ -132,7 +131,7 @@ const CommonDetail: React.FC<CommonDetailProps> = ({ data }) => {
   }
   const [imageIndex, setImageIndex] = useState(0)
   return (
-    <ContentLayout>
+    <>
       <div className={cssDetail.detailPage}>
         <div className={'section'}>
           {`Home > ${data?.category} > ${data?.title}`}
@@ -229,7 +228,7 @@ const CommonDetail: React.FC<CommonDetailProps> = ({ data }) => {
           </div>
         </Doll69Div>
       </div>
-    </ContentLayout>
+    </>
   )
 }
 

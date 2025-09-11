@@ -1,6 +1,5 @@
 import { useMemo } from "react"
 import { useMeasure } from "@uidotdev/usehooks"
-import ContentLayout from "../../components/ContentLayout"
 import Doll69Div from "../../components/Doll69Div"
 import ImageBg from "../../components/ImageBg"
 import useCardCount from "../../hooks/useCardCount"
@@ -26,7 +25,7 @@ export const Component: React.FC = () => {
   }), [cardCount, containerWidth])
   const jumper = useJumpPage()
   return (
-    <ContentLayout>
+    <>
       <Doll69Div classNames={['section', css.title]}>REALDOLL</Doll69Div>
       <Doll69Div classNames={['section', css.container]} ref={ref}>
         {
@@ -50,7 +49,7 @@ export const Component: React.FC = () => {
           })
         }
       </Doll69Div>
-    </ContentLayout>
+    </>
   )
 }
 

@@ -7,8 +7,9 @@ import Header from "../Header"
 import MetaData from "../MetaData"
 import Sider from "../Sider"
 import Doll69If from "../Doll69If"
+import { Outlet } from "react-router-dom"
 
-const ContentLayout: React.FC<React.PropsWithChildren & { rightSide?: React.ReactNode }> = ({ children, rightSide }) => {
+const ContentLayout: React.FC = () => {
   const [isDisplaySider, setDisplaySider] = useState(false)
   return (
     <>
@@ -23,15 +24,12 @@ const ContentLayout: React.FC<React.PropsWithChildren & { rightSide?: React.Reac
               <Header />
             </header>
             <main className={css.body}>
-              { children }
+              <Outlet />
             </main>
             <footer className={css.footer}>
               <Footer />
             </footer>
           </div>
-          <Doll69If display={!!rightSide}>
-            <aside className={css.rightSide}>{rightSide}</aside>
-          </Doll69If>
         </div>
       </DisplayContext.Provider>
     </>

@@ -1,4 +1,3 @@
-import ContentLayout from "../../components/ContentLayout"
 import Doll69If from "../../components/Doll69If"
 import ImageBg from "../../components/ImageBg"
 import css from './style.module.scss'
@@ -10,7 +9,7 @@ interface CommonListProps {
 
 const CommonList: React.FC<CommonListProps> = ({ list = [], onClick }) => {
   return <>
-    <ContentLayout>
+    <>
       <div className="section">
         <div className={css.list}>
           {
@@ -26,7 +25,7 @@ const CommonList: React.FC<CommonListProps> = ({ list = [], onClick }) => {
           }
         </div>
       </div>
-    </ContentLayout>
+    </>
   </>
 }
 

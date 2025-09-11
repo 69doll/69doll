@@ -3,25 +3,26 @@ import { compile } from 'path-to-regexp'
 import getSupportedLanguages from './utils/getSupportedLanguages'
 import SUPPORTED_LANGUAGE from './constant/SUPPORTED_LANGUAGE'
 import { mockAccessoriesList, mockDollsList, mockFacesList, mockTorsosList } from './mock.ts'
+import ContentLayout from './components/ContentLayout/index.tsx'
 
 const langOptional = '{/:lang}'
 
 export const NavigatePath = {
-  get INDEX() { return '/' },
-  get NOT_FOUND() { return `${langOptional}/404` },
-  get HOME() { return `${langOptional}/home` },
-  get FORGOT() { return `${langOptional}/forgot` },
-  get SIGNIN() { return `${langOptional}/signin` },
-  get SIGNUP() { return `${langOptional}/signup` },
-  get CARTS() { return `${langOptional}/carts` },
-  get DOLLS() { return `${langOptional}/dolls` },
-  get DOLL_DETAIL() { return `${NavigatePath.DOLLS}/:id` },
-  get FACES() { return `${langOptional}/faces` },
-  get FACE_DETAIL() { return `${NavigatePath.FACES}/:id` },
-  get TORSOS() { return `${langOptional}/torsos` },
-  get TORSO_DETAIL() { return `${NavigatePath.TORSOS}/:id` },
-  get ACCESSORIES() { return `${langOptional}/accessories` },
-  get ACCESSORY_DETAIL() { return `${NavigatePath.ACCESSORIES}/:id` },
+  get INDEX() { return '/' as const },
+  get NOT_FOUND() { return `${langOptional}/404` as const },
+  get HOME() { return `${langOptional}/home` as const },
+  get FORGOT() { return `${langOptional}/forgot` as const },
+  get SIGNIN() { return `${langOptional}/signin` as const },
+  get SIGNUP() { return `${langOptional}/signup` as const },
+  get CARTS() { return `${langOptional}/carts` as const },
+  get DOLLS() { return `${langOptional}/dolls` as const },
+  get DOLL_DETAIL() { return `${NavigatePath.DOLLS}/:id` as const },
+  get FACES() { return `${langOptional}/faces` as const },
+  get FACE_DETAIL() { return `${NavigatePath.FACES}/:id` as const },
+  get TORSOS() { return `${langOptional}/torsos` as const },
+  get TORSO_DETAIL() { return `${NavigatePath.TORSOS}/:id` as const },
+  get ACCESSORIES() { return `${langOptional}/accessories` as const },
+  get ACCESSORY_DETAIL() { return `${NavigatePath.ACCESSORIES}/:id` as const },
 }
 
 export const NavigateRealPath = {
@@ -59,6 +60,7 @@ const flatLanguageRoutes = <O extends Record<any, any>>(key: keyof typeof Naviga
 export const routes: RouteRecord[] = [
   {
     path: NavigatePath.INDEX,
+    Component: ContentLayout,
     children: [
       {
         index: true,
