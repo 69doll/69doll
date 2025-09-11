@@ -38,11 +38,11 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
-      - run: |
-          echo '' > .env.production
-          echo "VITE_API_CDN_DOMAIN=${{ vars.VITE_API_CDN_DOMAIN }}" >> .env.production
-          echo "VITE_API_CDN_SERVICE=${{ vars.VITE_API_CDN_SERVICE }}" >> .env.production
-          echo "VITE_API_CDN_BASE_URL=${{ vars.VITE_API_CDN_BASE_URL }}" >> .env.production
+      - name: 'Download .env file'
+        env:
+          data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
+        if: ${{ env.data_domain != '' }}
+        run: wget -O .env.production ${data_domain}/.env.production
       - run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -76,11 +76,11 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
-      - run: |
-          echo '' > .env.staging
-          echo "VITE_API_CDN_DOMAIN=${{ vars.VITE_API_CDN_DOMAIN }}" >> .env.staging
-          echo "VITE_API_CDN_SERVICE=${{ vars.VITE_API_CDN_SERVICE }}" >> .env.staging
-          echo "VITE_API_CDN_BASE_URL=${{ vars.VITE_API_CDN_BASE_URL }}" >> .env.staging
+      - name: 'Download .env file'
+        env:
+          data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
+        if: ${{ env.data_domain != '' }}
+        run: wget -O .env.staging ${data_domain}/.env.staging
       - run: npm run build -- --mode staging
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -25,7 +25,7 @@ type TransformByLanguage<O extends PreLoaderData<any>> = {
 export type LoaderData<O> = Pick<PreLoaderData<O>, 'dataUrl'>
   & TransformByLanguage<Omit<PreLoaderData<O>, 'dataUrl'>>
 
-export function genLoaderData <O>(lang: string, data: PreLoaderData<O>) {
+export function genLoaderData <O>(lang: string | undefined, data: PreLoaderData<O>) {
   const currentLanguage = transformI18nKey(lang)
   return {
     dataUrl: data.dataUrl,
