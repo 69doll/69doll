@@ -1,6 +1,7 @@
-import { useMemo } from "react"
+import React, { useMemo } from "react"
 import { SIDER_TYPE, useSiderType } from "../../context/SiderDisplay"
-import SiderMenu from '../SiderMenu'
+
+const SiderMenu = React.lazy(() => import('../SiderMenu'))
 
 export default function Sider () {
   const siderType = useSiderType()
