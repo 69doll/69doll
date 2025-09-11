@@ -4,6 +4,7 @@ import useJumpPage from '../../../../hooks/useJumpPage'
 import Doll69If from '../../../../components/Doll69If'
 import { useMemo } from 'react'
 import { match } from 'ts-pattern'
+import getImageUrl from '../../../../utils/getImageUrl'
 
 const DEFAULT_MENU_LIST = [
   { imageUrl: '', routeKey: 'DOLLS' },
@@ -54,10 +55,11 @@ const Banner: React.FC<IBannerProps> = ({ revealList = [], menuList: paramMenuLi
                   const onClickFn = () => {
                     return hasClickFn ? jumper[revealObj.routeKey](revealObj.routeObject ?? {} as any) : undefined
                   }
+                  console.log(revealObj.imageUrl, getImageUrl(revealObj.imageUrl, { cdn: true }))
                   return <ImageBg
                     key={index}
                     classNames={[css.bannerContentContainer, { 'pointer': hasClickFn }]}
-                    imageUrl={revealObj.imageUrl}
+                    imageUrl={getImageUrl(revealObj.imageUrl, { cdn: true })}
                     onClick={onClickFn}
                     noAnimation={!hasClickFn}
                   ></ImageBg>
@@ -76,7 +78,7 @@ const Banner: React.FC<IBannerProps> = ({ revealList = [], menuList: paramMenuLi
                 return <div className={css.bannerContent} key={index}>
                   <ImageBg
                     classNames={[css.bannerContentContainer, 'pointer']}
-                    imageUrl={menuObj.imageUrl}
+                    imageUrl={getImageUrl(menuObj.imageUrl, { cdn: true })}
                     onClick={() => jumper[menuObj.routeKey]()}
                   >
                     <div>{ menuObj.title }</div>
@@ -95,7 +97,7 @@ const Banner: React.FC<IBannerProps> = ({ revealList = [], menuList: paramMenuLi
                 return <div className={css.bannerContent} key={index}>
                   <ImageBg
                     classNames={[css.bannerContentContainer, 'pointer']}
-                    imageUrl={menuObj.imageUrl}
+                    imageUrl={getImageUrl(menuObj.imageUrl, { cdn: true })}
                     onClick={() => jumper[menuObj.routeKey]()}
                   >
                     <div>{ menuObj.title }</div>

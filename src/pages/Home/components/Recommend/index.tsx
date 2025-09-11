@@ -6,6 +6,7 @@ import css from './style.module.scss'
 import TitleContainer from "../TitleContainer";
 import ImageBg from "../../../../components/ImageBg";
 import useCardCount from "../../../../hooks/useCardCount";
+import getImageUrl from "../../../../utils/getImageUrl";
 
 export interface IRecommendProps {
   title: string;
@@ -61,7 +62,7 @@ const Recommend: React.FC<IRecommendProps> = ({ title, tags, map }) => {
                 <ImageBg
                   lazy={true}
                   className={css.img}
-                  imageUrl={card.imageUrl}
+                  imageUrl={getImageUrl(card.imageUrl, { cdn: true })}
                   parentHover={true}
                 ></ImageBg>
                 <div className={css.label}>{ card.title }</div>
