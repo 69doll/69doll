@@ -1,37 +1,34 @@
-import { useState } from "react"
 import type React from "react"
-import { context as DisplayContext } from "../../context/SiderDisplay"
-import css from './style.module.scss'
+import { Outlet } from "react-router-dom"
+import { useIsDisplaySider } from "../../context/SiderDisplay"
+import Doll69If from "../Doll69If"
 import Footer from "../Footer"
 import Header from "../Header"
 import MetaData from "../MetaData"
 import Sider from "../Sider"
-import Doll69If from "../Doll69If"
-import { Outlet } from "react-router-dom"
+import css from './style.module.scss'
 
 const ContentLayout: React.FC = () => {
-  const [isDisplaySider, setDisplaySider] = useState(false)
+  const isDisplaySider = useIsDisplaySider()
   return (
     <>
-      <DisplayContext.Provider value={[isDisplaySider, setDisplaySider as any]}>
-        <MetaData />
-        <div className={css.layout} onScroll={isDisplaySider ? () => false : undefined}>
-          <Doll69If display={isDisplaySider}>
-            <aside className={css.leftSider}><Sider></Sider></aside>
-          </Doll69If>
-          <div className={css.container}>
-            <header className={css.header}>
-              <Header />
-            </header>
-            <main className={css.body}>
-              <Outlet />
-            </main>
-            <footer className={css.footer}>
-              <Footer />
-            </footer>
-          </div>
+      <MetaData />
+      <div className={css.layout}>
+        <Doll69If display={isDisplaySider}>
+          <aside className={css.sider}><Sider /></aside>
+        </Doll69If>
+        <div className={css.container}>
+          <header className={css.header}>
+            <Header />
+          </header>
+          <main className={css.body}>
+            <Outlet />
+          </main>
+          <footer className={css.footer}>
+            <Footer />
+          </footer>
         </div>
-      </DisplayContext.Provider>
+      </div>
     </>
   )
 }

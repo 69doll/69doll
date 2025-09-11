@@ -1,28 +1,18 @@
 .layout {
   --uno-apply: flex-row-nowrap overflow-x-hidden bg-main;
-  &:has(.leftSider), &:has(.rightSider) {
+  &:has(.sider) {
     --uno-apply: h-dvh overflow-y-hidden;
-    > footer {
-      --uno-apply: hidden;
-    }
   }
 }
 
 .sider {
-  --uno-apply: h-[100dvh] w-screen z-[1500];
-}
-
-.leftSider, .rightSider {
-  @extend .sider;
+  --uno-apply: h-[100dvh] w-screen z-[1500] overflow-x-hidden overflow-y-auto;
 }
 
 .container {
   --uno-apply: flex-col-nowrap w-screen;
-  .layout:has(.leftSider) & {
+  .layout:has(.sider) & {
     --uno-apply: m-l-[-100vw];
-  }
-  .layout:has(.rightSider) & {
-    --uno-apply: m-r-[-100vw];
   }
 }
 .header {

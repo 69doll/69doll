@@ -1,20 +1,20 @@
 import type React from "react"
 import classNames from "classnames"
 import { ClientOnly } from "vite-react-ssg"
-import css from './style.module.scss'
-import { useDisplaySider } from "../Sider/hook"
+import { useOpenSider } from "../../context/SiderDisplay"
 import useJumpPage from "../../hooks/useJumpPage"
 import Doll69Div from "../Doll69Div"
+import css from './style.module.scss'
 
 const Header: React.FC = () => {
-  const [_, setDisplaySider] = useDisplaySider()
   const jumper = useJumpPage()
+  const openSider = useOpenSider()
   return (<>
     <div className={css.container}>
       <ClientOnly>
         {
           () => (
-            <Doll69Div classNames={['pointer', css.left]} onClick={() => setDisplaySider(true)}>
+            <Doll69Div classNames={['pointer', css.left]} onClick={() => openSider()}>
               <div className={classNames('icon', css.hamburger)}></div>
               <b>SHOP</b>
             </Doll69Div>

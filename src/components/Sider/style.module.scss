@@ -1,42 +1,4 @@
-.container {
-  --uno-apply: flex-row-nowrap;
-}
 
-.menu {
-  --uno-apply: bg-white max-w-[80vw] w-[500px] h-screen grow-0 shrink-0 overflow-y-scroll;
-  &:has(+.menu) .close {
-    --uno-apply: hidden;
-  }
-  @screen lt-lg {
-    &:has(+.menu) {
-      --uno-apply: hidden;
-    }
-  }
-}
-
-.submenu {
-  --uno-apply:  bg-gray p-b-[40px];
-  @screen lg {
-    --uno-apply: w-[700px] max-w-[calc(900vw-500px)];
-  }
-  > *:not(.header) {
-    --uno-apply: flex-row-wrap justify-around gap-y-[40px] m-b-[20px];
-  }
-}
-
-.actionBtn {
-  --uno-apply: h-[60px] min-w-[200px] bg-active hover:bg-active-hover color-main leading-[60px] text-[15px] text-center cursor-pointer transition-all;
-}
-
-.masking {
-  --uno-apply: bg-black h-screen grow-1 shrink-1 opacity-80 cursor-not-allowed;
-}
-
-.header {
-  --uno-apply: flex-row-nowrap justify-end items-center h-[var(--69doll-header-height)] w-full;
-}
-
-.close {
-  --69doll-icon-size: 40px;
-  --uno-apply: i-material-symbols-close mr-[var(--69doll-margin-x)];
+.sider {
+  --uno-apply: h-[100dvh] w-screen z-[1500] overflow-x-hidden overflow-y-auto;
 }
