@@ -55,7 +55,6 @@ const Banner: React.FC<IBannerProps> = ({ revealList = [], menuList: paramMenuLi
                   const onClickFn = () => {
                     return hasClickFn ? jumper[revealObj.routeKey](revealObj.routeObject ?? {} as any) : undefined
                   }
-                  console.log(revealObj.imageUrl, getImageUrl(revealObj.imageUrl, { cdn: true }))
                   return <ImageBg
                     key={index}
                     classNames={[css.bannerContentContainer, { 'pointer': hasClickFn }]}

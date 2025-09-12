@@ -22,8 +22,8 @@ export const i18nMap = {
 
 export const Component: React.FC = () => {
   const matches = useMatches()
-  const isSignIn = useMemo(() => matches[0].pathname.includes('/signin'), [matches])
-  const isSignUp = useMemo(() => matches[0].pathname.includes('/signup'), [matches])
+  const isSignIn = useMemo(() => matches[matches.length - 1].pathname.includes('/signin'), [matches])
+  const isSignUp = useMemo(() => matches[matches.length - 1].pathname.includes('/signup'), [matches])
   const [[method, url], setHttpInfo] = useState<[string, string]>(['', ''])
   const changeSignIn = () => {
     setHttpInfo(['POST', '/api/auth/login'])
