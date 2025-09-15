@@ -9,7 +9,7 @@ const toPathRepeated = compile("{/:mode}{/*segment}")
 
 function transformsPathname (pathname: string) {
   const mode = isProd ? undefined : import.meta.env.MODE
-  if (pathname === '/') {
+  if (['', '/'].includes(pathname)) {
     if (mode) return `/${mode}`
     return pathname
   }

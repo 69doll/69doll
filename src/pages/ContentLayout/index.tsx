@@ -17,9 +17,6 @@ const ContentLayout: React.FC = () => {
     <>
       <MetaData />
       <div className={css.layout}>
-        <Doll69If display={isDisplaySider}>
-          <aside className={css.sider}><Sider /></aside>
-        </Doll69If>
         <ImageBg
           className={css.container}
           imageUrl={backgroundImage}
@@ -35,6 +32,9 @@ const ContentLayout: React.FC = () => {
             <Footer />
           </footer>
         </ImageBg>
+        <Doll69If display={isDisplaySider}>
+          <aside className={css.sider}><Sider /></aside>
+        </Doll69If>
       </div>
     </>
   )

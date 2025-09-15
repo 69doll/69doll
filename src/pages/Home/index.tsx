@@ -8,9 +8,10 @@ import getDataAsync from "../../utils/getDataAsync"
 import useCurrentLanguage from "../../hooks/useCurrentLanguage"
 
 export const Component: React.FC = () => {
-  const { pageData: loaderData, pathname } = useLoaderData() as Awaited<ReturnType<typeof loader<any[]>>>
+  const preloadData = useLoaderData() as Awaited<ReturnType<typeof loader<any[]>>>
+  const { pageData: loaderData, pathname } = preloadData ?? {}
   const currentLanguage = useCurrentLanguage()
-  const [dataMap, setDataMap] = useState(loaderData.data ?? {})
+  const [dataMap, setDataMap] = useState(loaderData?.data ?? {})
   useEffect(() => {
     if (dataMap[currentLanguage]) return
     getDataAsync(currentLanguage, pathname).then((d) => setDataMap(d.data ?? {} as any))

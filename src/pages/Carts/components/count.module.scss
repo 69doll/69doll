@@ -1,0 +1,14 @@
+.count {
+  --uno-apply: grid grid-flow-col h-[30px];
+  grid-template-columns: 25px min(30px) 25px;
+  > * {
+    --uno-apply: grid justify-center items-center border-gray;
+    &.action {
+      --uno-apply: border border-solid;
+    }
+    &:not(.action) {
+      --uno-apply: border-t border-b border-t-solid border-b-solid;
+    }
+  }
+}
+

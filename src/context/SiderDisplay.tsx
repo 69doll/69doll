@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState } from "react"
 export enum SIDER_TYPE {
   NONE = 'NONE',
   SIDER_MENU = 'SIDER_MENU',
+  CART = 'CART',
 }
 
 const Context = createContext<ReturnType<typeof useState<SIDER_TYPE>>>(undefined as any)

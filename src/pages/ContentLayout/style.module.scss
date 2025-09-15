@@ -12,7 +12,7 @@
 .container {
   --uno-apply: flex-col-nowrap w-screen;
   .layout:has(.sider) & {
-    --uno-apply: m-l-[-100vw];
+    --uno-apply: m-r-[-100vw];
   }
 }
 .header {

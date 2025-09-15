@@ -1,0 +1,12 @@
+.wrapper {
+  --uno-apply: w-full h-dvh grid;
+  grid-template-columns: auto 400px;
+}
+
+.masking {
+  --uno-apply: bg-black opacity-80 cursor-not-allowed;
+}
+
+.containerWrapper {
+  --uno-apply: bg-main-rev p-[var(--69doll-margin-x)] flex-col-nowrap  justify-between gap-y-[20px];
+}

@@ -117,6 +117,9 @@ export const routes: RouteRecord[] = [
         ...flatLanguageRoutes('NOT_FOUND', {
           lazy: () => import('./pages/404/index.tsx'),
         }),
+        ...flatLanguageRoutes('CARTS', {
+          lazy: () => import('./pages/Carts/index.tsx'),
+        }),
       ].sort(() => random(2) - 1),
     }],
   },
