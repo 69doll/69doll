@@ -1,14 +1,15 @@
 import type React from "react"
-import { Outlet } from "react-router-dom"
+import { Outlet, type LoaderFunctionArgs } from "react-router-dom"
 import { useIsDisplaySider } from "../../context/SiderDisplay"
-import Doll69If from "../Doll69If"
-import Footer from "../Footer"
-import Header from "../Header"
-import MetaData from "../MetaData"
-import Sider from "../Sider"
+import Doll69If from "../../components/Doll69If"
+import Footer from "../../components/Footer"
+import Header from "../../components/Header"
+import MetaData from "../../components/MetaData"
+import Sider from "../../components/Sider"
 import css from './style.module.scss'
-import ImageBg from "../ImageBg"
+import ImageBg from "../../components/ImageBg"
 import { backgroundImage } from "../../mock"
+import getDataAsync from "../../utils/getDataAsync"
 
 const ContentLayout: React.FC = () => {
   const isDisplaySider = useIsDisplaySider()
@@ -39,4 +40,12 @@ const ContentLayout: React.FC = () => {
   )
 }
 
-export default ContentLayout
+export const Component = ContentLayout
+
+export async function loader ({ params, request }: LoaderFunctionArgs) {
+  const pathname = new URL(request.url).pathname
+  return {
+    pathname,
+    pageData: await getDataAsync(params.lang, pathname)
+  }
+}

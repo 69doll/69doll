@@ -1,6 +1,6 @@
 import { compile } from 'path-to-regexp'
+import { random } from 'es-toolkit'
 import type { RouteRecord } from 'vite-react-ssg'
-import ContentLayout from './components/ContentLayout/index.tsx'
 import Provider from './components/Provider/index.tsx'
 import SUPPORTED_LANGUAGE from './constant/SUPPORTED_LANGUAGE'
 import { mockAccessoriesList, mockDollsList, mockFacesList, mockTorsosList } from './mock.ts'
@@ -66,7 +66,7 @@ export const routes: RouteRecord[] = [
     Component: Provider,
     children: [{
       path: NavigatePath.INDEX,
-      Component: ContentLayout,
+      lazy: () => import('./pages/ContentLayout/index.tsx'),
       children: [
         {
           index: true,
@@ -117,7 +117,7 @@ export const routes: RouteRecord[] = [
         ...flatLanguageRoutes('NOT_FOUND', {
           lazy: () => import('./pages/404/index.tsx'),
         }),
-      ],
+      ].sort(() => random(2) - 1),
     }],
   },
 ]

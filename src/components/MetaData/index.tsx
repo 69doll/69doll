@@ -47,7 +47,8 @@ function useIconUrls () {
 export default function MetaData() {
   const linkList = useIconUrls()
 
-  const data = loaderData(useLoaderData() as any)
+  const preloadData = useLoaderData() as any
+  const data = useMemo(() => loaderData(preloadData.pageData), [preloadData])
   const currentLanguage = useCurrentLanguage()
   const htmlLanguage = useMemo(
     () => match(currentLanguage)
@@ -59,12 +60,12 @@ export default function MetaData() {
     return data.getTitle(currentLanguage) ?? [
       data.getPageName(currentLanguage),
       data.getSystemName(currentLanguage) ?? '69Doll',
-    ].filter(Boolean).join(' | ')
-  }, [currentLanguage])
+    ].filter(Boolean).join(' - ')
+  }, [currentLanguage, data])
   const metaData = useMemo(() => [
     data.getKeywords(currentLanguage) && { name: 'keywords', content: data.getKeywords(currentLanguage) },
     data.getDescription(currentLanguage) && { name: 'description', content: data.getDescription(currentLanguage) },
-  ].filter(Boolean), [currentLanguage])
+  ].filter(Boolean), [currentLanguage, data])
   return (
     <Head>
       <html lang={htmlLanguage} />

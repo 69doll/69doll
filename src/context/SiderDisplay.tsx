@@ -25,8 +25,6 @@ export const useIsDisplaySider = () => {
   return SiderType !== SIDER_TYPE.NONE
 }
 
-
-// const SiderMenu = React.lazy(() => import('../components/SiderMenu'))
 export const useOpenSider = (type: SIDER_TYPE = SIDER_TYPE.SIDER_MENU) => {
   const [_, setSiderComponent] = useContext(Context)
   return () => setSiderComponent(type)
