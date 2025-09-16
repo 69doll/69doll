@@ -6,6 +6,7 @@ import css from './style.module.scss'
 import { cloneDeep } from 'es-toolkit'
 import Doll69Button from '../../components/Doll69Button'
 import Doll69Div from '../../components/Doll69Div'
+import OrderSteps from '../../components/OrderSteps'
 
 export const Component: React.FC = () => {
   const [cartList, setCartList] = useState([
@@ -50,6 +51,7 @@ export const Component: React.FC = () => {
     setCartList(preList)
   }
   return (<>
+    <OrderSteps />
     <div className={css.grid}>
       <div className={css.list}>
         <div className={css.header}>
