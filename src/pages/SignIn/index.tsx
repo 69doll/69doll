@@ -24,47 +24,51 @@ export const Component: React.FC = () => {
   const matches = useMatches()
   const isSignIn = useMemo(() => matches[matches.length - 1].pathname.includes('/signin'), [matches])
   const isSignUp = useMemo(() => matches[matches.length - 1].pathname.includes('/signup'), [matches])
-  const [[method, url], setHttpInfo] = useState<[string, string]>(['', ''])
-  const changeSignIn = () => {
-    setHttpInfo(['POST', '/api/auth/login'])
-  }
-  const changeSignUp = () => {
-    setHttpInfo(['POST', '/api/auth/register'])
-  }
-  const changeForgot = () => {
-    setHttpInfo(['POST', '/api/user/reset_password'])
-  }
   const [isRemember, setRemember] = useLocalStorage('signin.remember', false)
   const [isRememberMe, setRememberMe] = useState(isRemember)
   const [formData, setFormData] = useState({})
   useEffect(() => setFormData({}), [matches])
-  const { isLoading, refetch } = useQuery(
-    new URL(url, API_BASE_URL),
+  const { isLoading: isLoadingA, refetch: fetchSignIn } = useQuery(
+    new URL('/api/auth/login', API_BASE_URL),
     {
-      method,
+      method: 'POST',
       body: formData,
       fetchOnMount: false,
     },
   )
+  const { isLoading: isLoadingB, refetch: fetchSignUp } = useQuery(
+    new URL('/api/user/register', API_BASE_URL),
+    {
+      method: 'POST',
+      body: formData,
+      fetchOnMount: false,
+    },
+  )
+  const { isLoading: isLoadingC, refetch: fetchForgot } = useQuery(
+    new URL('/api/user/reset_password', API_BASE_URL),
+    {
+      method: 'POST',
+      body: formData,
+      fetchOnMount: false,
+    },
+  )
+  const isLoading = useMemo(() => isLoadingA || isLoadingB || isLoadingC, [isLoadingA, isLoadingB, isLoadingC])
   const signIn = async () => {
-    changeSignIn()
-    await refetch()
+    await fetchSignIn()
     setFormData({})
     setRemember(isRememberMe)
   }
   const signUp = async () => {
-    changeSignUp()
-    await refetch()
-    changeSignIn()
+    await fetchSignUp()
     setFormData({
       email: (formData as any).email,
-      rawPassword: (formData as any).password,
+      password: (formData as any).rawPassword,
     })
-    await refetch()
+    await fetchSignIn()
+    // TODO jump to which page?
   }
   const forgotMe = async () => {
-    changeForgot()
-    await refetch()
+    await fetchForgot()
   }
   const jumper = useJumpPage()
   return (<>
