@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useMemo } from "react"
 import { useLoaderData } from "react-router-dom"
 import { match } from "ts-pattern"
 import Banner from "./components/Banner"
@@ -9,13 +9,9 @@ import useCurrentLanguage from "../../hooks/useCurrentLanguage"
 
 export const Component: React.FC = () => {
   const preloadData = useLoaderData() as Awaited<ReturnType<typeof loader<any[]>>>
-  const { pageData: loaderData, pathname } = preloadData ?? {}
+  const { pageData: loaderData } = preloadData ?? {}
   const currentLanguage = useCurrentLanguage()
-  const [dataMap, setDataMap] = useState(loaderData?.data ?? {})
-  useEffect(() => {
-    if (dataMap[currentLanguage]) return
-    getDataAsync(currentLanguage, pathname).then((d) => setDataMap(d.data ?? {} as any))
-  }, [])
+  const dataMap = useMemo(() => loaderData?.data ?? {}, [loaderData])
   const data = useMemo(() => dataMap[currentLanguage] ?? [], [currentLanguage])
   return (
     <>
