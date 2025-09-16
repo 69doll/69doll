@@ -7,7 +7,7 @@ const isSSR = import.meta.env.SSR
 
 const toPathRepeated = compile("{/:mode}{/*segment}")
 
-function transformsPathname (pathname: string) {
+function transformsPathname (pathname: string = '/') {
   const mode = isProd ? undefined : import.meta.env.MODE
   if (['', '/'].includes(pathname)) {
     if (mode) return `/${mode}`
