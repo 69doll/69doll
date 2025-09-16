@@ -42,7 +42,7 @@ jobs:
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
         if: ${{ env.data_domain != '' }}
-        run: wget -O .env.production ${data_domain}/.env.production
+        run: wget -O .env.production ${data_domain}/production/.env.production
       - run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -80,7 +80,7 @@ jobs:
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
         if: ${{ env.data_domain != '' }}
-        run: wget -O .env.staging ${data_domain}/.env.staging
+        run: wget -O .env.staging ${data_domain}/staging/.env.staging
       - run: npm run build -- --mode staging
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
