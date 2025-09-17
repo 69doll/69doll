@@ -42,25 +42,20 @@ jobs:
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
         if: ${{ env.data_domain != '' }}
-        run: wget -O .env.production ${data_domain}/production/.env.production
+        run: wget -O official-website/.env.production ${data_domain}/production/.env.production
       - run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: 'github-pages-production'
-          path: './dist'
-      - name: Deploy Production to GitHub Pages
-        uses: actions/deploy-pages@v4
-        with:
-          token: ${{ github.token}}
-          artifact_name: 'github-pages-production'
+          path: './official-website/dist'
       - name: Deploy Production to Cloudflare
         uses: cloudflare/wrangler-action@v3
         id: deployment
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME}} --branch master
+          command: pages deploy official-website/dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME}} --branch master
   deploy-staging:
     environment:
       name: staging
@@ -80,17 +75,17 @@ jobs:
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
         if: ${{ env.data_domain != '' }}
-        run: wget -O .env.staging ${data_domain}/staging/.env.staging
+        run: wget -O official-website/.env.staging ${data_domain}/staging/.env.staging
       - run: npm run build -- --mode staging
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: 'github-pages-staging'
-          path: './dist'
+          path: './official-website/dist'
       - name: Deploy Staging to Cloudflare
         uses: cloudflare/wrangler-action@v3
         id: deployment
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME}} --branch staging
+          command: pages deploy official-website/dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME}} --branch staging
