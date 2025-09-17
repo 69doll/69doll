@@ -12,10 +12,11 @@ export default function useQueryFn<D>(fn: () => Promise<D>, options?: UseQueryFn
   const [isLoading, setLoading] = useState(false)
   const [isDone, setDone] = useState(false)
   const haveData = useMemo(() => !!data, [data])
+  const realFn = useMemo(() => fn, [fn])
   const refetch = async () => {
     setLoading(true)
     setDone(false)
-    return fn()
+    return realFn()
       .then((data) => {
         setData(data)
       })

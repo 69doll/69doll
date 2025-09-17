@@ -19,9 +19,9 @@ export default function getImageUrl (originUrl: string, opts: IGetImageUrlOption
   const collection: string[] = []
   collection.push(CDN_DOMAIN)
   if (IS_CF_CDN && opts.resize) {
-    const prefix = '/cdn-cgi/image/'
+    const prefix = '/cdn-cgi/image'
     const resizeOptions = Object.entries(opts.resize).map(([k, v]) => `${k}=${v}`).join(',')
-    collection.push(`${prefix}${resizeOptions}`)
+    collection.push(`${prefix}/${resizeOptions}`)
   }
   collection.push(originUrl.startsWith('/') ? originUrl : `/${originUrl}`)
   return collection.join('')
