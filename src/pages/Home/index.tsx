@@ -6,17 +6,26 @@ import LargeAD from "./components/LargeAD"
 import Recommend from "./components/Recommend"
 import getDataAsync from "../../utils/getDataAsync"
 import useCurrentLanguage from "../../hooks/useCurrentLanguage"
+import useQueryFn from "../../hooks/useQueryFn"
 
 export const Component: React.FC = () => {
   const preloadData = useLoaderData() as Awaited<ReturnType<typeof loader<any[]>>>
-  const { pageData: loaderData } = preloadData ?? {}
   const currentLanguage = useCurrentLanguage()
-  const dataMap = useMemo(() => loaderData?.data ?? {}, [loaderData])
-  const data = useMemo(() => dataMap[currentLanguage] ?? [], [currentLanguage])
+  const { data: realData, isDone } = useQueryFn<Awaited<ReturnType<typeof loader<any[]>>>>(async () => {
+    const pathname = location.pathname
+    return {
+      pathname,
+      pageData: await getDataAsync(currentLanguage, pathname)
+    }
+  }, { fetchOnMount: !preloadData, defaultData: preloadData })
+  const dataMap = useMemo(() => realData?.pageData?.data ?? {}, [realData, isDone])
+  const moduleList = useMemo(() => {
+    return dataMap[currentLanguage] ?? []
+  }, [currentLanguage, dataMap])
   return (
     <>
       {
-        data?.map((d: any, index) => {
+        moduleList?.map((d: any, index) => {
           const { component, ...props } = d
           return match(d)
             .with({ component: 'banner' }, () => <Banner key={index} {...props} />)
@@ -33,6 +42,6 @@ export async function loader <D>({ params, request }: any) {
   const pathname = new URL(request.url).pathname
   return {
     pathname,
-    pageData: await getDataAsync<D>(params.lang, pathname)
+    pageData: await getDataAsync<D>(params.lang, pathname),
   }
 }

@@ -31,16 +31,18 @@ async function getDataAsync<D>(lang: string | undefined, pathname: string): Prom
   const startedAt = Date.now()
   try {
     if (!isProd || isSSR) console.info(`[${pathname}]`, url, '... fetching')
-    const data = await fetch(url)
-    const mockData = await data.json()
-    cacheMap.set(pathname, mockData)
+    const res = await fetch(url)
+    const data = await res.json()
     if (!isProd || isSSR) console.info(`[${pathname}]`, url, '... fetch done', `${Date.now() - startedAt}ms`)
-    return genLoaderData<D>(lang, mockData)
+    const realData = genLoaderData<D>(lang, data)
+    cacheMap.set(pathname, realData)
+    return realData
   } catch (e) {
     if (!isProd || isSSR) console.error(`[${pathname}]`, url, '... fetch fail', `${Date.now() - startedAt}ms`)
   }
-  cacheMap.set(pathname, {})
-  return genLoaderData<D>(lang, {})
+  const realData = genLoaderData<D>(lang, {})
+  cacheMap.set(pathname, realData)
+  return realData
 }
 
 export default getDataAsync
