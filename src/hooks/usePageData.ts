@@ -1,17 +1,23 @@
 import { useLoaderData } from "react-router-dom";
-import loaderData from "../utils/loaderData";
 import useCurrentLanguage from "./useCurrentLanguage";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
+import useQueryFn from "./useQueryFn";
+import type { LoaderData } from "../data";
+import getDataAsync from "../utils/getDataAsync";
+import { isSSR } from "../constant";
 
-export default function usePageData<V = any>(cb?: (setter: (v: V) => any) => any): V {
-  const defaultLoaderData = loaderData(useLoaderData() as any)
+export default function usePageData<D> (mockData?: LoaderData<D>) {
+  const preloadData = useLoaderData() as { pageData: LoaderData<D> }
+  const realMockData = !isSSR ? mockData : undefined
   const currentLanguage = useCurrentLanguage()
-  const [data, setData] = useState<V>()
+  const args = useQueryFn(async () => {
+    const pathname = location.pathname
+    return mockData?.data ?? (await getDataAsync<D>(currentLanguage, pathname))?.data
+  }, { fetchOnMount: !preloadData || !realMockData, defaultData: realMockData?.data ?? preloadData?.pageData?.data })
+  const { data, refetch } = args
+  const pageData = useMemo(() => data?.[currentLanguage], [currentLanguage, data])
   useEffect(() => {
-    const existData = defaultLoaderData.getData(currentLanguage)
-    if (!existData) {
-      cb?.(setData)
-    }
+    refetch()
   }, [currentLanguage])
-  return useMemo(() => defaultLoaderData.getData(currentLanguage) ?? data, [currentLanguage, data])
+  return { ...args, data: pageData }
 }

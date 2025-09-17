@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface UseQueryFnOptions<D>  {
   fetchOnMount?: boolean,
@@ -11,13 +11,18 @@ export default function useQueryFn<D>(fn: () => Promise<D>, options?: UseQueryFn
   const [error, setError] = useState(undefined)
   const [isLoading, setLoading] = useState(false)
   const [isDone, setDone] = useState(false)
+  const haveData = useMemo(() => !!data, [data])
   const refetch = async () => {
     setLoading(true)
     setDone(false)
-    setData(defaultData as any)
     return fn()
-      .then((data) => { setData(data) })
-      .catch((e) => { setError(e) })
+      .then((data) => {
+        setData(data)
+      })
+      .catch((e) => {
+        setData(undefined as any)
+        setError(e)
+      })
       .finally(() => {
         setLoading(false)
         setDone(true)
@@ -30,6 +35,7 @@ export default function useQueryFn<D>(fn: () => Promise<D>, options?: UseQueryFn
     data,
     error,
     isLoading,
+    haveData,
     isDone,
     refetch,
   }

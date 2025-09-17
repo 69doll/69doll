@@ -23,6 +23,6 @@ export default function getImageUrl (originUrl: string, opts: IGetImageUrlOption
     const resizeOptions = Object.entries(opts.resize).map(([k, v]) => `${k}=${v}`).join(',')
     collection.push(`${prefix}${resizeOptions}`)
   }
-  collection.push(originUrl)
+  collection.push(originUrl.startsWith('/') ? originUrl : `/${originUrl}`)
   return collection.join('')
 }

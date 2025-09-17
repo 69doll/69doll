@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState } from "react"
 
-/* @ts-ignore  */
-export enum SIDER_TYPE {
-  NONE = 'NONE',
-  SIDER_MENU = 'SIDER_MENU',
-  CART = 'CART',
-}
+export const SIDER_TYPE = {
+  NONE: 'NONE',
+  SIDER_MENU: 'SIDER_MENU',
+  CART: 'CART',
+} as const
+
+type SIDER_TYPE = typeof SIDER_TYPE[keyof typeof SIDER_TYPE]
 
 const Context = createContext<ReturnType<typeof useState<SIDER_TYPE>>>(undefined as any)
 

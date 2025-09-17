@@ -7,11 +7,11 @@ import useJumpPage from "../../hooks/useJumpPage"
 import getImageUrl from "../../utils/getImageUrl"
 import { mockDollsList } from "../../mock"
 import css from './style.module.scss'
-import usePageData from "../../hooks/usePageData"
+import usePageData1 from "../../hooks/usePageData1"
 import { genLoaderData } from "../../data"
 
 export const Component: React.FC = () => {
-  const list = usePageData((setter) => setter(mockDollsList)) as typeof mockDollsList
+  const list = usePageData1((setter) => setter(mockDollsList)) as typeof mockDollsList
   const cardCount = useCardCount([2, 3, 4, 5, 5, 5])
   const cardGroup = useMemo(() => (list ?? []).reduce<Array<typeof list>>((l, item, index) => {
     const key = Math.floor(index / cardCount)

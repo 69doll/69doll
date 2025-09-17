@@ -1,11 +1,11 @@
 import { genLoaderData } from "../../data"
 import useJumpPage from "../../hooks/useJumpPage"
-import usePageData from "../../hooks/usePageData"
+import usePageData1 from "../../hooks/usePageData1"
 import { mockFacesList } from "../../mock"
 import CommonList from "../CommonList"
 
 export const Component: React.FC = () => {
-  const list = usePageData((setter) => setter(mockFacesList)) as typeof mockFacesList
+  const list = usePageData1((setter) => setter(mockFacesList)) as typeof mockFacesList
   const jumper = useJumpPage()
   const onClick = (index: number) => jumper.FACE_DETAIL({ id: list[index].id })
   return (

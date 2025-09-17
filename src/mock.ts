@@ -5,46 +5,6 @@ export const mockLargeImageUrl = 'https://cdnfile.sspai.com/2025/08/21/article/3
 
 export const backgroundImage = getImageUrl('/expansion_20250903235835295.JPEG', { cdn: true, resize: { width: 1080 } })
 
-export const mockHomeData = {
-  description: "Home page",
-  keywords: "mock,home,69doll",
-  data: [
-    {
-      component: "banner",
-      revealList: [
-        {
-          imageUrl: mockLargeImageUrl
-        }
-      ],
-      menuList: Array(4).fill({ imageUrl: mockLargeImageUrl }),
-    },
-    {
-      component: "recommend",
-      title: "DOLLS",
-      tags: [
-        "Featured",
-        "ReaDoll",
-        "RealDoll (Robots)"
-      ],
-      map: {
-        Featured: [
-          { imageUrl: mockLargeImageUrl, title: "Tanya 1.0", flags: ["ai"] },
-          { imageUrl: mockLargeImageUrl, title: "Tanya 1.0", flags: ["hotSell"] },
-          { imageUrl: mockLargeImageUrl, title: "Tanya 1.0", flags: [] },
-          { imageUrl: mockLargeImageUrl, title: "Tanya 1.0", flags: ["ai"] },
-          { imageUrl: mockLargeImageUrl, title: "Tanya 1.0", flags: ["hotSell"], }
-        ],
-        ReaDoll: [],
-        "RealDoll (Robot)": [],
-      }
-    },
-    {
-      component: "largeAD",
-      imageUrl: mockLargeImageUrl
-    }
-  ]
-}
-
 export const mockDollsList = fill(Array(23), { imageUrl: mockLargeImageUrl })
   .map((obj, index) => (Object.assign({}, obj, { id: `doll-${index}`, title: `Doll ${index + 1}.0` })))
 

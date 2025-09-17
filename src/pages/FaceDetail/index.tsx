@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom"
-import usePageData from "../../hooks/usePageData"
+import usePageData1 from "../../hooks/usePageData1"
 import { genLoaderData } from "../../data"
 import { mockFaceDetails } from "../../mock"
 import CommonDetail from "../CommonDetail"
 
 export const Component: React.FC = () => {
   const { id: dollId } = useParams()
-  const data = usePageData((setter) => setter(mockFaceDetails.find(({ id }) => id === dollId)))
+  const data = usePageData1((setter) => setter(mockFaceDetails.find(({ id }) => id === dollId)))
   return (
     <CommonDetail data={data} />
   )

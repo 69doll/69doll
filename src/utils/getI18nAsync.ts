@@ -5,7 +5,7 @@ interface I18nFnMap<T, FN = () => T | Promise<T | { default: T }>> {
   [key: string]: FN;
 }
 
-export default async function getI18nAsync<T extends object>(fnMap: I18nFnMap<T>, lang: string) {
+export default async function getI18nAsync<T extends object>(fnMap: I18nFnMap<T>, lang?: string) {
   const fn = fnMap[transformI18nKey(lang)]
   const p = fn()
   let m: T | { default: T }

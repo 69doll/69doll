@@ -1,9 +1,8 @@
 import { compile, match as pMatch } from "path-to-regexp"
 import { genLoaderData, type LoaderData } from "../data"
+import { isProd, isSSR } from "../constant"
 
 const VITE_API_DATA_DOMAIN = import.meta.env.VITE_API_DATA_DOMAIN
-const isProd = import.meta.env.MODE === 'production'
-const isSSR = import.meta.env.SSR
 
 const toPathRepeated = compile("{/:mode}{/*segment}")
 
