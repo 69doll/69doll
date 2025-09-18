@@ -8,7 +8,9 @@
     "node": ">=22.14.0"
   },
   "packageManager": "npm@10.9.2",
-  "scripts": {},
+  "scripts": {
+    "build": "turbo build"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/69doll/69doll.git"
