@@ -11,6 +11,35 @@ const ContentLayout = () => {
   const nickname = useMemo(() => {
     return data?.data?.nickname
   }, [data])
+
+  const list = [
+    {
+      name: '数据管理',
+      list: [
+        {
+          path: 'brands',
+          name: '品牌管理',
+        },
+        {
+          path: 'categories',
+          name: '分类管理',
+        },
+        {
+          path: 'images',
+          name: '图片管理',
+        },
+      ],
+    },
+    {
+      name: '系统管理',
+      list: [
+        {
+          path: 'users',
+          name: '用户管理',
+        }
+      ],
+    },
+  ]
   return <>
     <SidebarProvider>
       <Sidebar>
@@ -18,34 +47,26 @@ const ContentLayout = () => {
           <Logo />
         </SidebarHeader>
         <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>数据管理</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href="images">
-                      图片管理
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-          <SidebarGroup>
-            <SidebarGroupLabel>系统管理</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href="users">
-                      用户管理
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+          {
+            list.map((group, gIndex) => {
+              return <SidebarGroup key={`group-${gIndex}`}>
+                <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  {
+                    group.list.map((item, index) => <SidebarMenu key={index}>
+                      <SidebarMenuItem>
+                        <SidebarMenuButton asChild>
+                          <a href={item.path}>
+                            { item.name }
+                          </a>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    </SidebarMenu>)
+                  }
+                </SidebarGroupContent>
+              </SidebarGroup>
+            })
+          }
         </SidebarContent>
         <SidebarFooter>
           <div>{nickname}</div>
