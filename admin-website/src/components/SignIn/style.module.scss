@@ -1,0 +1,17 @@
+.container {
+  & {
+    --uno: w-[320px] p-x-[20px] p-y-[30px];
+  }
+  & {
+    --uno: border border-solid border-gray;
+  }
+  & {
+    --uno: flex flex-col gap-[20px];
+  }
+  h1 {
+    --uno: text-center;
+  }
+  > * {
+    --uno: w-full;
+  }
+}

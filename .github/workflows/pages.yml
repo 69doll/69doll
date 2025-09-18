@@ -22,8 +22,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  deploy-admin-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci -ws --include-workspace-root
+      - run: npm run build -w @69doll/admin-website
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: 'admin-website-production'
+          path: './admin-website/dist'
+
   # Single deploy job since we're just deploying
-  deploy-production:
+  deploy-official-production:
     environment:
       name: production
       url: ${{ steps.deployment.outputs.deployment-url }}
@@ -37,17 +54,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm ci
+      - run: npm ci -ws --include-workspace-root
       - name: 'Download .env file'
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
         if: ${{ env.data_domain != '' }}
         run: wget -O official-website/.env.production ${data_domain}/production/.env.production
-      - run: npm run build
+      - run: npm run build -w @69doll/official-website
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: 'github-pages-production'
+          name: 'official-website-production'
           path: './official-website/dist'
       - name: Deploy Production to Cloudflare
         uses: cloudflare/wrangler-action@v3
@@ -56,7 +73,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy official-website/dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME}} --branch master
-  deploy-staging:
+  deploy-official-staging:
     environment:
       name: staging
       url: ${{ steps.deployment.outputs.deployment-url }}
@@ -70,17 +87,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm ci
+      - run: npm ci -ws --include-workspace-root
       - name: 'Download .env file'
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
         if: ${{ env.data_domain != '' }}
         run: wget -O official-website/.env.staging ${data_domain}/staging/.env.staging
-      - run: npm run build -- --mode staging
+      - run: npm run build  -w @69doll/official-website -- --mode staging
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: 'github-pages-staging'
+          name: 'official-website-staging'
           path: './official-website/dist'
       - name: Deploy Staging to Cloudflare
         uses: cloudflare/wrangler-action@v3
