@@ -10,8 +10,8 @@ export default defineConfig({
   server: {
     port: 5174,
     proxy: {
-      '/api/admin/auth': 'https://proxy.69doll.arylo.cc/http://admin.69doll.veda-studios.com',
-      '/api': 'http://admin.69doll.veda-studios.com',
+      // '/api/admin/auth': 'https://proxy.69doll.arylo.cc/http://admin.69doll.veda-studios.com',
+      // '/api': 'http://admin.69doll.veda-studios.com',
     }
   },
   plugins: [

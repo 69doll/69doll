@@ -1,11 +1,13 @@
+import React from 'react'
 import {
   createBrowserRouter,
+  redirect,
   RouterProvider,
 } from 'react-router-dom'
-import Layout from './components/Layout'
-import React from 'react'
-import ContentLayout from './components/ContentLayout'
+import Root from './components/Root'
+import { AuthProvider } from './provider/auth'
 
+const ContentLayout = React.lazy(() => import('./components/ContentLayout'))
 const Home = React.lazy(() => import('./components/Home'))
 const SignIn = React.lazy(() => import('./components/SignIn'))
 const Users = React.lazy(() => import('./components/Users'))
@@ -16,14 +18,17 @@ const routes = createBrowserRouter([
   {
     id: 'root',
     path: '/',
-    loader () {
-      return { }
-    },
-    Component: Layout,
+    Component: Root,
     children: [
       {
         path: '/',
         Component: ContentLayout,
+        async loader () {
+          if (AuthProvider.isAuthenticated) {
+            return { user: AuthProvider.user }
+          }
+          return {}
+        },
         children: [
           {
             path: '/',
@@ -46,6 +51,12 @@ const routes = createBrowserRouter([
       {
         path: '/signin',
         Component: SignIn,
+      },
+      {
+        path: '/signout',
+        async action () {
+          return redirect('/signin')
+        },
       },
     ],
   }

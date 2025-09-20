@@ -1,18 +1,13 @@
 import { Outlet } from "react-router-dom"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarGroupLabel } from "../ui/sidebar"
-import { useMemo } from "react"
+import { Doll69If } from "shared"
 import './root.scss'
 import css from './style.module.scss'
-import { useQuery } from "shared"
 import Logo from "../Logo"
+import SidebarFooterContent from "./components/SideFooterContent"
 
 const ContentLayout = () => {
-  const { data } = useQuery<any>('/api/admin/user/current_user')
-  const nickname = useMemo(() => {
-    return data?.data?.nickname
-  }, [data])
-
-  const list = [
+  const menuList = [
     {
       name: '数据管理',
       list: [
@@ -41,41 +36,43 @@ const ContentLayout = () => {
     },
   ]
   return <>
-    <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader>
-          <Logo />
-        </SidebarHeader>
-        <SidebarContent>
-          {
-            list.map((group, gIndex) => {
-              return <SidebarGroup key={`group-${gIndex}`}>
-                <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
-                <SidebarGroupContent>
-                  {
-                    group.list.map((item, index) => <SidebarMenu key={index}>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <a href={item.path}>
-                            { item.name }
-                          </a>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>)
-                  }
-                </SidebarGroupContent>
-              </SidebarGroup>
-            })
-          }
-        </SidebarContent>
-        <SidebarFooter>
-          <div>{nickname}</div>
-        </SidebarFooter>
-      </Sidebar>
-      <main className={css.body}>
-        <Outlet />
-      </main>
-    </SidebarProvider>
+    <Doll69If display={true}>
+      <SidebarProvider>
+        <Sidebar>
+          <SidebarHeader>
+            <Logo />
+          </SidebarHeader>
+          <SidebarContent>
+            {
+              menuList.map((group, gIndex) => {
+                return <SidebarGroup key={`group-${gIndex}`}>
+                  <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
+                  <SidebarGroupContent>
+                    {
+                      group.list.map((item, index) => <SidebarMenu key={index}>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton asChild>
+                            <a href={item.path}>
+                              { item.name }
+                            </a>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </SidebarMenu>)
+                    }
+                  </SidebarGroupContent>
+                </SidebarGroup>
+              })
+            }
+          </SidebarContent>
+          <SidebarFooter>
+            <SidebarFooterContent />
+          </SidebarFooter>
+        </Sidebar>
+        <main className={css.body}>
+          <Outlet />
+        </main>
+      </SidebarProvider>
+    </Doll69If>
   </>
 }
 

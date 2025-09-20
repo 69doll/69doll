@@ -1,105 +1,85 @@
 import type React from "react"
+import { useMemo, useState } from "react"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import { Doll69If, useQuery } from "shared"
+import { Doll69If } from "shared"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
-import { useEffect, useMemo, useState } from "react"
 import { Skeleton } from "../ui/skeleton"
 import { Button } from "../ui/button"
-import TableFooter, { type TableFooterOnValueChange } from "../TableFooter"
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../ui/sheet"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import {
+  createCategory,
+  getCategoryList,
+  getCategoryListCacheKeys,
+  updateCategory,
+  type Category,
+} from "../../request/category"
 
-const SUPPORT_PAGE_SIZE = [25, 50, 100]
-
-const Categories: React.FC = ({  }) => {
-  const [pageNum, setPageNum] = useState(1)
-  const [pageSize, setPageSize] = useState(SUPPORT_PAGE_SIZE[0])
-  const url = useMemo(() => `/api/admin/category/list?pageNum=${pageNum}&pageSize=${pageSize}&level=0`, [pageNum, pageSize])
-  const { data, isLoading, isDone, refetch } = useQuery<any>(url)
-  useEffect(() => {
-    refetch()
-  }, [url])
-  const list = useMemo<any[]>(() => {
-    const currentList: { id: string, parentId: string }[] = data?.data ?? []
+const Categories: React.FC = () => {
+  const { data, isLoading, isSuccess, refetch: refetchCategoryList } = useQuery({
+    queryKey: getCategoryListCacheKeys(),
+    queryFn: () => getCategoryList(),
+  })
+  const list = useMemo(() => {
+    const currentList = data?.data ?? []
     return currentList.map((item) => {
       return {
         ...item,
         get dependencies () {
-          const linkIds: string[] = [item.parentId]
-          while (true) {
-            const curItem = currentList.find((cur) => cur.id === linkIds[0])
-            if (!curItem || linkIds.includes(curItem.parentId)) break
-            linkIds.unshift(curItem.parentId)
-          }
-          return linkIds
+          return item.path.split(',')
         },
         get dependents () {
           const linkIds: string[] = list
-            .filter((cur) => cur.dependencies.includes(item.id))
-            .map(({ id }: { id: string }) => id)
+            .filter((cur) => cur.dependencies.includes(item.id.toString()))
+            .map(({ id }) => id.toString())
           return linkIds
         },
       }
     })
   }, [data])
-  const map = useMemo<Record<string, any>>(() => {
-    return Object.fromEntries(list.map((item) => [item.id, item]))
+  const map = useMemo(() => {
+    return Object.fromEntries(list.map((item) => [item.id.toString(), item]))
   }, [list])
-  const totalPageNum = useMemo(() => {
-    return data?.data?.totalPage ?? 1
-  }, [data])
-  const onPageChange: TableFooterOnValueChange = ({ pageNum, pageSize }) => {
-    setPageNum(pageNum)
-    setPageSize(pageSize)
-  }
 
-  const [category, setCategory] = useState<any>()
+  const [editCategory, setEditCategory] = useState<any>()
   const parentCategories = useMemo(() => {
-    if (!category?.id) return list
-    return list.filter((item) => item.id !== category?.id && !category?.dependents.includes(item.id))
-  }, [category])
+    if (!editCategory?.id) return list
+    return list.filter((item) => item.id !== editCategory?.id && !editCategory?.dependents.includes(item.id))
+  }, [editCategory])
   const onFormChange = ({ name, value }: { name: string, value: any }) => {
-    setCategory({
-      ...category,
+    setEditCategory({
+      ...editCategory,
       [name]: value,
     })
   }
-  const isOpenSheet = useMemo(() => !!category, [category])
-  const { refetch: addCategory, reset: resetAddStatus } = useQuery('/api/admin/category/create', {
-    method: 'POST',
-    body: {
-      name: category?.name,
-      parentId: Number(category?.parentId),
-    },
-    fetchOnMount: false,
+  const isOpenSheet = useMemo(() => !!editCategory, [editCategory])
+  const { mutateAsync: addCategory } = useMutation({
+    mutationFn: (categoryInfo: Parameters<typeof createCategory>[0]) => createCategory(categoryInfo),
   })
   const add = async () => {
-    await addCategory()
-    setCategory(undefined)
-    resetAddStatus()
-    await refetch()
+    const { code } = await addCategory(editCategory)
+    if (code === 200) {
+      setEditCategory(undefined)
+      await refetchCategoryList()
+    }
   }
-  const { refetch: updateCategory, reset: resetUpdateStatus } = useQuery('/api/admin/category/update', {
-    method: 'PUT',
-    body: {
-      id: category?.id,
-      name: category?.name,
-      parentId: Number(category?.parentId),
-    },
-    fetchOnMount: false,
+  const { mutateAsync: saveCategory } = useMutation({
+    mutationFn: (categoryInfo: Category) => updateCategory(categoryInfo.id, categoryInfo),
   })
   const save = async () => {
-    await updateCategory()
-    setCategory(undefined)
-    resetUpdateStatus()
-    await refetch()
+    const { code } = await saveCategory(editCategory)
+    if (code === 200) {
+      setEditCategory(undefined)
+      await refetchCategoryList()
+    }
   }
   return (<>
-    <h1>Categories</h1>
+    <h1>分类管理</h1>
     <div className='flex flex-row justify-end'>
-      <Button variant="outline" onClick={() => setCategory({ parentId: 0 })}>新增分类</Button>
+      <Button variant="outline" onClick={() => setEditCategory({ parentId: 0 })}>新增分类</Button>
     </div>
     <Table>
       <TableHeader>
@@ -108,13 +88,13 @@ const Categories: React.FC = ({  }) => {
           <TableHead>分类名</TableHead>
           <TableHead>父分类</TableHead>
           <TableHead>创建时间</TableHead>
-          <TableHead className="w-[120px]">操作</TableHead>
+          <TableHead className="min-w-[120px]">操作</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         <Doll69If display={isLoading}>
           {
-            Array(pageSize).map(() => <TableRow>
+            Array(15).fill(undefined).map(() => <TableRow>
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
@@ -122,7 +102,7 @@ const Categories: React.FC = ({  }) => {
             </TableRow>)
           }
         </Doll69If>
-        <Doll69If display={isDone}>
+        <Doll69If display={isSuccess}>
           {
             list.map((item, index) => {
               return <TableRow key={index}>
@@ -132,8 +112,8 @@ const Categories: React.FC = ({  }) => {
                 <TableCell title={dayjs(item.createdAt).format('YYYY-MM-DD HH:MM:SS ZZ')}>
                   { dayjs(item.createdAt).format('YYYY-MM-DD') }
                 </TableCell>
-                <TableCell>
-                  <Button size={'sm'} variant="outline" onClick={() => setCategory(item)}>修改</Button>
+                <TableCell className="min-w-[120px]">
+                  <Button size={'sm'} variant="outline" onClick={() => setEditCategory(item)}>修改</Button>
                 </TableCell>
               </TableRow>
             })
@@ -141,64 +121,59 @@ const Categories: React.FC = ({  }) => {
         </Doll69If>
       </TableBody>
     </Table>
-    <TableFooter
-      pageNum={pageNum}
-      totalPageNum={totalPageNum}
-      pageSize={pageSize}
-      pageSizes={SUPPORT_PAGE_SIZE}
-      onValueChange={onPageChange}
-    />
     <Sheet open={isOpenSheet}>
       <SheetContent headerClose={false}>
         <SheetHeader>
-          <Doll69If display={!category?.id}>
+          <Doll69If display={!editCategory?.id}>
             <SheetTitle>添加分类</SheetTitle>
             <SheetDescription>
               添加一个分类
             </SheetDescription>
           </Doll69If>
-          <Doll69If display={category?.id}>
+          <Doll69If display={editCategory?.id}>
             <SheetTitle>修改分类信息</SheetTitle>
             <SheetDescription>
-              当前正在修改分类[{`${map[category?.id]?.name}(ID:${category?.id})`}]的信息
+              当前正在修改分类[{`${map[editCategory?.id]?.name}(ID:${editCategory?.id})`}]的信息
             </SheetDescription>
           </Doll69If>
         </SheetHeader>
         <form className="grid auto-rows-min gap-6 px-4" onChange={(a) => onFormChange(a.target as any)}>
           <div className="grid gap-3">
             <Label htmlFor="user-id">ID</Label>
-            <Input id="user-id" defaultValue={category?.id} disabled={true} name='id' />
+            <Input id="user-id" defaultValue={editCategory?.id} disabled={true} name='id' />
           </div>
           <div className="grid gap-3">
             <Label htmlFor="user-name">名称</Label>
-            <Input id="user-name" defaultValue={category?.name} name='name' />
+            <Input id="user-name" defaultValue={editCategory?.name} name='name' />
           </div>
-          <div className="grid gap-3">
-            <Label htmlFor="user-parent-id">父分类</Label>
-            <Select defaultValue={category?.parentId.toString()} name='parentId'>
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={'0'}>根分类(ID:0)</SelectItem>
-                {
-                  parentCategories
-                    .map((item) => {
-                      return <SelectItem value={item.id.toString()}>{`${item.name}(ID:${item.id}))`}</SelectItem>
-                    })
-                }
-              </SelectContent>
-            </Select>
-          </div>
+          <Doll69If display={!editCategory?.id}>
+            <div className="grid gap-3">
+              <Label htmlFor="user-parent-id">父分类</Label>
+              <Select defaultValue={editCategory?.parentId.toString()} name='parentId'>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={'0'}>根分类(ID:0)</SelectItem>
+                  {
+                    parentCategories
+                      .map((item) => {
+                        return <SelectItem value={item.id.toString()}>{`${item.name}(ID:${item.id}))`}</SelectItem>
+                      })
+                  }
+                </SelectContent>
+              </Select>
+            </div>
+          </Doll69If>
         </form>
         <SheetFooter>
-          <Doll69If display={!category?.id}>
+          <Doll69If display={!editCategory?.id}>
             <Button type="submit" variant="outline" onClick={() => add()}>立即添加</Button>
           </Doll69If>
-          <Doll69If display={category?.id}>
+          <Doll69If display={editCategory?.id}>
             <Button type="submit" variant="outline" onClick={() => save()}>立即修改</Button>
           </Doll69If>
-          <Button variant="outline" onClick={() => setCategory(undefined)}>关闭</Button>
+          <Button variant="outline" onClick={() => setEditCategory(undefined)}>关闭</Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>

@@ -6,27 +6,27 @@ import { SelectContent, SelectTrigger, SelectValue } from "../ui/select";
 import { useMemo } from "react";
 import css from './style.module.scss'
 
-export type TableFooterOnValueChange = (params: { pageNum: number, pageSize: number }) => any
+export type TableFooterOnValueChange = (params: { pageNum: number, pageSize?: number }) => any
 
 interface TableFooterProps {
-  pageNum: number,
-  totalPageNum: number,
-  pageSize: number,
-  pageSizes: number[],
-  onValueChange: TableFooterOnValueChange,
+  pageNum?: number,
+  totalPageNum?: number,
+  pageSize?: number,
+  pageSizes?: number[],
+  onValueChange?: TableFooterOnValueChange,
 }
 
 const TableFooter: React.FC<TableFooterProps> = ({ pageNum, totalPageNum, pageSize, pageSizes, onValueChange }) => {
-  const defaultPageSize = useMemo(() => pageSize.toString(), [pageSize])
-  const pageSizeList = useMemo(() => pageSizes.map((ps) => ps.toString()), [pageSizes])
+  const defaultPageSize = useMemo(() => pageSize?.toString(), [pageSize])
+  const pageSizeList = useMemo(() => pageSizes?.map((ps) => ps.toString()) ?? [], [pageSizes])
   const changePageSize = (ps: string) => {
-    onValueChange({
+    onValueChange?.({
       pageNum: 1,
       pageSize: Number(ps),
     })
   }
   const setPageNum = (v: number) => {
-    onValueChange({
+    onValueChange?.({
       pageSize,
       pageNum: v,
     })
@@ -70,16 +70,18 @@ const TableFooter: React.FC<TableFooterProps> = ({ pageNum, totalPageNum, pageSi
         </PaginationContent>
       </Pagination>
     </Doll69If>
-    <Select defaultValue={defaultPageSize} onValueChange={(v) => changePageSize(v)}>
-      <SelectTrigger>
-        每页<SelectValue>{pageSize}</SelectValue>条
-      </SelectTrigger>
-      <SelectContent>
-        {
-          pageSizeList.map((ps, index) => <SelectItem key={index} value={ps}>{ps}</SelectItem>)
-        }
-      </SelectContent>
-    </Select>
+    <Doll69If display={!!pageSize && pageSizeList?.length >= 1}>
+      <Select defaultValue={defaultPageSize} onValueChange={(v) => changePageSize(v)}>
+        <SelectTrigger>
+          每页<SelectValue>{pageSize}</SelectValue>条
+        </SelectTrigger>
+        <SelectContent>
+          {
+            pageSizeList.map((ps, index) => <SelectItem key={index} value={ps}>{ps}</SelectItem>)
+          }
+        </SelectContent>
+      </Select>
+    </Doll69If>
   </div>
 }
 

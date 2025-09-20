@@ -21,7 +21,7 @@ export default function useQueryFn<D>(fn: () => Promise<D>, options?: UseQueryFn
         setData(data)
       })
       .catch((e) => {
-        setData(undefined as any)
+        setData(undefined!)
         setError(e)
       })
       .finally(() => {

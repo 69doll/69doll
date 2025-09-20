@@ -1,8 +1,9 @@
 import type React from "react"
-import dayjs from "dayjs"
-import { Doll69If, useQuery } from "shared"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { useEffect, useMemo, useState } from "react"
+import dayjs from "dayjs"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { Doll69If } from "shared"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { Skeleton } from "../ui/skeleton"
 import { Button } from "../ui/button"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
@@ -11,30 +12,37 @@ import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetT
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import SHA1 from 'crypto-js/sha1'
+import { createUser, getUserList, getUserListCacheKeys, updateUser, UserType, type User } from "../../request/user"
 
 const SUPPORT_PAGE_SIZE = [25, 50, 100]
 
-const SUPPORT_TYPE = ['APP', 'ADMIN']
-
 const Users: React.FC = () => {
-  const [userType, setUserType] = useState(SUPPORT_TYPE[0])
+  const [userType, setUserType] = useState<UserType>(UserType.APP)
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(SUPPORT_PAGE_SIZE[0])
-  const url = useMemo(() => `/api/admin/user/page?type=${userType}&pageNum=${pageNum}&pageSize=${pageSize}`, [pageNum, pageSize, userType])
-  const { data, isLoading, isDone, refetch } = useQuery<any>(url)
+  const getUserListOpts = useMemo(() => ({ type: userType, pageNum, pageSize }), [pageNum, pageSize, userType])
+  const queryKey = useMemo(() => getUserListCacheKeys(getUserListOpts), [getUserListOpts])
+  const queryFn = useMemo(() => () => getUserList(getUserListOpts), [getUserListOpts])
+  const { data, isLoading, isSuccess, refetch: refetchList } = useQuery({
+    queryKey,
+    queryFn: queryFn,
+  })
   useEffect(() => {
-    refetch()
-  }, [url])
+    refetchList()
+  }, [getUserListOpts])
   const list = useMemo<any[]>(() => {
     return data?.data?.list ?? []
   }, [data])
   const totalPageNum = useMemo(() => {
     return data?.data?.totalPage ?? 1
   }, [data])
-  const onPageChange: TableFooterOnValueChange = ({ pageNum, pageSize }) => {
-    setPageNum(pageNum)
-    setPageSize(pageSize)
+  const onPageChange: TableFooterOnValueChange = ({ pageNum: nextPageNum, pageSize: nextPageSize }) => {
+    if (nextPageSize && nextPageSize !== pageSize) {
+      setPageNum(1)
+      setPageSize(nextPageSize)
+    } else {
+      setPageNum(nextPageNum)
+    }
   }
 
   const [editUser, setEditUser] = useState<any>()
@@ -45,44 +53,36 @@ const Users: React.FC = () => {
     })
   }
   const isOpenSheet = useMemo(() => !!editUser, [editUser])
-  const { refetch: addUser, reset: resetAddStatus } = useQuery('/api/admin/user/create', {
-    method: 'POST',
-    body: {
-      email: editUser?.email,
-      nickname: editUser?.nickname,
-      status: !!editUser?.status,
-      type: userType,
-      rawPassword: SHA1(editUser?.rawPassword).toString(),
-    },
-    fetchOnMount: false,
+
+  const { mutateAsync: addUser } = useMutation({
+    mutationFn: (userInfo: Parameters<typeof createUser>[0]) => createUser(userInfo),
   })
   const add = async () => {
-    await addUser()
-    setEditUser(undefined)
-    resetAddStatus()
-    await refetch()
+    const { code } = await addUser(editUser)
+    if (code === 200) {
+      setEditUser(undefined)
+      setPageNum(1)
+      await refetchList()
+    }
   }
-  const { refetch: updateUser, reset: resetUpdateStatus } = useQuery('/api/admin/user/update', {
-    method: 'PUT',
-    body: {
-      id: editUser?.id,
-      nickname: editUser?.nickname,
-    },
-    fetchOnMount: false,
+  const { mutateAsync: saveUser } = useMutation({
+    mutationFn: (userInfo: User) => updateUser(userInfo.id, userInfo),
   })
   const save = async () => {
-    await updateUser()
-    setEditUser(undefined)
-    resetUpdateStatus()
-    await refetch()
+    const { code } = await saveUser(editUser)
+    if (code === 200) {
+      setEditUser(undefined)
+      setPageNum(1)
+      await refetchList()
+    }
   }
   return <>
-    <h1>Users</h1>
+    <h1>用户管理</h1>
     <div className='flex flex-row justify-between'>
-      <Tabs defaultValue={userType} onValueChange={(v) => setUserType(v)}>
+      <Tabs defaultValue={userType} onValueChange={(v) => setUserType(v as UserType)}>
         <TabsList>
-          <TabsTrigger value={SUPPORT_TYPE[0]}>普通用户</TabsTrigger>
-          <TabsTrigger value={SUPPORT_TYPE[1]}>管理员</TabsTrigger>
+          <TabsTrigger value={UserType.APP}>普通用户</TabsTrigger>
+          <TabsTrigger value={UserType.ADMIN}>管理员</TabsTrigger>
         </TabsList>
       </Tabs>
       <Button variant="outline" onClick={() => setEditUser({ status: true })}>新增用户</Button>
@@ -100,7 +100,7 @@ const Users: React.FC = () => {
       <TableBody>
         <Doll69If display={isLoading}>
           {
-            Array(pageSize).map(() => <TableRow>
+            Array(pageSize).fill(undefined).map(() => <TableRow>
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
@@ -108,7 +108,7 @@ const Users: React.FC = () => {
             </TableRow>)
           }
         </Doll69If>
-        <Doll69If display={isDone}>
+        <Doll69If display={isSuccess}>
           {
             list.map((item, index) => {
               return <TableRow key={index}>
@@ -137,11 +137,10 @@ const Users: React.FC = () => {
     <Sheet open={isOpenSheet}>
       <SheetContent headerClose={false}>
         <SheetHeader>
-
           <Doll69If display={!editUser?.id}>
             <SheetTitle>添加用户</SheetTitle>
             <SheetDescription>
-              添加一个{userType === SUPPORT_TYPE[0] ? '普通用户' : '管理员'}
+              添加一个{userType === UserType.APP ? '普通用户' : '管理员'}
             </SheetDescription>
           </Doll69If>
           <Doll69If display={editUser?.id}>

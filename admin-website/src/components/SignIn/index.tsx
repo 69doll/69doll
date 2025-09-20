@@ -5,9 +5,25 @@ import { Button } from "../ui/button";
 import { useNavigate } from "react-router";
 import Logo from "../Logo";
 import SHA1 from 'crypto-js/sha1'
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser, getCurrentUserCacheKeys } from "@/request/user";
+import { AuthProvider } from "@/provider/auth";
+import { useEffect } from "react";
 
 const SignIn: React.FC = () => {
   const nav = useNavigate()
+  const { data: currentUser, refetch: refetchCurrentUser } = useQuery({
+    queryKey: getCurrentUserCacheKeys(),
+    queryFn: () => getCurrentUser(),
+    select: (data) => data?.data,
+    enabled: false,
+  })
+  useEffect(() => {
+    if (currentUser) {
+      AuthProvider.setUser(currentUser)
+      nav('/')
+    }
+  }, [currentUser])
   const login = async (formData: FormData) => {
     const body = Object.fromEntries([...formData.entries()])
     body.password = SHA1(body.password as string).toString()
@@ -20,7 +36,7 @@ const SignIn: React.FC = () => {
     })
     const data = await res.json()
     if (data.code === 200) {
-      nav('/')
+      await refetchCurrentUser()
     }
   }
   return <>
