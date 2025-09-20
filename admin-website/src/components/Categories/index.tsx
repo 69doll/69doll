@@ -1,7 +1,6 @@
 import type React from "react"
 import { useMemo, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import dayjs from "dayjs"
 import { Doll69If } from "shared"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { Skeleton } from "../ui/skeleton"
@@ -12,16 +11,18 @@ import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import {
   createCategory,
-  getCategoryList,
-  getCategoryListCacheKeys,
+  getCategoryAllList,
+  getCategoryAllListCacheKeys,
   updateCategory,
   type Category,
 } from "../../request/category"
+import TableDateCell from "../TableDateCell"
+import tableCss from '../../styles/table.module.scss'
 
 const Categories: React.FC = () => {
   const { data, isLoading, isSuccess, refetch: refetchCategoryList } = useQuery({
-    queryKey: getCategoryListCacheKeys(),
-    queryFn: () => getCategoryList(),
+    queryKey: getCategoryAllListCacheKeys(),
+    queryFn: () => getCategoryAllList(),
   })
   const list = useMemo(() => {
     const currentList = data?.data ?? []
@@ -58,23 +59,27 @@ const Categories: React.FC = () => {
   const isOpenSheet = useMemo(() => !!editCategory, [editCategory])
   const { mutateAsync: addCategory } = useMutation({
     mutationFn: (categoryInfo: Parameters<typeof createCategory>[0]) => createCategory(categoryInfo),
+    onSuccess: async ({ code }) => {
+      if (code === 200) {
+        setEditCategory(undefined)
+        await refetchCategoryList()
+      }
+    }
   })
   const add = async () => {
-    const { code } = await addCategory(editCategory)
-    if (code === 200) {
-      setEditCategory(undefined)
-      await refetchCategoryList()
-    }
+    await addCategory(editCategory)
   }
   const { mutateAsync: saveCategory } = useMutation({
     mutationFn: (categoryInfo: Category) => updateCategory(categoryInfo.id, categoryInfo),
+    onSuccess: async ({ code }) => {
+      if (code === 200) {
+        setEditCategory(undefined)
+        await refetchCategoryList()
+      }
+    }
   })
   const save = async () => {
-    const { code } = await saveCategory(editCategory)
-    if (code === 200) {
-      setEditCategory(undefined)
-      await refetchCategoryList()
-    }
+    await saveCategory(editCategory)
   }
   return (<>
     <h1>分类管理</h1>
@@ -84,11 +89,10 @@ const Categories: React.FC = () => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>ID</TableHead>
           <TableHead>分类名</TableHead>
           <TableHead>父分类</TableHead>
-          <TableHead>创建时间</TableHead>
-          <TableHead className="min-w-[120px]">操作</TableHead>
+          <TableHead className={tableCss.date}>创建时间</TableHead>
+          <TableHead className={tableCss.actions}>操作</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -97,8 +101,7 @@ const Categories: React.FC = () => {
             Array(15).fill(undefined).map(() => <TableRow>
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+              <TableCell className={tableCss.date}><Skeleton className="h-4 w-full" /></TableCell>
             </TableRow>)
           }
         </Doll69If>
@@ -106,13 +109,12 @@ const Categories: React.FC = () => {
           {
             list.map((item, index) => {
               return <TableRow key={index}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.name}(ID:{item.id})</TableCell>
                 <TableCell>{(item.dependencies as string[]).map((id) => map[id]?.name).filter(Boolean).join(' > ')}</TableCell>
-                <TableCell title={dayjs(item.createdAt).format('YYYY-MM-DD HH:MM:SS ZZ')}>
-                  { dayjs(item.createdAt).format('YYYY-MM-DD') }
+                <TableCell className={tableCss.date}>
+                  <TableDateCell date={item.createdAt} />
                 </TableCell>
-                <TableCell className="min-w-[120px]">
+                <TableCell className={tableCss.actions}>
                   <Button size={'sm'} variant="outline" onClick={() => setEditCategory(item)}>修改</Button>
                 </TableCell>
               </TableRow>

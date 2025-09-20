@@ -1,0 +1,20 @@
+.icon {
+  --uno: w-[80px];
+  tbody & {
+    --uno: size-[80px];
+  }
+}
+
+.date {
+  --uno: w-[100px];
+}
+
+.actions {
+  --uno: max-w-[80px];
+  & > button + button {
+    --uno: ml-[5px];
+  }
+  &:has(> button) {
+    --uno: text-center;
+  }
+}

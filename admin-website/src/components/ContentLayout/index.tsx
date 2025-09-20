@@ -12,6 +12,10 @@ const ContentLayout = () => {
       name: '数据管理',
       list: [
         {
+          path: 'products',
+          name: '产品管理',
+        },
+        {
           path: 'brands',
           name: '品牌管理',
         },

@@ -13,6 +13,7 @@ const SignIn = React.lazy(() => import('./components/SignIn'))
 const Users = React.lazy(() => import('./components/Users'))
 const Categories = React.lazy(() => import('./components/Categories'))
 const Brands = React.lazy(() => import('./components/Brands'))
+const Product = React.lazy(() => import('./components/Product'))
 
 const routes = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const routes = createBrowserRouter([
           {
             path: '/brands',
             Component: Brands,
+          },
+          {
+            path: '/products',
+            Component: Product,
           },
         ],
       },

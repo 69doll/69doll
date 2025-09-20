@@ -1,5 +1,5 @@
 import type React from "react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import dayjs from "dayjs"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Doll69If } from "shared"
@@ -13,6 +13,8 @@ import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { createUser, getUserList, getUserListCacheKeys, updateUser, UserType, type User } from "../../request/user"
+import tableCss from '../../styles/table.module.scss'
+import TableDateCell from "../TableDateCell"
 
 const SUPPORT_PAGE_SIZE = [25, 50, 100]
 
@@ -27,10 +29,7 @@ const Users: React.FC = () => {
     queryKey,
     queryFn: queryFn,
   })
-  useEffect(() => {
-    refetchList()
-  }, [getUserListOpts])
-  const list = useMemo<any[]>(() => {
+  const list = useMemo(() => {
     return data?.data?.list ?? []
   }, [data])
   const totalPageNum = useMemo(() => {
@@ -56,25 +55,28 @@ const Users: React.FC = () => {
 
   const { mutateAsync: addUser } = useMutation({
     mutationFn: (userInfo: Parameters<typeof createUser>[0]) => createUser(userInfo),
+    onSuccess: async ({ code }) => {
+      if (code === 200) {
+        setEditUser(undefined)
+        setPageNum(1)
+        await refetchList()
+      }
+    }
   })
   const add = async () => {
-    const { code } = await addUser(editUser)
-    if (code === 200) {
-      setEditUser(undefined)
-      setPageNum(1)
-      await refetchList()
-    }
+    await addUser(editUser)
   }
   const { mutateAsync: saveUser } = useMutation({
     mutationFn: (userInfo: User) => updateUser(userInfo.id, userInfo),
+    onSuccess: async ({ code }) => {
+      if (code === 200) {
+        setEditUser(undefined)
+        await refetchList()
+      }
+    }
   })
   const save = async () => {
-    const { code } = await saveUser(editUser)
-    if (code === 200) {
-      setEditUser(undefined)
-      setPageNum(1)
-      await refetchList()
-    }
+    await saveUser(editUser)
   }
   return <>
     <h1>用户管理</h1>
@@ -93,8 +95,8 @@ const Users: React.FC = () => {
           <TableHead>Email</TableHead>
           <TableHead>昵称</TableHead>
           <TableHead>状态</TableHead>
-          <TableHead>创建时间</TableHead>
-          <TableHead className="w-[120px]">操作</TableHead>
+          <TableHead className={tableCss.date}>创建时间</TableHead>
+          <TableHead className={tableCss.actions}>操作</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -104,7 +106,7 @@ const Users: React.FC = () => {
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
               <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+              <TableCell className={tableCss.date}><Skeleton className="h-4 w-full" /></TableCell>
             </TableRow>)
           }
         </Doll69If>
@@ -115,11 +117,11 @@ const Users: React.FC = () => {
                 <TableCell>{item.email}</TableCell>
                 <TableCell>{item.nickname}</TableCell>
                 <TableCell>{item.status ? '可用' : '不可用'}</TableCell>
-                <TableCell title={dayjs(item.createdAt).format('YYYY-MM-DD HH:MM:SS ZZ')}>
-                  { dayjs(item.createdAt).format('YYYY-MM-DD') }
+                <TableCell className={tableCss.date}>
+                  <TableDateCell date={item.createdAt} />
                 </TableCell>
-                <TableCell>
-                  <Button size={'sm'} variant="outline" onClick={() => setEditUser(item)}>修改</Button>
+                <TableCell className={tableCss.actions}>
+                  <Button size='icon' variant="outline" onClick={() => setEditUser(item)}>修改</Button>
                 </TableCell>
               </TableRow>
             })

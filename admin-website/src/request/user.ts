@@ -1,4 +1,4 @@
-import type { ApiResBody } from '@/api.type'
+import type { ApiReqPage, ApiResBody, ApiResBodyPage } from '@/types/api.type'
 import SHA1 from 'crypto-js/sha1'
 
 export interface User {
@@ -37,21 +37,11 @@ export type UserType = typeof UserType[keyof typeof UserType]
 
 // #region User List
 
-interface UserListOptions {
+type UserListOptions = ApiReqPage<{
   type: UserType,
-  pageNum: number,
-  pageSize: number,
-}
-
-type UserList = ApiResBody<{
-  data: {
-    list: User[],
-    total: number,
-    totalPage: number,
-    pageNum: number,
-    pageSize: number,
-  },
 }>
+
+type UserList = ApiResBodyPage<User[]>
 
 export const getUserListCacheKeys = (options?: Partial<UserListOptions>) => {
   const keys = ['user_list']

@@ -1,0 +1,16 @@
+.uploadArea {
+  & {
+    --uno: border border-dashed border-gray-200 rounded-t p-[5px];
+  }
+  & {
+    --uno: flex items-center justify-center;
+  }
+  --uno: size-[130px];
+}
+
+.uploadButton {
+  --uno: w-[130px];
+  .uploadArea + & {
+    --uno: rounded-t-none;
+  }
+}

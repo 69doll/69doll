@@ -32,11 +32,11 @@ const TableFooter: React.FC<TableFooterProps> = ({ pageNum, totalPageNum, pageSi
     })
   }
   return <div className={css.tableFooter}>
-    <Doll69If display={totalPageNum !== 1}>
+    <Doll69If display={typeof totalPageNum === 'number' && totalPageNum > 1}>
       <Pagination className="justify-end">
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious href="#" onClick={() => pageNum !== 1 && setPageNum(pageNum - 1)} />
+            <PaginationPrevious href="#" onClick={() => pageNum && pageNum !== 1 && setPageNum(pageNum - 1)} />
           </PaginationItem>
           <Doll69If display={pageNum === 1}>
             <PaginationItem>
@@ -46,7 +46,7 @@ const TableFooter: React.FC<TableFooterProps> = ({ pageNum, totalPageNum, pageSi
           {
             Array(totalPageNum).fill(undefined).map((_, index) => {
               const currentPageNum = index + 1
-              const isDisplay = [pageNum - 1, pageNum, pageNum + 1].includes(currentPageNum)
+              const isDisplay = pageNum && [pageNum - 1, pageNum, pageNum + 1].includes(currentPageNum)
               if (!isDisplay) return <></>
               return <>
                 <PaginationItem>
@@ -65,7 +65,7 @@ const TableFooter: React.FC<TableFooterProps> = ({ pageNum, totalPageNum, pageSi
             </PaginationItem>
           </Doll69If>
           <PaginationItem>
-            <PaginationNext href="#" onClick={() => pageNum < totalPageNum && setPageNum(pageNum + 1)}/>
+            <PaginationNext href="#" onClick={() => pageNum && totalPageNum && pageNum < totalPageNum && setPageNum(pageNum + 1)}/>
           </PaginationItem>
         </PaginationContent>
       </Pagination>
