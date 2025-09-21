@@ -16,7 +16,7 @@ import {
   updateCategory,
   type Category,
 } from "../../request/category"
-import TableDateCell from "../TableDateCell"
+import TableDateCell from "../Table/TableDateCell"
 import tableCss from '../../styles/table.module.scss'
 
 const Categories: React.FC = () => {

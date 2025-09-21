@@ -9,8 +9,8 @@ import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetT
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { createBrand, getBrandList, getBrandListCacheKeys, updateBrand, type Brand } from "@/request/brand"
-import TableFooter, { type TableFooterOnValueChange } from "../TableFooter"
-import TableDateCell from "../TableDateCell"
+import TableFooter, { type TableFooterOnValueChange } from "../Table/TableFooter"
+import TableDateCell from "../Table/TableDateCell"
 import tableCss from '../../styles/table.module.scss'
 import UploadArea from "../UploadArea"
 import Image from "../Image"

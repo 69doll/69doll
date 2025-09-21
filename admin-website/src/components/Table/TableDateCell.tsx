@@ -1,5 +1,5 @@
 import parseDate from "@/utils/parseDate"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
 import parseDatetime from "@/utils/parseDatetime"
 
 const TableDateCell = ({ date }: { date: string }) => {

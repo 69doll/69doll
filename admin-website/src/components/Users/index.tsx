@@ -6,14 +6,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Skeleton } from "../ui/skeleton"
 import { Button } from "../ui/button"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
-import TableFooter, { type TableFooterOnValueChange } from "../TableFooter"
+import TableFooter, { type TableFooterOnValueChange } from "../Table/TableFooter"
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../ui/sheet"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { createUser, getUserList, getUserListCacheKeys, updateUser, UserType, type User } from "../../request/user"
 import tableCss from '../../styles/table.module.scss'
-import TableDateCell from "../TableDateCell"
+import TableDateCell from "../Table/TableDateCell"
 
 const SUPPORT_PAGE_SIZE = [25, 50, 100]
 

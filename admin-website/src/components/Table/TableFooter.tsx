@@ -4,7 +4,7 @@ import { Doll69If } from "shared";
 import { Select, SelectItem } from "@radix-ui/react-select";
 import { SelectContent, SelectTrigger, SelectValue } from "../ui/select";
 import { useMemo } from "react";
-import css from './style.module.scss'
+import css from './TableFooter.module.scss'
 
 export type TableFooterOnValueChange = (params: { pageNum: number, pageSize?: number }) => any
 
