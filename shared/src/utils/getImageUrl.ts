@@ -14,7 +14,7 @@ const CDN_DOMAIN = import.meta.env.VITE_API_CDN_DOMAIN
 const IS_CF_CDN = import.meta.env.VITE_API_CDN_SERVICE === 'CF'
 
 export function getImageUrl (originUrl?: string, opts: IGetImageUrlOptions = {}) {
-  if (typeof originUrl !== 'string' || !originUrl) return originUrl
+  if (typeof originUrl !== 'string' || !originUrl) return ''
   const isAbsUrl = /^(\w+:)?\/\//.test(originUrl)
   if (!CDN_DOMAIN || isAbsUrl || !opts.cdn) return originUrl
   const collection: string[] = []
