@@ -1,22 +1,22 @@
 import type React from "react"
 import { useMemo, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { Button } from "../../components/ui/button"
+import DeleteButton from "../../components/Button/DeleteButton"
 import { Doll69If } from "shared"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
-import { Skeleton } from "../ui/skeleton"
-import { Button } from "../ui/button"
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
-import TableFooter, { type TableFooterOnValueChange } from "../Table/TableFooter"
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../ui/sheet"
-import { Label } from "../ui/label"
-import { Input } from "../ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { createUser, deleteUser, getCurrentUser, getCurrentUserCacheKeys, getUserList, getUserListCacheKeys, updateUser, UserType, type User } from "../../request/user"
+import { Input } from "../../components/ui/input"
+import { Label } from "../../components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../../components/ui/sheet"
+import { Skeleton } from "../../components/ui/skeleton"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table"
+import { Tabs, TabsList, TabsTrigger } from "../../components/ui/tabs"
+import TableDateCell from "../../components/Table/TableDateCell"
+import TableFooter, { type TableFooterOnValueChange } from "../../components/Table/TableFooter"
 import tableCss from '../../styles/table.module.scss'
-import TableDateCell from "../Table/TableDateCell"
-import DeleteButton from "../Button/DeleteButton"
+import { createUser, deleteUser, getCurrentUser, getCurrentUserCacheKeys, getUserList, getUserListCacheKeys, updateUser, UserType, type User } from "../../request/user"
 
-const SUPPORT_PAGE_SIZE = [25, 50, 100]
+const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
 const Users: React.FC = () => {
   const [userType, setUserType] = useState<UserType>(UserType.APP)

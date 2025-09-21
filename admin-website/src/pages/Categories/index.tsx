@@ -2,13 +2,13 @@ import type React from "react"
 import { useMemo, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Doll69If } from "shared"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
-import { Skeleton } from "../ui/skeleton"
-import { Button } from "../ui/button"
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../ui/sheet"
-import { Label } from "../ui/label"
-import { Input } from "../ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table"
+import { Skeleton } from "../../components/ui/skeleton"
+import { Button } from "../../components/ui/button"
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../../components/ui/sheet"
+import { Label } from "../../components/ui/label"
+import { Input } from "../../components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
 import {
   createCategory,
   deleteCategory,
@@ -17,9 +17,9 @@ import {
   updateCategory,
   type Category,
 } from "../../request/category"
-import TableDateCell from "../Table/TableDateCell"
+import TableDateCell from "../../components/Table/TableDateCell"
 import tableCss from '../../styles/table.module.scss'
-import DeleteButton from "../Button/DeleteButton"
+import DeleteButton from "../../components/Button/DeleteButton"
 
 const Categories: React.FC = () => {
   const { data, isLoading, isSuccess, refetch: refetchCategoryList } = useQuery({

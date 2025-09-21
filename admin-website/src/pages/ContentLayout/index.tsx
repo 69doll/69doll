@@ -1,10 +1,21 @@
 import { Outlet } from "react-router-dom"
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarGroupLabel } from "../ui/sidebar"
 import { Doll69If } from "shared"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup, SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+} from "../../components/ui/sidebar"
+import Logo from "../../components/Logo"
+import SidebarFooterContent from "./components/SideFooterContent"
 import './root.scss'
 import css from './style.module.scss'
-import Logo from "../Logo"
-import SidebarFooterContent from "./components/SideFooterContent"
 
 const ContentLayout = () => {
   const menuList = [

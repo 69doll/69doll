@@ -4,16 +4,16 @@ import {
   redirect,
   RouterProvider,
 } from 'react-router-dom'
-import Root from './components/Root'
+import Root from './pages/Root'
 import { AuthProvider } from './provider/auth'
 
-const ContentLayout = React.lazy(() => import('./components/ContentLayout'))
-const Home = React.lazy(() => import('./components/Home'))
-const SignIn = React.lazy(() => import('./components/SignIn'))
-const Users = React.lazy(() => import('./components/Users'))
-const Categories = React.lazy(() => import('./components/Categories'))
-const Brands = React.lazy(() => import('./components/Brands'))
-const Product = React.lazy(() => import('./components/Product'))
+const ContentLayout = React.lazy(() => import('./pages/ContentLayout'))
+const DashBoard = React.lazy(() => import('./pages/DashBoard'))
+const SignIn = React.lazy(() => import('./pages/SignIn'))
+const Users = React.lazy(() => import('./pages/Users'))
+const Categories = React.lazy(() => import('./pages/Categories'))
+const Brands = React.lazy(() => import('./pages/Brands'))
+const Product = React.lazy(() => import('./pages/Product'))
 
 const routes = createBrowserRouter([
   {
@@ -33,7 +33,11 @@ const routes = createBrowserRouter([
         children: [
           {
             path: '/',
-            Component: Home,
+            Component: DashBoard,
+          },
+          {
+            path: '/dashboard',
+            Component: DashBoard,
           },
           {
             path: '/users',

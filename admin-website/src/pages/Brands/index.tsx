@@ -2,12 +2,12 @@ import type React from "react"
 import { useMemo, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Doll69If } from "shared"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
-import { Skeleton } from "../ui/skeleton"
-import { Button } from "../ui/button"
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../ui/sheet"
-import { Label } from "../ui/label"
-import { Input } from "../ui/input"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table"
+import { Skeleton } from "../../components/ui/skeleton"
+import { Button } from "../../components/ui/button"
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../../components/ui/sheet"
+import { Label } from "../../components/ui/label"
+import { Input } from "../../components/ui/input"
 import {
   createBrand,
   deleteBrand,
@@ -16,14 +16,14 @@ import {
   updateBrand,
   type Brand,
 } from "@/request/brand"
-import TableFooter, { type TableFooterOnValueChange } from "../Table/TableFooter"
-import TableDateCell from "../Table/TableDateCell"
+import TableFooter, { type TableFooterOnValueChange } from "../../components/Table/TableFooter"
+import TableDateCell from "../../components/Table/TableDateCell"
 import tableCss from "../../styles/table.module.scss"
-import UploadArea from "../UploadArea"
-import Image from "../Image"
-import DeleteButton from "../Button/DeleteButton"
+import UploadArea from "../../components/UploadArea"
+import Image from "../../components/Image"
+import DeleteButton from "../../components/Button/DeleteButton"
 
-const SUPPORT_PAGE_SIZE = [25, 50, 100]
+const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
 const Brands: React.FC = () => {
   const [pageNum, setPageNum] = useState(1)
