@@ -32,12 +32,24 @@ jobs:
         with:
           node-version: 22
       - run: npm ci -ws --include-workspace-root
+      - name: 'Download .env file'
+        env:
+          data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
+        if: ${{ env.data_domain != '' }}
+        run: wget -O admin-website/.env.staging ${data_domain}/production/.env.production
       - run: npm run build -w @69doll/admin-website
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: 'admin-website-production'
           path: './admin-website/dist'
+      - name: Deploy Production to Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        id: deployment
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy official-website/dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME_ADMIN}} --branch master
 
   # Single deploy job since we're just deploying
   deploy-official-production:
@@ -59,9 +71,7 @@ jobs:
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
         if: ${{ env.data_domain != '' }}
-        run: |
-          wget -O official-website/.env.production ${data_domain}/production/.env.production
-          cp -f official-website/.env.production admin-website/.env.production
+        run: wget -O official-website/.env.production ${data_domain}/production/.env.production
       - run: npm run build -w @69doll/official-website
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -74,7 +84,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy official-website/dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME}} --branch master
+          command: pages deploy official-website/dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME_OFFICIAL}} --branch master
   deploy-official-staging:
     environment:
       name: staging
@@ -94,9 +104,7 @@ jobs:
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
         if: ${{ env.data_domain != '' }}
-        run: |
-          wget -O official-website/.env.staging ${data_domain}/staging/.env.staging
-          cp -f official-website/.env.staging admin-website/.env.staging
+        run: wget -O official-website/.env.staging ${data_domain}/staging/.env.staging
       - run: npm run build  -w @69doll/official-website -- --mode staging
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -109,4 +117,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy official-website/dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME}} --branch staging
+          command: pages deploy official-website/dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME_OFFICIAL}} --branch staging
