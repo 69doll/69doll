@@ -1,12 +1,13 @@
 import type React from "react";
+import { useRef } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Doll69If } from "shared";
 import { Input } from "../ui/input";
-import { useMutation } from "@tanstack/react-query";
-import { uploadImage } from "@/request/image";
-import { useRef } from "react";
 import { Button } from "../ui/button";
-import css from './style.module.scss'
 import { Skeleton } from "../ui/skeleton";
+import Image from "../Image";
+import { uploadImage } from "@/request/image";
+import css from "./style.module.scss";
 
 interface UploadAreaProps {
   src?: string,
@@ -41,7 +42,7 @@ const UploadArea: React.FC<UploadAreaProps> = ({ src, onChange }) => {
             <Skeleton className="size-[100px]" />
           </Doll69If>
           <Doll69If display={!!src && !isPending}>
-            <img src={src} />
+            <Image src={src} />
           </Doll69If>
         </div>
       </Doll69If>

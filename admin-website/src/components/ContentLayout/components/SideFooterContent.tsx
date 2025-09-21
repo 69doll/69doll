@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/provider/auth"
 import { getCurrentUser, getCurrentUserCacheKeys } from "@/request/user"
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useMemo } from "react"
@@ -14,7 +15,8 @@ export default function SidebarFooterContent() {
   })
   useEffect(() => {
     if (isFetched && (isError || data?.code !== 200)) {
-      nav('/signin')
+      AuthProvider.clearUser()
+      nav('/signin', { replace: true })
     }
   }, [isFetched, isError, data])
   const nickname = useMemo(() => {

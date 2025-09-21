@@ -59,7 +59,9 @@ jobs:
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
         if: ${{ env.data_domain != '' }}
-        run: wget -O official-website/.env.production ${data_domain}/production/.env.production
+        run: |
+          wget -O official-website/.env.production ${data_domain}/production/.env.production
+          cp -f official-website/.env.production admin-website/.env.production
       - run: npm run build -w @69doll/official-website
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -92,7 +94,9 @@ jobs:
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
         if: ${{ env.data_domain != '' }}
-        run: wget -O official-website/.env.staging ${data_domain}/staging/.env.staging
+        run: |
+          wget -O official-website/.env.staging ${data_domain}/staging/.env.staging
+          cp -f official-website/.env.staging admin-website/.env.staging
       - run: npm run build  -w @69doll/official-website -- --mode staging
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

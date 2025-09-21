@@ -13,6 +13,7 @@ import TableFooter, { type TableFooterOnValueChange } from "../TableFooter"
 import TableDateCell from "../TableDateCell"
 import tableCss from '../../styles/table.module.scss'
 import UploadArea from "../UploadArea"
+import Image from "../Image"
 
 const SUPPORT_PAGE_SIZE = [25, 50, 100]
 
@@ -100,7 +101,7 @@ const Brands: React.FC = () => {
             list.map((item, index) => {
               return <TableRow key={index}>
                 <TableCell className={tableCss.icon}>
-                  <img src={item.logo} loading="lazy" />
+                  <Image src={item.logo} loading="lazy" />
                 </TableCell>
                 <TableCell>{item.name}(ID:{item.id})</TableCell>
                 <TableCell className={tableCss.date}>
