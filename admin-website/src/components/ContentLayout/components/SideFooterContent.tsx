@@ -16,7 +16,7 @@ export default function SidebarFooterContent() {
   useEffect(() => {
     if (isFetched && (isError || data?.code !== 200)) {
       AuthProvider.clearUser()
-      nav('/signin', { replace: true })
+      nav('/signin')
     }
   }, [isFetched, isError, data])
   const nickname = useMemo(() => {

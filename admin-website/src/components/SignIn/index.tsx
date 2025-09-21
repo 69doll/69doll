@@ -15,12 +15,11 @@ const SignIn: React.FC = () => {
   const { data: currentUser, refetch: refetchCurrentUser } = useQuery({
     queryKey: getCurrentUserCacheKeys(),
     queryFn: () => getCurrentUser(),
-    select: (data) => data?.data,
     enabled: false,
   })
   useEffect(() => {
-    if (currentUser) {
-      AuthProvider.setUser(currentUser)
+    if (currentUser?.code === 200) {
+      AuthProvider.setUser(currentUser.data)
       nav('/')
     }
   }, [currentUser])
