@@ -23,6 +23,9 @@ concurrency:
 
 jobs:
   deploy-admin-production:
+    environment:
+      name: admin-production
+      url: ${{ steps.deployment.outputs.deployment-url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,7 +52,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy official-website/dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME_ADMIN}} --branch master
+          command: pages deploy admin-website/dist --project-name=${{vars.CLOUDFLARE_PROJECT_NAME_ADMIN}} --branch master
 
   # Single deploy job since we're just deploying
   deploy-official-production:
