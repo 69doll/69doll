@@ -11,9 +11,10 @@ import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetT
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { createUser, getUserList, getUserListCacheKeys, updateUser, UserType, type User } from "../../request/user"
+import { createUser, deleteUser, getCurrentUser, getCurrentUserCacheKeys, getUserList, getUserListCacheKeys, updateUser, UserType, type User } from "../../request/user"
 import tableCss from '../../styles/table.module.scss'
 import TableDateCell from "../Table/TableDateCell"
+import DeleteButton from "../Button/DeleteButton"
 
 const SUPPORT_PAGE_SIZE = [25, 50, 100]
 
@@ -52,6 +53,11 @@ const Users: React.FC = () => {
   }
   const isOpenSheet = useMemo(() => !!editUser, [editUser])
 
+  const { data: currentUser, refetch: refetchCurrentUser } = useQuery({
+    queryKey: getCurrentUserCacheKeys(),
+    queryFn: () => getCurrentUser()
+  })
+
   const { mutateAsync: addUser } = useMutation({
     mutationFn: (userInfo: Parameters<typeof createUser>[0]) => createUser(userInfo),
     onSuccess: async ({ code }) => {
@@ -71,12 +77,21 @@ const Users: React.FC = () => {
       if (code === 200) {
         setEditUser(undefined)
         await refetchList()
+        await refetchCurrentUser()
       }
     }
   })
   const save = async () => {
     await saveUser(editUser)
   }
+  const { mutateAsync: removeUser } = useMutation({
+    mutationFn: (userInfo: User) => deleteUser(userInfo.id),
+    onSuccess: async ({ code }) => {
+      if (code === 200) {
+        await refetchList()
+      }
+    }
+  })
   return <>
     <h1>用户管理</h1>
     <div className='flex flex-row justify-between'>
@@ -121,6 +136,9 @@ const Users: React.FC = () => {
                 </TableCell>
                 <TableCell className={tableCss.actions}>
                   <Button size='icon' variant="outline" onClick={() => setEditUser(item)}>修改</Button>
+                  <Doll69If display={item.id !== currentUser?.data.id}>
+                    <DeleteButton onClick={() => removeUser(item)} />
+                  </Doll69If>
                 </TableCell>
               </TableRow>
             })

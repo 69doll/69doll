@@ -11,6 +11,7 @@ import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import {
   createCategory,
+  deleteCategory,
   getCategoryAllList,
   getCategoryAllListCacheKeys,
   updateCategory,
@@ -18,6 +19,7 @@ import {
 } from "../../request/category"
 import TableDateCell from "../Table/TableDateCell"
 import tableCss from '../../styles/table.module.scss'
+import DeleteButton from "../Button/DeleteButton"
 
 const Categories: React.FC = () => {
   const { data, isLoading, isSuccess, refetch: refetchCategoryList } = useQuery({
@@ -81,6 +83,15 @@ const Categories: React.FC = () => {
   const save = async () => {
     await saveCategory(editCategory)
   }
+  const { mutateAsync: removeCategory } = useMutation({
+    mutationFn: (categoryInfo: Category) => deleteCategory(categoryInfo.id),
+    onSuccess: async ({ code }) => {
+      if (code === 200) {
+        await refetchCategoryList()
+      }
+    }
+  })
+
   return (<>
     <h1>分类管理</h1>
     <div className='flex flex-row justify-end'>
@@ -116,6 +127,7 @@ const Categories: React.FC = () => {
                 </TableCell>
                 <TableCell className={tableCss.actions}>
                   <Button size={'sm'} variant="outline" onClick={() => setEditCategory(item)}>修改</Button>
+                  <DeleteButton onClick={() => removeCategory(item)} />
                 </TableCell>
               </TableRow>
             })

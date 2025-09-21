@@ -8,12 +8,20 @@ import { Button } from "../ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../ui/sheet"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
-import { createBrand, getBrandList, getBrandListCacheKeys, updateBrand, type Brand } from "@/request/brand"
+import {
+  createBrand,
+  deleteBrand,
+  getBrandList,
+  getBrandListCacheKeys,
+  updateBrand,
+  type Brand,
+} from "@/request/brand"
 import TableFooter, { type TableFooterOnValueChange } from "../Table/TableFooter"
 import TableDateCell from "../Table/TableDateCell"
-import tableCss from '../../styles/table.module.scss'
+import tableCss from "../../styles/table.module.scss"
 import UploadArea from "../UploadArea"
 import Image from "../Image"
+import DeleteButton from "../Button/DeleteButton"
 
 const SUPPORT_PAGE_SIZE = [25, 50, 100]
 
@@ -71,6 +79,14 @@ const Brands: React.FC = () => {
   const save = async () => {
     await saveBrand(editBrand)
   }
+  const { mutateAsync: removeBrand } = useMutation({
+    mutationFn: (brandInfo: Brand) => deleteBrand(brandInfo.id),
+    onSuccess: async ({ code }) => {
+      if (code === 200) {
+        await refetchList()
+      }
+    }
+  })
 
   return (<>
     <h1>品牌管理</h1>
@@ -109,6 +125,7 @@ const Brands: React.FC = () => {
                 </TableCell>
                 <TableCell className={tableCss.actions}>
                   <Button size='icon' variant="outline" onClick={() => setEditBrand(item)}>修改</Button>
+                  <DeleteButton onClick={() => removeBrand(item)} />
                 </TableCell>
               </TableRow>
             })
@@ -145,15 +162,15 @@ const Brands: React.FC = () => {
             <Input id="user-id" defaultValue={editBrand?.id} disabled={true} name='id' />
           </div>
           <div className="grid gap-3">
-            <Label htmlFor="user-name">品牌名</Label>
-            <Input id="user-name" defaultValue={editBrand?.name} name='name' />
-          </div>
-          <div className="grid gap-3">
             <Label htmlFor="user-name">品牌图</Label>
             <UploadArea
               src={editBrand?.logo}
               onChange={(url) => onFormChange({ name: 'logo', value: url }) }
             ></UploadArea>
+          </div>
+          <div className="grid gap-3">
+            <Label htmlFor="user-name">品牌名</Label>
+            <Input id="user-name" defaultValue={editBrand?.name} name='name' />
           </div>
         </form>
         <SheetFooter>

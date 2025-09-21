@@ -103,3 +103,40 @@ export async function updateUser (id: number, userInfo: UpdateUserInfo) {
 }
 
 // #endregion Update User
+
+// #region Delete User
+
+export async function deleteUser (id: number) {
+  const url = new URL('/api/admin/user/delete', location.origin)
+  const res = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id }),
+  })
+  return await res.json() as ApiResBody
+}
+
+// #endregion Delete User
+
+// #region Reset User Password
+
+export async function resetUserPassword (id: number, passwordObj: { oldRawPassword: string, newRawPassword: string, doubleConfirmNewRawPassword: string }) {
+  const url = new URL('/api/admin/user/reset_password', location.origin)
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      oldRawPassword: SHA1(passwordObj.oldRawPassword).toString(),
+      newRawPassword: SHA1(passwordObj.newRawPassword).toString(),
+      doubleConfirmNewRawPassword: SHA1(passwordObj.doubleConfirmNewRawPassword).toString(),
+      id,
+    }),
+  })
+  return await res.json() as ApiResBody
+}
+
+// #endregion Reset User Password

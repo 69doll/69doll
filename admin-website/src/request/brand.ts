@@ -96,3 +96,18 @@ export async function updateBrand (id: number, body: UpdateBrand) {
 
 // #endregion Update Brand
 
+// #region Delete Brand
+
+export async function deleteBrand (id: number) {
+  const url = new URL('/api/admin/brand/delete', location.origin)
+  const res = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id }),
+  })
+  return await res.json() as ApiResBody
+}
+
+// #endregion Delete Brand

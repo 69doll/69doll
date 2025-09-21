@@ -71,3 +71,18 @@ export async function updateCategory (id: number, body: UpdateCategory) {
 
 // #endregion Update Category
 
+// #region Delete Category
+
+export async function deleteCategory (id: number) {
+  const url = new URL('/api/admin/category/delete', location.origin)
+  const res = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id }),
+  })
+  return await res.json() as ApiResBody
+}
+
+// #endregion Delete Category

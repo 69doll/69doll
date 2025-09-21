@@ -10,7 +10,7 @@
 }
 
 .actions {
-  --uno: max-w-[80px];
+  --uno: w-[80px];
   & > button + button {
     --uno: ml-[5px];
   }
