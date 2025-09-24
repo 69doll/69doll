@@ -24,10 +24,15 @@ export const getBrandAllListCacheKeys = (options?: Partial<BrandAllListOptions>)
 }
 
 export const getBrandAllList = async (options?: Partial<BrandAllListOptions>) => {
-  const url = new URL('/api/admin/brand/list', location.origin)
+  const url = new URL('/api/admin/brand/list', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   options?.id && url.searchParams.set('id', options.id.toString())
   options?.name && url.searchParams.set('name', options.name)
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
+    },
+  })
   return await res.json() as BrandAllList
 }
 
@@ -49,12 +54,17 @@ export const getBrandListCacheKeys = (options?: Partial<ApiReqPage<BrandListOpti
 }
 
 export const getBrandList = async (options?: Partial<ApiReqPage<BrandListOptions>>) => {
-  const url = new URL('/api/admin/brand/page', location.origin)
+  const url = new URL('/api/admin/brand/page', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   options?.pageNum && url.searchParams.set('pageNum', options.pageNum.toString())
   options?.pageSize && url.searchParams.set('pageSize', options.pageSize.toString())
   options?.id && url.searchParams.set('id', options.id.toString())
   options?.name && url.searchParams.set('name', options.name)
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
+    },
+  })
   return await res.json() as BrandList
 }
 
@@ -65,11 +75,12 @@ export const getBrandList = async (options?: Partial<ApiReqPage<BrandListOptions
 type AddBrandInfo = Pick<Brand, 'name' | 'logo'>
 
 export async function createBrand (body: AddBrandInfo) {
-  const url = new URL('/api/admin/brand/create', location.origin)
+  const url = new URL('/api/admin/brand/create', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   const res = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
     },
     body: JSON.stringify(body),
   })
@@ -83,11 +94,12 @@ export async function createBrand (body: AddBrandInfo) {
 type UpdateBrand = Pick<Brand, 'name' | 'logo'>
 
 export async function updateBrand (id: number, body: UpdateBrand) {
-  const url = new URL('/api/admin/brand/update', location.origin)
+  const url = new URL('/api/admin/brand/update', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   const res = await fetch(url, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
     },
     body: JSON.stringify({ ...body, id }),
   })
@@ -99,11 +111,12 @@ export async function updateBrand (id: number, body: UpdateBrand) {
 // #region Delete Brand
 
 export async function deleteBrand (id: number) {
-  const url = new URL('/api/admin/brand/delete', location.origin)
+  const url = new URL('/api/admin/brand/delete', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   const res = await fetch(url, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
     },
     body: JSON.stringify({ id }),
   })

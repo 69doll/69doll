@@ -21,8 +21,13 @@ interface CurrentUser {
 export const getCurrentUserCacheKeys = () => ['current_user']
 
 export async function getCurrentUser () {
-  const url = new URL('/api/admin/user/current_user', location.origin)
-  const res = await fetch(url)
+  const url = new URL('/api/admin/user/current_user', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const res = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
+    },
+  })
   return await res.json() as CurrentUser
 }
 
@@ -52,11 +57,16 @@ export const getUserListCacheKeys = (options?: Partial<UserListOptions>) => {
 }
 
 export async function getUserList (options?: Partial<UserListOptions>) {
-  const url = new URL('/api/admin/user/page', location.origin)
+  const url = new URL('/api/admin/user/page', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   options?.type && url.searchParams.set('type', options.type)
   options?.pageNum && url.searchParams.set('pageNum', options.pageNum.toString())
   options?.pageSize && url.searchParams.set('pageSize', options.pageSize.toString())
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
+    },
+  })
   return await res.json() as UserList
 }
 
@@ -70,11 +80,12 @@ type AddUserInfo = Omit<User, 'id' | 'createdAt' | 'updatedAt'> & {
 }
 
 export async function createUser (userInfo: AddUserInfo) {
-  const url = new URL('/api/admin/user/create', location.origin)
+  const url = new URL('/api/admin/user/create', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   const res = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
     },
     body: JSON.stringify({
       ...userInfo,
@@ -91,11 +102,12 @@ export async function createUser (userInfo: AddUserInfo) {
 type UpdateUserInfo = Omit<User, 'id' | 'email' | 'createdAt' | 'updatedAt'>
 
 export async function updateUser (id: number, userInfo: UpdateUserInfo) {
-  const url = new URL('/api/admin/user/update', location.origin)
+  const url = new URL('/api/admin/user/update', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   const res = await fetch(url, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
     },
     body: JSON.stringify({ ...userInfo, id }),
   })
@@ -107,11 +119,12 @@ export async function updateUser (id: number, userInfo: UpdateUserInfo) {
 // #region Delete User
 
 export async function deleteUser (id: number) {
-  const url = new URL('/api/admin/user/delete', location.origin)
+  const url = new URL('/api/admin/user/delete', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   const res = await fetch(url, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
     },
     body: JSON.stringify({ id }),
   })
@@ -123,11 +136,12 @@ export async function deleteUser (id: number) {
 // #region Reset User Password
 
 export async function resetUserPassword (id: number, passwordObj: { oldRawPassword: string, newRawPassword: string, doubleConfirmNewRawPassword: string }) {
-  const url = new URL('/api/admin/user/reset_password', location.origin)
+  const url = new URL('/api/admin/user/reset_password', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   const res = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
     },
     body: JSON.stringify({
       oldRawPassword: SHA1(passwordObj.oldRawPassword).toString(),

@@ -26,10 +26,15 @@ export const getCategoryAllListCacheKeys = (options?: Partial<CategoryListOption
 }
 
 export const getCategoryAllList = async (options?: Partial<CategoryListOptions>) => {
-  const url = new URL('/api/admin/category/list', location.origin)
+  const url = new URL('/api/admin/category/list', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   options?.name && url.searchParams.set('name', options.name)
   options?.parentId && url.searchParams.set('parentId', options.parentId.toString())
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
+    },
+  })
   return await res.json() as CategoryList
 }
 
@@ -40,11 +45,12 @@ export const getCategoryAllList = async (options?: Partial<CategoryListOptions>)
 type AddCategoryInfo = Pick<Category, 'name' | 'parentId'>
 
 export async function createCategory (body: AddCategoryInfo) {
-  const url = new URL('/api/admin/category/create', location.origin)
+  const url = new URL('/api/admin/category/create', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   const res = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
     },
     body: JSON.stringify(body),
   })
@@ -58,11 +64,12 @@ export async function createCategory (body: AddCategoryInfo) {
 type UpdateCategory = Pick<Category, 'name'>
 
 export async function updateCategory (id: number, body: UpdateCategory) {
-  const url = new URL('/api/admin/category/update', location.origin)
+  const url = new URL('/api/admin/category/update', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   const res = await fetch(url, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
     },
     body: JSON.stringify({ ...body, id }),
   })
@@ -74,11 +81,12 @@ export async function updateCategory (id: number, body: UpdateCategory) {
 // #region Delete Category
 
 export async function deleteCategory (id: number) {
-  const url = new URL('/api/admin/category/delete', location.origin)
+  const url = new URL('/api/admin/category/delete', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
   const res = await fetch(url, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
     },
     body: JSON.stringify({ id }),
   })

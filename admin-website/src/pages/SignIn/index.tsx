@@ -2,14 +2,13 @@ import type React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import SHA1 from "crypto-js/sha1";
 import css from "./style.module.scss";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import Logo from "../../components/Logo";
 import { getCurrentUser, getCurrentUserCacheKeys } from "@/request/user";
 import { AuthProvider } from "@/provider/auth";
-import type { ApiResBody } from "@/types/api.type";
+import { signIn } from "@/request/auth";
 
 const SignIn: React.FC = () => {
   const nav = useNavigate()
@@ -21,23 +20,11 @@ const SignIn: React.FC = () => {
   useEffect(() => {
     if (currentUser?.code === 200) {
       AuthProvider.setUser(currentUser.data)
-      nav('/')
+      nav('/dashboard')
     }
   }, [currentUser])
   const { mutateAsync } = useMutation({
-    mutationFn: async (formData: FormData) => {
-      const body = Object.fromEntries([...formData.entries()])
-      body.password = SHA1(body.password as string).toString()
-      const res = await fetch('/api/admin/auth/login', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify(body),
-      })
-      const data = await res.json() as ApiResBody
-      return data
-    },
+    mutationFn: signIn,
     async onSuccess (data) {
       if (data.code === 200) {
         await refetchCurrentUser()

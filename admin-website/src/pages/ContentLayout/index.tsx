@@ -20,6 +20,15 @@ import css from './style.module.scss'
 const ContentLayout = () => {
   const menuList = [
     {
+      name: '总览',
+      list: [
+        {
+          path: '/dashboard',
+          name: '仪表盘',
+        },
+      ],
+    },
+    {
       name: '数据管理',
       list: [
         {

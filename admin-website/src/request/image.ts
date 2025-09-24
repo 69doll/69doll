@@ -12,6 +12,10 @@ export async function uploadImage (file: File) {
   const res = await fetch('/api/admin/aws/s3/upload', {
     method: 'POST',
     body: formData,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('authorization')!,
+    },
   })
   const data = await res.json() as UploadImage
   return data
