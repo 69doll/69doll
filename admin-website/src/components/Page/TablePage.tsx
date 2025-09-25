@@ -44,7 +44,11 @@ const TableFooter: React.FC<TableFooterProps> = ({
   return <div className={css.tableFooter}>
     <div className={css.left}>
       <Doll69If display={!!totalNum}>
-        <div>共&nbsp;{totalNum}&nbsp;条</div>
+        <div className={css.tableCount}>
+          <span>共</span>
+          <span>{totalNum}</span>
+          <span>条</span>
+        </div>
       </Doll69If>
       <Doll69If display={!!pageSize && pageSizeList?.length >= 1}>
         <Select defaultValue={defaultPageSize} onValueChange={(v) => changePageSize(v)}>

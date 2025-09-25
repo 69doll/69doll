@@ -4,3 +4,12 @@
     --uno: flex flex-row items-center gap-x-[10px];
   }
 }
+
+.tableCount {
+  & {
+    --uno: flex flex-row flex-nowrap justify-between items-center;
+  }
+  & {
+    --uno: min-w-[65px];
+  }
+}

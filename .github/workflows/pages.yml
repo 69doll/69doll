@@ -38,8 +38,9 @@ jobs:
       - name: 'Download .env file'
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
+          data_env: production
         if: ${{ env.data_domain != '' }}
-        run: wget -O admin-website/.env.staging ${data_domain}/production/.env.production
+        run: wget -O admin-website/.env.${data_env} ${data_domain}/${data_env}/.env.${data_env}
       - run: npm run build -w @69doll/admin-website
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -73,8 +74,9 @@ jobs:
       - name: 'Download .env file'
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
+          data_env: production
         if: ${{ env.data_domain != '' }}
-        run: wget -O official-website/.env.production ${data_domain}/production/.env.production
+        run: wget -O official-website/.env.${data_env} ${data_domain}/${data_env}/.env.${data_env}
       - run: npm run build -w @69doll/official-website
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -106,8 +108,9 @@ jobs:
       - name: 'Download .env file'
         env:
           data_domain: ${{ vars.VITE_API_DATA_DOMAIN }}
+          data_env: staging
         if: ${{ env.data_domain != '' }}
-        run: wget -O official-website/.env.staging ${data_domain}/staging/.env.staging
+        run: wget -O official-website/.env.${data_env} ${data_domain}/${data_env}/.env.${data_env}
       - run: npm run build  -w @69doll/official-website -- --mode staging
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

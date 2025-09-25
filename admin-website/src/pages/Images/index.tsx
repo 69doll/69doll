@@ -11,7 +11,7 @@ type ImageType = typeof ImageType[keyof typeof ImageType]
 
 const Image: React.FC = () => {
   const imageTabs = [
-    { name: '品牌配置', value: ImageType.LOGO },
+    { name: '主站设置', value: ImageType.LOGO },
   ]
   const [imageType, setImageType] = useState<ImageType>(ImageType.LOGO)
   return (<>
