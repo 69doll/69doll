@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/constant"
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from "@/types/api.type"
 
 export interface Brand {
@@ -24,7 +25,7 @@ export const getBrandAllListCacheKeys = (options?: Partial<BrandAllListOptions>)
 }
 
 export const getBrandAllList = async (options?: Partial<BrandAllListOptions>) => {
-  const url = new URL('/api/admin/brand/list', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/brand/list', API_BASE_URL)
   options?.id && url.searchParams.set('id', options.id.toString())
   options?.name && url.searchParams.set('name', options.name)
   const res = await fetch(url, {
@@ -54,7 +55,7 @@ export const getBrandListCacheKeys = (options?: Partial<ApiReqPage<BrandListOpti
 }
 
 export const getBrandList = async (options?: Partial<ApiReqPage<BrandListOptions>>) => {
-  const url = new URL('/api/admin/brand/page', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/brand/page', API_BASE_URL)
   options?.pageNum && url.searchParams.set('pageNum', options.pageNum.toString())
   options?.pageSize && url.searchParams.set('pageSize', options.pageSize.toString())
   options?.id && url.searchParams.set('id', options.id.toString())
@@ -75,7 +76,7 @@ export const getBrandList = async (options?: Partial<ApiReqPage<BrandListOptions
 type AddBrandInfo = Pick<Brand, 'name' | 'logo'>
 
 export async function createBrand (body: AddBrandInfo) {
-  const url = new URL('/api/admin/brand/create', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/brand/create', API_BASE_URL)
   const res = await fetch(url, {
     method: 'POST',
     headers: {
@@ -94,7 +95,7 @@ export async function createBrand (body: AddBrandInfo) {
 type UpdateBrand = Pick<Brand, 'name' | 'logo'>
 
 export async function updateBrand (id: number, body: UpdateBrand) {
-  const url = new URL('/api/admin/brand/update', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/brand/update', API_BASE_URL)
   const res = await fetch(url, {
     method: 'PUT',
     headers: {
@@ -111,7 +112,7 @@ export async function updateBrand (id: number, body: UpdateBrand) {
 // #region Delete Brand
 
 export async function deleteBrand (id: number) {
-  const url = new URL('/api/admin/brand/delete', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/brand/delete', API_BASE_URL)
   const res = await fetch(url, {
     method: 'DELETE',
     headers: {

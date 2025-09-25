@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '@/constant'
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from '@/types/api.type'
 import SHA1 from 'crypto-js/sha1'
 
@@ -21,7 +22,7 @@ interface CurrentUser {
 export const getCurrentUserCacheKeys = () => ['current_user']
 
 export async function getCurrentUser () {
-  const url = new URL('/api/admin/user/current_user', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/user/current_user', API_BASE_URL)
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
@@ -57,7 +58,7 @@ export const getUserListCacheKeys = (options?: Partial<UserListOptions>) => {
 }
 
 export async function getUserList (options?: Partial<UserListOptions>) {
-  const url = new URL('/api/admin/user/page', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/user/page', API_BASE_URL)
   options?.type && url.searchParams.set('type', options.type)
   options?.pageNum && url.searchParams.set('pageNum', options.pageNum.toString())
   options?.pageSize && url.searchParams.set('pageSize', options.pageSize.toString())
@@ -80,7 +81,7 @@ type AddUserInfo = Omit<User, 'id' | 'createdAt' | 'updatedAt'> & {
 }
 
 export async function createUser (userInfo: AddUserInfo) {
-  const url = new URL('/api/admin/user/create', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/user/create', API_BASE_URL)
   const res = await fetch(url, {
     method: 'POST',
     headers: {
@@ -102,7 +103,7 @@ export async function createUser (userInfo: AddUserInfo) {
 type UpdateUserInfo = Omit<User, 'id' | 'email' | 'createdAt' | 'updatedAt'>
 
 export async function updateUser (id: number, userInfo: UpdateUserInfo) {
-  const url = new URL('/api/admin/user/update', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/user/update', API_BASE_URL)
   const res = await fetch(url, {
     method: 'PUT',
     headers: {
@@ -119,7 +120,7 @@ export async function updateUser (id: number, userInfo: UpdateUserInfo) {
 // #region Delete User
 
 export async function deleteUser (id: number) {
-  const url = new URL('/api/admin/user/delete', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/user/delete', API_BASE_URL)
   const res = await fetch(url, {
     method: 'DELETE',
     headers: {
@@ -136,7 +137,7 @@ export async function deleteUser (id: number) {
 // #region Reset User Password
 
 export async function resetUserPassword (id: number, passwordObj: { oldRawPassword: string, newRawPassword: string, doubleConfirmNewRawPassword: string }) {
-  const url = new URL('/api/admin/user/reset_password', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/user/reset_password', API_BASE_URL)
   const res = await fetch(url, {
     method: 'POST',
     headers: {

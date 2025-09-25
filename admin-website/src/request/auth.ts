@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/constant"
 import type { ApiResBody } from "@/types/api.type"
 import SHA1 from "crypto-js/sha1"
 
@@ -5,7 +6,7 @@ export async function signIn (formData: FormData) {
   const body = Object.fromEntries([...formData.entries()])
   body.password = SHA1(body.password as string).toString()
 
-  const url = new URL('/api/admin/auth/login', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/auth/login', API_BASE_URL)
   const res = await fetch(url, {
     method: 'POST',
     headers: {

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/constant"
 import type { ApiResBody } from "@/types/api.type"
 
 export interface Category {
@@ -26,7 +27,7 @@ export const getCategoryAllListCacheKeys = (options?: Partial<CategoryListOption
 }
 
 export const getCategoryAllList = async (options?: Partial<CategoryListOptions>) => {
-  const url = new URL('/api/admin/category/list', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/category/list', API_BASE_URL)
   options?.name && url.searchParams.set('name', options.name)
   options?.parentId && url.searchParams.set('parentId', options.parentId.toString())
   const res = await fetch(url, {
@@ -45,7 +46,7 @@ export const getCategoryAllList = async (options?: Partial<CategoryListOptions>)
 type AddCategoryInfo = Pick<Category, 'name' | 'parentId'>
 
 export async function createCategory (body: AddCategoryInfo) {
-  const url = new URL('/api/admin/category/create', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/category/create', API_BASE_URL)
   const res = await fetch(url, {
     method: 'POST',
     headers: {
@@ -64,7 +65,7 @@ export async function createCategory (body: AddCategoryInfo) {
 type UpdateCategory = Pick<Category, 'name'>
 
 export async function updateCategory (id: number, body: UpdateCategory) {
-  const url = new URL('/api/admin/category/update', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/category/update', API_BASE_URL)
   const res = await fetch(url, {
     method: 'PUT',
     headers: {
@@ -81,7 +82,7 @@ export async function updateCategory (id: number, body: UpdateCategory) {
 // #region Delete Category
 
 export async function deleteCategory (id: number) {
-  const url = new URL('/api/admin/category/delete', import.meta.env.VITE_API_BASE_ADMIN_URL || location.origin)
+  const url = new URL('/api/admin/category/delete', API_BASE_URL)
   const res = await fetch(url, {
     method: 'DELETE',
     headers: {
