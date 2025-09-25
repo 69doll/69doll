@@ -1,10 +1,13 @@
 import Page from "@/components/Page/Page";
 import type React from "react";
+import Users from "./components/Users";
 
-const DashBoard: React.FC = ({  }) => {
+const DashBoard: React.FC = () => {
   return (<Page
     label="数据面板"
-  ></Page>)
+  >
+    <Users />
+  </Page>)
 }
 
 export default DashBoard
