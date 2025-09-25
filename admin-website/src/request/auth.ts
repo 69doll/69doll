@@ -16,9 +16,17 @@ export async function signIn (formData: FormData) {
   })
   const data = await res.json() as ApiResBody<{ data: { expireTime: number, tokenValue: string } }>
   if (data.code === 200) {
-    sessionStorage.setItem('authorization', res.headers.get('authorization')!)
-  } else {
-    sessionStorage.removeItem('authorization')
+    const token = res.headers.get('authorization')
+    if (token) {
+      sessionStorage.setItem('authorization', token)
+      return data
+    }
+    console.error('Get Token Fail', token)
   }
+  sessionStorage.removeItem('authorization')
   return data
+}
+
+export async function signOut () {
+  sessionStorage.removeItem('authorization')
 }

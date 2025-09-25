@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 import Root from './pages/Root'
 import ContentLayout from './pages/ContentLayout'
+import { signOut } from './request/auth'
 
 const DashBoard = React.lazy(() => import('./pages/DashBoard'))
 const SignIn = React.lazy(() => import('./pages/SignIn'))
@@ -62,7 +63,7 @@ const routes = createBrowserRouter([
       {
         path: '/signout',
         async action () {
-          sessionStorage.removeItem('authorization')
+          await signOut()
           return redirect('/signin')
         },
       },
