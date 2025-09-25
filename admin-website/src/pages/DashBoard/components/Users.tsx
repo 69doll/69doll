@@ -5,36 +5,24 @@ import { getUserList, getUserListCacheKeys } from "@/request/user";
 import { useQuery } from "@tanstack/react-query";
 import type React from "react";
 import { Doll69If } from "shared";
-import { useIntersectionObserver } from "@uidotdev/usehooks"
-import { useEffect } from "react";
 
 const Users: React.FC = () => {
-  const { data, isLoading, isSuccess, refetch } = useQuery({
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: getUserListCacheKeys({ pageNum: 1 }),
     queryFn: () => getUserList({ pageNum: 1 }),
   })
-  const [ref, entry] = useIntersectionObserver({
-    threshold: 0,
-    root: null,
-    rootMargin: "0px",
-  });
-  useEffect(() => {
-    if (!isSuccess) return
-    if (!entry?.isIntersecting) return
-    refetch()
-  }, [entry?.isIntersecting])
-  return <Card ref={ref}>
+  return <Card>
     <CardHeader>
-      用户总览
+      <span className="font-bold">用户总览</span>
       <Separator />
     </CardHeader>
     <CardContent>
       <div className="text-center flex flex-col items-center">
         <Doll69If display={isLoading}>
-          <Skeleton className="h-[25px] w-[50px]" />
+          <Skeleton className="h-[30px] w-[50px]" />
         </Doll69If>
         <Doll69If display={isSuccess}>
-          <div className="h-[25px]">
+          <div className="h-[30px] leading-[30px] text-[30px]">
             { data?.data.total }
           </div>
         </Doll69If>
