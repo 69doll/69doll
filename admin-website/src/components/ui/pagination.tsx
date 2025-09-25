@@ -7,6 +7,7 @@ import {
 
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { Doll69If } from "shared"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -67,8 +68,9 @@ function PaginationLink({
 
 function PaginationPrevious({
   className,
+  label,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) {
+}: React.ComponentProps<typeof PaginationLink>  & { label?: string }) {
   return (
     <PaginationLink
       aria-label="Go to previous page"
@@ -77,15 +79,16 @@ function PaginationPrevious({
       {...props}
     >
       <ChevronLeftIcon />
-      <span className="hidden sm:block">Previous</span>
+      <Doll69If display={!!label}><span className="hidden sm:block">{label}</span></Doll69If>
     </PaginationLink>
   )
 }
 
 function PaginationNext({
   className,
+  label,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) {
+}: React.ComponentProps<typeof PaginationLink>  & { label?: string }) {
   return (
     <PaginationLink
       aria-label="Go to next page"
@@ -93,7 +96,7 @@ function PaginationNext({
       className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
       {...props}
     >
-      <span className="hidden sm:block">Next</span>
+      <Doll69If display={!!label}><span className="hidden sm:block">{label}</span></Doll69If>
       <ChevronRightIcon />
     </PaginationLink>
   )

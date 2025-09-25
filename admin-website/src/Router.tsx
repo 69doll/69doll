@@ -5,15 +5,15 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 import Root from './pages/Root'
-import { AuthProvider } from './provider/auth'
+import ContentLayout from './pages/ContentLayout'
 
-const ContentLayout = React.lazy(() => import('./pages/ContentLayout'))
 const DashBoard = React.lazy(() => import('./pages/DashBoard'))
 const SignIn = React.lazy(() => import('./pages/SignIn'))
 const Users = React.lazy(() => import('./pages/Users'))
 const Categories = React.lazy(() => import('./pages/Categories'))
 const Brands = React.lazy(() => import('./pages/Brands'))
 const Product = React.lazy(() => import('./pages/Product'))
+const Images = React.lazy(() => import('./pages/Images'))
 
 const routes = createBrowserRouter([
   {
@@ -24,12 +24,6 @@ const routes = createBrowserRouter([
       {
         path: '/',
         Component: ContentLayout,
-        async loader () {
-          if (AuthProvider.isAuthenticated) {
-            return { user: AuthProvider.user }
-          }
-          return {}
-        },
         children: [
           {
             path: '/',
@@ -55,6 +49,10 @@ const routes = createBrowserRouter([
             path: '/products',
             Component: Product,
           },
+          {
+            path: '/images',
+            Component: Images,
+          },
         ],
       },
       {
@@ -64,6 +62,7 @@ const routes = createBrowserRouter([
       {
         path: '/signout',
         async action () {
+          sessionStorage.removeItem('authorization')
           return redirect('/signin')
         },
       },

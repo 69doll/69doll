@@ -1,11 +1,10 @@
+import Page from "@/components/Page/Page";
 import type React from "react";
 
 const DashBoard: React.FC = ({  }) => {
-  return (<>
-    <div>
-      <h1>数据面板</h1>
-    </div>
-  </>)
+  return (<Page
+    label="数据面板"
+  ></Page>)
 }
 
 export default DashBoard

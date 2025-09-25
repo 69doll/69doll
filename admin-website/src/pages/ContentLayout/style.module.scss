@@ -1,3 +1,12 @@
-.body {
-  --uno: p-[30px] h-dvh w-full overflow-auto;
+.contentLayout {
+  --layout-padding: 10px;
+  @screen md {
+    & {
+      --layout-padding: 30px;
+    }
+  }
+}
+
+.contentLayout {
+  --uno: p-[var(--layout-padding)] h-dvh w-full overflow-auto;
 }

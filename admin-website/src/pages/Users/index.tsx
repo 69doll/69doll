@@ -10,15 +10,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../../components/ui/sheet"
 import { Skeleton } from "../../components/ui/skeleton"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table"
-import { Tabs, TabsList, TabsTrigger } from "../../components/ui/tabs"
 import TableDateCell from "../../components/Table/TableDateCell"
-import TableFooter, { type TableFooterOnValueChange } from "../../components/Table/TableFooter"
 import tableCss from '../../styles/table.module.scss'
-import { createUser, deleteUser, getCurrentUser, getCurrentUserCacheKeys, getUserList, getUserListCacheKeys, updateUser, UserType, type User } from "../../request/user"
+import { createUser, deleteUser, getUserList, getUserListCacheKeys, updateUser, UserType, type User } from "../../request/user"
+import TablePage, { type TablePageOnValueChange } from "@/components/Page/TablePage"
+import PageTabs from "@/components/Page/PageTabs"
+import { useCurrentUser, useRefreshCurrentUser } from "@/Context/CurrentUser"
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
 const Users: React.FC = () => {
+  const userTabs = [
+    { name: '普通用户', value: UserType.APP },
+    { name: '管理员', value: UserType.ADMIN },
+  ]
+
   const [userType, setUserType] = useState<UserType>(UserType.APP)
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(SUPPORT_PAGE_SIZE[0])
@@ -32,10 +38,13 @@ const Users: React.FC = () => {
   const list = useMemo(() => {
     return data?.data?.list ?? []
   }, [data])
+  const totalNum = useMemo(() => {
+    return data?.data?.total ?? list.length
+  }, [data])
   const totalPageNum = useMemo(() => {
     return data?.data?.totalPage ?? 1
   }, [data])
-  const onPageChange: TableFooterOnValueChange = ({ pageNum: nextPageNum, pageSize: nextPageSize }) => {
+  const onPageChange: TablePageOnValueChange = ({ pageNum: nextPageNum, pageSize: nextPageSize }) => {
     if (nextPageSize && nextPageSize !== pageSize) {
       setPageNum(1)
       setPageSize(nextPageSize)
@@ -53,10 +62,8 @@ const Users: React.FC = () => {
   }
   const isOpenSheet = useMemo(() => !!editUser, [editUser])
 
-  const { data: currentUser, refetch: refetchCurrentUser } = useQuery({
-    queryKey: getCurrentUserCacheKeys(),
-    queryFn: () => getCurrentUser()
-  })
+  const currentUser = useCurrentUser()
+  const refreshCurrentUser = useRefreshCurrentUser()
 
   const { mutateAsync: addUser } = useMutation({
     mutationFn: (userInfo: Parameters<typeof createUser>[0]) => createUser(userInfo),
@@ -77,7 +84,7 @@ const Users: React.FC = () => {
       if (code === 200) {
         setEditUser(undefined)
         await refetchList()
-        await refetchCurrentUser()
+        await refreshCurrentUser()
       }
     }
   })
@@ -93,66 +100,69 @@ const Users: React.FC = () => {
     }
   })
   return <>
-    <h1>用户管理</h1>
-    <div className='flex flex-row justify-between'>
-      <Tabs defaultValue={userType} onValueChange={(v) => setUserType(v as UserType)}>
-        <TabsList>
-          <TabsTrigger value={UserType.APP}>普通用户</TabsTrigger>
-          <TabsTrigger value={UserType.ADMIN}>管理员</TabsTrigger>
-        </TabsList>
-      </Tabs>
-      <Button variant="outline" onClick={() => setEditUser({ status: true })}>新增用户</Button>
-    </div>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Email</TableHead>
-          <TableHead>昵称</TableHead>
-          <TableHead>状态</TableHead>
-          <TableHead className={tableCss.date}>创建时间</TableHead>
-          <TableHead className={tableCss.actions}>操作</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <Doll69If display={isLoading}>
-          {
-            Array(pageSize).fill(undefined).map(() => <TableRow>
-              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-              <TableCell className={tableCss.date}><Skeleton className="h-4 w-full" /></TableCell>
-            </TableRow>)
-          }
-        </Doll69If>
-        <Doll69If display={isSuccess}>
-          {
-            list.map((item, index) => {
-              return <TableRow key={index}>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>{item.nickname}</TableCell>
-                <TableCell>{item.status ? '可用' : '不可用'}</TableCell>
-                <TableCell className={tableCss.date}>
-                  <TableDateCell date={item.createdAt} />
-                </TableCell>
-                <TableCell className={tableCss.actions}>
-                  <Button size='icon' variant="outline" onClick={() => setEditUser(item)}>修改</Button>
-                  <Doll69If display={item.id !== currentUser?.data.id}>
-                    <DeleteButton onClick={() => removeUser(item)} />
-                  </Doll69If>
-                </TableCell>
-              </TableRow>
-            })
-          }
-        </Doll69If>
-      </TableBody>
-    </Table>
-    <TableFooter
+    <TablePage
+      label="用户管理"
       pageNum={pageNum}
+      totalNum={totalNum}
       totalPageNum={totalPageNum}
       pageSize={pageSize}
       pageSizes={SUPPORT_PAGE_SIZE}
       onValueChange={onPageChange}
-    />
+      header={
+        <div className='w-full flex flex-row justify-between'>
+          <PageTabs
+            options={userTabs}
+            defaultValue={userType}
+            onValueChange={(v) => setUserType(v as UserType)}
+          />
+          <Button variant="outline" size='sm' onClick={() => setEditUser({ status: true })}>新增用户</Button>
+        </div>
+      }
+    >
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Email</TableHead>
+            <TableHead>昵称</TableHead>
+            <TableHead>状态</TableHead>
+            <TableHead className={tableCss.date}>创建时间</TableHead>
+            <TableHead className={tableCss.actions}>操作</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <Doll69If display={isLoading}>
+            {
+              Array(pageSize).fill(undefined).map(() => <TableRow>
+                <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                <TableCell className={tableCss.date}><Skeleton className="h-4 w-full" /></TableCell>
+              </TableRow>)
+            }
+          </Doll69If>
+          <Doll69If display={isSuccess}>
+            {
+              list.map((item, index) => {
+                return <TableRow key={index}>
+                  <TableCell>{item.email}</TableCell>
+                  <TableCell>{item.nickname}</TableCell>
+                  <TableCell>{item.status ? '可用' : '不可用'}</TableCell>
+                  <TableCell className={tableCss.date}>
+                    <TableDateCell date={item.createdAt} />
+                  </TableCell>
+                  <TableCell className={tableCss.actions}>
+                    <Button size='icon' variant="outline" onClick={() => setEditUser(item)}>修改</Button>
+                    <Doll69If display={item.id !== currentUser?.id}>
+                      <DeleteButton onClick={() => removeUser(item)} />
+                    </Doll69If>
+                  </TableCell>
+                </TableRow>
+              })
+            }
+          </Doll69If>
+        </TableBody>
+      </Table>
+    </TablePage>
     <Sheet open={isOpenSheet}>
       <SheetContent headerClose={false}>
         <SheetHeader>

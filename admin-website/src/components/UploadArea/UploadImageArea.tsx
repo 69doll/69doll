@@ -2,19 +2,21 @@ import type React from "react";
 import { useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Doll69If } from "shared";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Skeleton } from "../ui/skeleton";
-import Image from "../Image";
 import { uploadImage } from "@/request/image";
-import css from "./style.module.scss";
+import Image from "../Image";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Skeleton } from "../ui/skeleton";
+import css from "./UploadImageArea.module.scss";
 
-interface UploadAreaProps {
+interface UploadImageAreaProps {
   src?: string,
   onChange?: (urlOrId: string) => any
+  multiple?: boolean,
+  accept?: string,
 }
 
-const UploadArea: React.FC<UploadAreaProps> = ({ src, onChange }) => {
+const UploadImageArea: React.FC<UploadImageAreaProps> = ({ src, onChange, multiple = false, accept = 'image/*' }) => {
   const element = useRef<HTMLInputElement>(null)
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (file?: File) => {
@@ -37,7 +39,7 @@ const UploadArea: React.FC<UploadAreaProps> = ({ src, onChange }) => {
   return <>
     <div>
       <Doll69If display={!!src || isPending}>
-        <div className={css.uploadArea}>
+        <div className={css.uploadImageArea}>
           <Doll69If display={isPending}>
             <Skeleton className="size-[100px]" />
           </Doll69If>
@@ -51,18 +53,18 @@ const UploadArea: React.FC<UploadAreaProps> = ({ src, onChange }) => {
           className={css.uploadButton}
           variant="outline"
           onClick={(e) => handleUploadClick(e)}
-        >上传新图片</Button>
+        >上传图片</Button>
       </Doll69If>
       <Input
         className="hidden"
         ref={element}
         type="file"
-        multiple={false}
-        accept="image/*"
+        multiple={multiple}
+        accept={accept}
         onChange={(e) => mutateAsync(e.target.files?.[0])}
       />
     </div>
   </>
 }
 
-export default UploadArea
+export default UploadImageArea

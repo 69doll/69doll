@@ -1,26 +1,10 @@
-import { AuthProvider } from "@/provider/auth"
-import { getCurrentUser, getCurrentUserCacheKeys } from "@/request/user"
-import { useQuery } from "@tanstack/react-query"
-import { useEffect, useMemo } from "react"
-import { useLoaderData, useNavigate } from "react-router-dom"
+import { useCurrentUser } from "@/Context/CurrentUser"
+import { useMemo } from "react"
 
 export default function SidebarFooterContent() {
-  const nav = useNavigate()
-  const { user } = useLoaderData()
-  const { data, isError, isFetched } = useQuery({
-    queryKey: getCurrentUserCacheKeys(),
-    queryFn: () => getCurrentUser(),
-    select: (data) => data,
-    enabled: !user,
-  })
-  useEffect(() => {
-    if (isFetched && (isError || data?.code !== 200)) {
-      AuthProvider.clearUser()
-      nav('/signin')
-    }
-  }, [isFetched, isError, data])
+  const currentUser = useCurrentUser()
   const nickname = useMemo(() => {
-    return data?.data?.nickname ?? user?.nickname
-  }, [user, data])
+    return currentUser?.nickname
+  }, [currentUser])
   return <div>{nickname}</div>
 }

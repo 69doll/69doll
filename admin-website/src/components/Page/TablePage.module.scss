@@ -1,0 +1,6 @@
+.tableFooter {
+  --uno: flex flex-row flex-wrap justify-between items-center;
+  > * {
+    --uno: flex flex-row items-center gap-x-[10px];
+  }
+}

@@ -20,6 +20,7 @@ import {
 import TableDateCell from "../../components/Table/TableDateCell"
 import tableCss from '../../styles/table.module.scss'
 import DeleteButton from "../../components/Button/DeleteButton"
+import TablePage from "../../components/Page/TablePage"
 
 const Categories: React.FC = () => {
   const { data, isLoading, isSuccess, refetch: refetchCategoryList } = useQuery({
@@ -93,48 +94,54 @@ const Categories: React.FC = () => {
   })
 
   return (<>
-    <h1>分类管理</h1>
-    <div className='flex flex-row justify-end'>
-      <Button variant="outline" onClick={() => setEditCategory({ parentId: 0 })}>新增分类</Button>
-    </div>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>分类名</TableHead>
-          <TableHead>父分类</TableHead>
-          <TableHead className={tableCss.date}>创建时间</TableHead>
-          <TableHead className={tableCss.actions}>操作</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <Doll69If display={isLoading}>
-          {
-            Array(15).fill(undefined).map(() => <TableRow>
-              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-              <TableCell className={tableCss.date}><Skeleton className="h-4 w-full" /></TableCell>
-            </TableRow>)
-          }
-        </Doll69If>
-        <Doll69If display={isSuccess}>
-          {
-            list.map((item, index) => {
-              return <TableRow key={index}>
-                <TableCell>{item.name}(ID:{item.id})</TableCell>
-                <TableCell>{(item.dependencies as string[]).map((id) => map[id]?.name).filter(Boolean).join(' > ')}</TableCell>
-                <TableCell className={tableCss.date}>
-                  <TableDateCell date={item.createdAt} />
-                </TableCell>
-                <TableCell className={tableCss.actions}>
-                  <Button size={'sm'} variant="outline" onClick={() => setEditCategory(item)}>修改</Button>
-                  <DeleteButton onClick={() => removeCategory(item)} />
-                </TableCell>
-              </TableRow>
-            })
-          }
-        </Doll69If>
-      </TableBody>
-    </Table>
+    <TablePage
+      label="分类管理"
+      totalNum={list.length}
+      header={
+        <div className='w-full flex flex-row justify-end'>
+          <Button variant="outline" onClick={() => setEditCategory({ parentId: 0 })}>新增分类</Button>
+        </div>
+      }
+    >
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>分类名</TableHead>
+            <TableHead>父分类</TableHead>
+            <TableHead className={tableCss.date}>创建时间</TableHead>
+            <TableHead className={tableCss.actions}>操作</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <Doll69If display={isLoading}>
+            {
+              Array(15).fill(undefined).map(() => <TableRow>
+                <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                <TableCell className={tableCss.date}><Skeleton className="h-4 w-full" /></TableCell>
+              </TableRow>)
+            }
+          </Doll69If>
+          <Doll69If display={isSuccess}>
+            {
+              list.map((item, index) => {
+                return <TableRow key={index}>
+                  <TableCell>{item.name}(ID:{item.id})</TableCell>
+                  <TableCell>{(item.dependencies as string[]).map((id) => map[id]?.name).filter(Boolean).join(' > ')}</TableCell>
+                  <TableCell className={tableCss.date}>
+                    <TableDateCell date={item.createdAt} />
+                  </TableCell>
+                  <TableCell className={tableCss.actions}>
+                    <Button size={'sm'} variant="outline" onClick={() => setEditCategory(item)}>修改</Button>
+                    <DeleteButton onClick={() => removeCategory(item)} />
+                  </TableCell>
+                </TableRow>
+              })
+            }
+          </Doll69If>
+        </TableBody>
+      </Table>
+    </TablePage>
     <Sheet open={isOpenSheet}>
       <SheetContent headerClose={false}>
         <SheetHeader>

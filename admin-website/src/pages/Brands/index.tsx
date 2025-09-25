@@ -16,10 +16,10 @@ import {
   updateBrand,
   type Brand,
 } from "@/request/brand"
-import TableFooter, { type TableFooterOnValueChange } from "../../components/Table/TableFooter"
+import TablePage, { type TablePageOnValueChange } from "../../components/Page/TablePage"
 import TableDateCell from "../../components/Table/TableDateCell"
 import tableCss from "../../styles/table.module.scss"
-import UploadArea from "../../components/UploadArea"
+import UploadImageArea from "../../components/UploadArea/UploadImageArea"
 import Image from "../../components/Image"
 import DeleteButton from "../../components/Button/DeleteButton"
 
@@ -38,7 +38,7 @@ const Brands: React.FC = () => {
   const totalPageNum = useMemo(() => {
     return data?.data?.totalPage ?? 1
   }, [data])
-  const onPageChange: TableFooterOnValueChange = ({ pageNum: nextPageNum, pageSize: nextPageSize }) => {
+  const onPageChange: TablePageOnValueChange = ({ pageNum: nextPageNum, pageSize: nextPageSize }) => {
     if (nextPageSize && nextPageSize !== pageSize) {
       setPageNum(1)
       setPageSize(nextPageSize)
@@ -89,57 +89,61 @@ const Brands: React.FC = () => {
   })
 
   return (<>
-    <h1>品牌管理</h1>
-    <div className='flex flex-row justify-end'>
-      <Button variant="outline" onClick={() => setEditBrand({ parentId: 0 })}>新增品牌</Button>
-    </div>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className={tableCss.icon}>品牌图</TableHead>
-          <TableHead>品牌名</TableHead>
-          <TableHead className={tableCss.date}>创建时间</TableHead>
-          <TableHead className={tableCss.actions}>操作</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <Doll69If display={isLoading}>
-          {
-            Array(15).fill(undefined).map(() => <TableRow>
-              <TableCell><Skeleton className={tableCss.icon} /></TableCell>
-              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-              <TableCell className={tableCss.date}><Skeleton className="h-4 w-full" /></TableCell>
-            </TableRow>)
-          }
-        </Doll69If>
-        <Doll69If display={isSuccess}>
-          {
-            list.map((item, index) => {
-              return <TableRow key={index}>
-                <TableCell className={tableCss.icon}>
-                  <Image src={item.logo} loading="lazy" />
-                </TableCell>
-                <TableCell>{item.name}(ID:{item.id})</TableCell>
-                <TableCell className={tableCss.date}>
-                  <TableDateCell date={item.createdAt} />
-                </TableCell>
-                <TableCell className={tableCss.actions}>
-                  <Button size='icon' variant="outline" onClick={() => setEditBrand(item)}>修改</Button>
-                  <DeleteButton onClick={() => removeBrand(item)} />
-                </TableCell>
-              </TableRow>
-            })
-          }
-        </Doll69If>
-      </TableBody>
-    </Table>
-    <TableFooter
+    <TablePage
+      label="品牌管理"
+      header={
+        <div className='w-full flex flex-row justify-end'>
+          <Button variant="outline" onClick={() => setEditBrand({ parentId: 0 })}>新增品牌</Button>
+        </div>
+      }
       pageNum={pageNum}
+      totalNum={list.length}
       totalPageNum={totalPageNum}
       pageSize={pageSize}
       pageSizes={SUPPORT_PAGE_SIZE}
       onValueChange={onPageChange}
-    />
+    >
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className={tableCss.icon}>品牌图</TableHead>
+            <TableHead>品牌名</TableHead>
+            <TableHead className={tableCss.date}>创建时间</TableHead>
+            <TableHead className={tableCss.actions}>操作</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <Doll69If display={isLoading}>
+            {
+              Array(15).fill(undefined).map(() => <TableRow>
+                <TableCell><Skeleton className={tableCss.icon} /></TableCell>
+                <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                <TableCell className={tableCss.date}><Skeleton className="h-4 w-full" /></TableCell>
+              </TableRow>)
+            }
+          </Doll69If>
+          <Doll69If display={isSuccess}>
+            {
+              list.map((item, index) => {
+                return <TableRow key={index}>
+                  <TableCell className={tableCss.icon}>
+                    <Image src={item.logo} loading="lazy" />
+                  </TableCell>
+                  <TableCell>{item.name}(ID:{item.id})</TableCell>
+                  <TableCell className={tableCss.date}>
+                    <TableDateCell date={item.createdAt} />
+                  </TableCell>
+                  <TableCell className={tableCss.actions}>
+                    <Button size='icon' variant="outline" onClick={() => setEditBrand(item)}>修改</Button>
+                    <DeleteButton onClick={() => removeBrand(item)} />
+                  </TableCell>
+                </TableRow>
+              })
+            }
+          </Doll69If>
+        </TableBody>
+      </Table>
+    </TablePage>
     <Sheet open={isOpenSheet}>
       <SheetContent headerClose={false}>
         <SheetHeader>
@@ -163,10 +167,10 @@ const Brands: React.FC = () => {
           </div>
           <div className="grid gap-3">
             <Label htmlFor="user-name">品牌图</Label>
-            <UploadArea
+            <UploadImageArea
               src={editBrand?.logo}
               onChange={(url) => onFormChange({ name: 'logo', value: url }) }
-            ></UploadArea>
+            ></UploadImageArea>
           </div>
           <div className="grid gap-3">
             <Label htmlFor="user-name">品牌名</Label>

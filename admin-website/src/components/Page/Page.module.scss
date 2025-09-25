@@ -1,0 +1,25 @@
+.page {
+  --uno: h-dvh m-[calc(0px-var(--layout-padding))];
+  & {
+    --uno: grid grid-flow-row;
+    grid-template-rows: 50px auto 60px;
+  }
+}
+
+.body {
+  --uno: p-[var(--layout-padding)];
+}
+
+.header {
+  --uno: grid grid-flow-row px-[10px];
+  grid-template-rows: auto 1px;
+}
+
+.headerContent {
+  --uno: flex flex-row gap-[10px] items-center;
+}
+
+.footer {
+  --uno: grid grid-flow-row px-[10px];
+  grid-template-rows: 1px auto;
+}

@@ -1,4 +1,4 @@
-.uploadArea {
+.uploadImageArea {
   & {
     --uno: border border-dashed border-gray-200 rounded-t p-[5px];
   }
@@ -10,7 +10,7 @@
 
 .uploadButton {
   --uno: w-[130px];
-  .uploadArea + & {
+  .uploadImageArea + & {
     --uno: rounded-t-none;
   }
 }
