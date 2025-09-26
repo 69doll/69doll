@@ -5,7 +5,7 @@ import { Separator } from "../ui/separator"
 import { SidebarTrigger } from "../ui/sidebar"
 
 export interface PageProps {
-  label: string,
+  label: React.ReactNode,
   header?: React.ReactNode,
   footer?: React.ReactNode,
 }

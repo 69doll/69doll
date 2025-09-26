@@ -1,16 +1,19 @@
 .icon {
   --uno: w-[80px];
-  tbody & {
+  tbody &, > [data-slot="skeleton"] {
     --uno: size-[80px];
   }
 }
 
 .date {
   --uno: w-[100px];
+  > [data-slot="skeleton"] {
+    --uno: h-4 w-full;
+  }
 }
 
 .actions {
-  --uno: w-[80px];
+  --uno: w-[150px];
   & > button + button {
     --uno: ml-[5px];
   }

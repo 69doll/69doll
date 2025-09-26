@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/constant"
+import { setAuthorization } from "@/store/authorization"
 import type { ApiResBody } from "@/types/api.type"
 import SHA1 from "crypto-js/sha1"
 
@@ -18,12 +19,12 @@ export async function signIn (formData: FormData) {
   if (data.code === 200) {
     const token = res.headers.get('authorization')
     if (token) {
-      sessionStorage.setItem('authorization', token)
+      setAuthorization(token)
       return data
     }
     console.error('Get Token Fail', token)
   }
-  sessionStorage.removeItem('authorization')
+  setAuthorization()
   return data
 }
 

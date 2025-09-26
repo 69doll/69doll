@@ -16,6 +16,8 @@ import { createUser, deleteUser, getUserList, getUserListCacheKeys, updateUser, 
 import TablePage, { type TablePageOnValueChange } from "@/components/Page/TablePage"
 import PageTabs from "@/components/Page/PageTabs"
 import { useCurrentUser, useRefreshCurrentUser } from "@/Context/CurrentUser"
+import PageName from "@/components/Page/PageName"
+import { hasAuthorization } from "@/store/authorization"
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
@@ -31,9 +33,10 @@ const Users: React.FC = () => {
   const getUserListOpts = useMemo(() => ({ type: userType, pageNum, pageSize }), [pageNum, pageSize, userType])
   const queryKey = useMemo(() => getUserListCacheKeys(getUserListOpts), [getUserListOpts])
   const queryFn = useMemo(() => () => getUserList(getUserListOpts), [getUserListOpts])
-  const { data, isLoading, isSuccess, refetch: refetchList } = useQuery({
+  const { data, isFetching, isSuccess, refetch: refetchList } = useQuery({
     queryKey,
     queryFn: queryFn,
+    enabled: hasAuthorization(),
   })
   const list = useMemo(() => {
     return data?.data?.list ?? []
@@ -101,7 +104,7 @@ const Users: React.FC = () => {
   })
   return <>
     <TablePage
-      label="用户管理"
+      label={<PageName name='用户管理' isLoading={isFetching} onRefresh={refetchList} />}
       pageNum={pageNum}
       totalNum={totalNum}
       totalPageNum={totalPageNum}
@@ -130,7 +133,7 @@ const Users: React.FC = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <Doll69If display={isLoading}>
+          <Doll69If display={isFetching}>
             {
               Array(pageSize).fill(undefined).map(() => <TableRow>
                 <TableCell><Skeleton className="h-4 w-full" /></TableCell>
@@ -140,7 +143,7 @@ const Users: React.FC = () => {
               </TableRow>)
             }
           </Doll69If>
-          <Doll69If display={isSuccess}>
+          <Doll69If display={!isFetching && isSuccess}>
             {
               list.map((item, index) => {
                 return <TableRow key={index}>
@@ -151,9 +154,9 @@ const Users: React.FC = () => {
                     <TableDateCell date={item.createdAt} />
                   </TableCell>
                   <TableCell className={tableCss.actions}>
-                    <Button size='icon' variant="outline" onClick={() => setEditUser(item)}>修改</Button>
+                    <Button size='sm' variant="outline" onClick={() => setEditUser(item)}>修改</Button>
                     <Doll69If display={item.id !== currentUser?.id}>
-                      <DeleteButton onClick={() => removeUser(item)} />
+                      <DeleteButton size='sm' onClick={() => removeUser(item)} />
                     </Doll69If>
                   </TableCell>
                 </TableRow>

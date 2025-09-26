@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/constant"
+import { getAuthorization } from "@/store/authorization"
 import type { ApiResBody } from "@/types/api.type"
 
 export interface Category {
@@ -33,7 +34,7 @@ export const getCategoryAllList = async (options?: Partial<CategoryListOptions>)
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
   })
   return await res.json() as CategoryList
@@ -51,7 +52,7 @@ export async function createCategory (body: AddCategoryInfo) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
     body: JSON.stringify(body),
   })
@@ -70,7 +71,7 @@ export async function updateCategory (id: number, body: UpdateCategory) {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
     body: JSON.stringify({ ...body, id }),
   })
@@ -87,7 +88,7 @@ export async function deleteCategory (id: number) {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
     body: JSON.stringify({ id }),
   })

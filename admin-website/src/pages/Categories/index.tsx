@@ -21,11 +21,14 @@ import TableDateCell from "../../components/Table/TableDateCell"
 import tableCss from '../../styles/table.module.scss'
 import DeleteButton from "../../components/Button/DeleteButton"
 import TablePage from "../../components/Page/TablePage"
+import PageName from "@/components/Page/PageName"
+import { hasAuthorization } from "@/store/authorization"
 
 const Categories: React.FC = () => {
-  const { data, isLoading, isSuccess, refetch: refetchCategoryList } = useQuery({
+  const { data, isFetching, isSuccess, refetch: refetchCategoryList } = useQuery({
     queryKey: getCategoryAllListCacheKeys(),
     queryFn: () => getCategoryAllList(),
+    enabled: hasAuthorization(),
   })
   const list = useMemo(() => {
     const currentList = data?.data ?? []
@@ -95,7 +98,7 @@ const Categories: React.FC = () => {
 
   return (<>
     <TablePage
-      label="分类管理"
+      label={<PageName name='分类管理' isLoading={isFetching} />}
       totalNum={list.length}
       header={
         <div className='w-full flex flex-row justify-end'>
@@ -113,7 +116,7 @@ const Categories: React.FC = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <Doll69If display={isLoading}>
+          <Doll69If display={isFetching}>
             {
               Array(15).fill(undefined).map(() => <TableRow>
                 <TableCell><Skeleton className="h-4 w-full" /></TableCell>
@@ -122,7 +125,7 @@ const Categories: React.FC = () => {
               </TableRow>)
             }
           </Doll69If>
-          <Doll69If display={isSuccess}>
+          <Doll69If display={!isFetching && isSuccess}>
             {
               list.map((item, index) => {
                 return <TableRow key={index}>
@@ -132,8 +135,8 @@ const Categories: React.FC = () => {
                     <TableDateCell date={item.createdAt} />
                   </TableCell>
                   <TableCell className={tableCss.actions}>
-                    <Button size={'sm'} variant="outline" onClick={() => setEditCategory(item)}>修改</Button>
-                    <DeleteButton onClick={() => removeCategory(item)} />
+                    <Button size='sm' variant="outline" onClick={() => setEditCategory(item)}>修改</Button>
+                    <DeleteButton size='sm' onClick={() => removeCategory(item)} />
                   </TableCell>
                 </TableRow>
               })

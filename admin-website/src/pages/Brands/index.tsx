@@ -22,22 +22,21 @@ import tableCss from "../../styles/table.module.scss"
 import UploadImageArea from "../../components/UploadArea/UploadImageArea"
 import Image from "../../components/Image"
 import DeleteButton from "../../components/Button/DeleteButton"
+import PageName from "@/components/Page/PageName"
+import { hasAuthorization } from "@/store/authorization"
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
 const Brands: React.FC = () => {
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(SUPPORT_PAGE_SIZE[0])
-  const { data, isLoading, isSuccess, refetch: refetchList } = useQuery({
+  const { data, isFetching, isSuccess, refetch: refetchList } = useQuery({
     queryKey: getBrandListCacheKeys({ pageSize, pageNum }),
     queryFn: () => getBrandList({ pageSize, pageNum }),
+    enabled: hasAuthorization(),
   })
-  const list = useMemo(() => {
-    return data?.data?.list ?? []
-  }, [data])
-  const totalPageNum = useMemo(() => {
-    return data?.data?.totalPage ?? 1
-  }, [data])
+  const list = useMemo(() => data?.data?.list ?? [], [data])
+  const totalPageNum = useMemo(() => data?.data?.totalPage ?? 1, [data])
   const onPageChange: TablePageOnValueChange = ({ pageNum: nextPageNum, pageSize: nextPageSize }) => {
     if (nextPageSize && nextPageSize !== pageSize) {
       setPageNum(1)
@@ -90,7 +89,7 @@ const Brands: React.FC = () => {
 
   return (<>
     <TablePage
-      label="品牌管理"
+      label={<PageName name='品牌管理' isLoading={isFetching} onRefresh={refetchList} />}
       header={
         <div className='w-full flex flex-row justify-end'>
           <Button variant="outline" onClick={() => setEditBrand({ parentId: 0 })}>新增品牌</Button>
@@ -113,7 +112,7 @@ const Brands: React.FC = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <Doll69If display={isLoading}>
+          <Doll69If display={isFetching}>
             {
               Array(15).fill(undefined).map(() => <TableRow>
                 <TableCell><Skeleton className={tableCss.icon} /></TableCell>
@@ -122,20 +121,20 @@ const Brands: React.FC = () => {
               </TableRow>)
             }
           </Doll69If>
-          <Doll69If display={isSuccess}>
+          <Doll69If display={!isFetching && isSuccess}>
             {
               list.map((item, index) => {
                 return <TableRow key={index}>
                   <TableCell className={tableCss.icon}>
-                    <Image src={item.logo} loading="lazy" />
+                    <Image src={item.logo} />
                   </TableCell>
                   <TableCell>{item.name}(ID:{item.id})</TableCell>
                   <TableCell className={tableCss.date}>
                     <TableDateCell date={item.createdAt} />
                   </TableCell>
                   <TableCell className={tableCss.actions}>
-                    <Button size='icon' variant="outline" onClick={() => setEditBrand(item)}>修改</Button>
-                    <DeleteButton onClick={() => removeBrand(item)} />
+                    <Button size='sm' variant="outline" onClick={() => setEditBrand(item)}>修改</Button>
+                    <DeleteButton size='sm' onClick={() => removeBrand(item)} />
                   </TableCell>
                 </TableRow>
               })
@@ -168,9 +167,9 @@ const Brands: React.FC = () => {
           <div className="grid gap-3">
             <Label htmlFor="user-name">品牌图</Label>
             <UploadImageArea
+              name='logo'
               src={editBrand?.logo}
-              onChange={(url) => onFormChange({ name: 'logo', value: url }) }
-            ></UploadImageArea>
+            />
           </div>
           <div className="grid gap-3">
             <Label htmlFor="user-name">品牌名</Label>

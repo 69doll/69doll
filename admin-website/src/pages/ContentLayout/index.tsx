@@ -36,6 +36,10 @@ const menuList = [
         name: '产品管理',
       },
       {
+        path: 'components',
+        name: '配件管理',
+      },
+      {
         path: 'brands',
         name: '品牌管理',
       },

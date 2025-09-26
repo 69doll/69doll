@@ -15,6 +15,7 @@ const Categories = React.lazy(() => import('./pages/Categories'))
 const Brands = React.lazy(() => import('./pages/Brands'))
 const Product = React.lazy(() => import('./pages/Product'))
 const Images = React.lazy(() => import('./pages/Images'))
+const Components = React.lazy(() => import('./pages/Components'))
 
 const routes = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const routes = createBrowserRouter([
           {
             path: '/products',
             Component: Product,
+          },
+          {
+            path: '/components',
+            Component: Components,
           },
           {
             path: '/images',

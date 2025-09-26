@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/constant"
+import { getAuthorization } from "@/store/authorization"
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from "@/types/api.type"
 
 export interface Brand {
@@ -31,7 +32,7 @@ export const getBrandAllList = async (options?: Partial<BrandAllListOptions>) =>
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
   })
   return await res.json() as BrandAllList
@@ -63,7 +64,7 @@ export const getBrandList = async (options?: Partial<ApiReqPage<BrandListOptions
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
   })
   return await res.json() as BrandList
@@ -81,7 +82,7 @@ export async function createBrand (body: AddBrandInfo) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
     body: JSON.stringify(body),
   })
@@ -100,7 +101,7 @@ export async function updateBrand (id: number, body: UpdateBrand) {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
     body: JSON.stringify({ ...body, id }),
   })
@@ -117,7 +118,7 @@ export async function deleteBrand (id: number) {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
     body: JSON.stringify({ id }),
   })

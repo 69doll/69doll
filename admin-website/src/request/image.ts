@@ -1,3 +1,4 @@
+import { getAuthorization } from "@/store/authorization"
 import type { ApiResBody } from "@/types/api.type"
 
 type UploadImage = ApiResBody<{
@@ -14,7 +15,7 @@ export async function uploadImage (file: File) {
     body: formData,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
   })
   const data = await res.json() as UploadImage

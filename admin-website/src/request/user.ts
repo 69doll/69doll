@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '@/constant'
+import { getAuthorization } from '@/store/authorization'
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from '@/types/api.type'
 import SHA1 from 'crypto-js/sha1'
 
@@ -26,7 +27,7 @@ export async function getCurrentUser () {
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
   })
   return await res.json() as CurrentUser
@@ -65,7 +66,7 @@ export async function getUserList (options?: Partial<UserListOptions>) {
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
   })
   return await res.json() as UserList
@@ -86,7 +87,7 @@ export async function createUser (userInfo: AddUserInfo) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
     body: JSON.stringify({
       ...userInfo,
@@ -108,7 +109,7 @@ export async function updateUser (id: number, userInfo: UpdateUserInfo) {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
     body: JSON.stringify({ ...userInfo, id }),
   })
@@ -125,7 +126,7 @@ export async function deleteUser (id: number) {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
     body: JSON.stringify({ id }),
   })
@@ -142,7 +143,7 @@ export async function resetUserPassword (id: number, passwordObj: { oldRawPasswo
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('authorization')!,
+      Authorization: getAuthorization()!,
     },
     body: JSON.stringify({
       oldRawPassword: SHA1(passwordObj.oldRawPassword).toString(),

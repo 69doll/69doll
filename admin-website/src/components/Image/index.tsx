@@ -5,7 +5,7 @@ type ImageProps = React.ImgHTMLAttributes<HTMLImageElement> & Parameters<typeof 
 
 const Image: React.FC<ImageProps> = ({ src, cdn = true, resize, ...props } = {}) => {
   return (<>
-    <img src={getImageUrl(src, { cdn, resize })} {...props} />
+    <img src={getImageUrl(src, { cdn, resize })} loading="lazy" {...props} />
   </>)
 }
 
