@@ -86,9 +86,8 @@ const Components: React.FC = () => {
       name: '操作',
       index: 'id',
       className: tableCss.actions,
-      render (_, __, data) {
-        return <>
-        </>
+      render () {
+        return <></>
       },
     },
   ]
