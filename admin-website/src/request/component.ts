@@ -1,6 +1,6 @@
+import type { ID } from "./bean.d"
 import { API_BASE_URL } from "@/constant"
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from "@/types/api.type"
-import type { ID } from "./bean.d"
 import { getAuthorization } from "@/store/authorization"
 
 export interface Component {

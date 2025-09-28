@@ -1,23 +1,22 @@
 import type React from "react"
 import { useMemo, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { Doll69If } from "shared"
 import { Button } from "../../components/ui/button"
 import DeleteButton from "../../components/Button/DeleteButton"
-import { Doll69If } from "shared"
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../../components/ui/sheet"
-import { Skeleton } from "../../components/ui/skeleton"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table"
 import TableDateCell from "../../components/Table/TableDateCell"
 import tableCss from '../../styles/table.module.scss'
-import { createUser, deleteUser, getUserList, getUserListCacheKeys, updateUser, UserType, type User } from "../../request/user"
+import { type User, UserType, createUser, deleteUser, getUserList, getUserListCacheKeys, updateUser } from "../../request/user"
 import TablePage, { type TablePageOnValueChange } from "@/components/Page/TablePage"
 import PageTabs from "@/components/Page/PageTabs"
 import { useCurrentUser, useRefreshCurrentUser } from "@/Context/CurrentUser"
 import PageName from "@/components/Page/PageName"
 import { hasAuthorization } from "@/store/authorization"
+import MappingTable, { type MappingTableOptions } from "@/components/Table/MappingTable"
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
@@ -33,7 +32,7 @@ const Users: React.FC = () => {
   const getUserListOpts = useMemo(() => ({ type: userType, pageNum, pageSize }), [pageNum, pageSize, userType])
   const queryKey = useMemo(() => getUserListCacheKeys(getUserListOpts), [getUserListOpts])
   const queryFn = useMemo(() => () => getUserList(getUserListOpts), [getUserListOpts])
-  const { data, isFetching, isSuccess, refetch: refetchList } = useQuery({
+  const { data, isFetching, refetch: refetchList } = useQuery({
     queryKey,
     queryFn: queryFn,
     enabled: hasAuthorization(),
@@ -102,6 +101,45 @@ const Users: React.FC = () => {
       }
     }
   })
+
+  const tableOptions: MappingTableOptions<User> = [
+    {
+      name: 'Email',
+      index: 'email',
+    },
+    {
+      name: '昵称',
+      index: 'nickname',
+    },
+    {
+      name: '状态',
+      index: 'status',
+      render(value) {
+        return value ? '可用' : '不可用'
+      },
+    },
+    {
+      name: '状态',
+      index: 'createdAt',
+      className: tableCss.date,
+      render(value) {
+        return <TableDateCell date={value} />
+      },
+    },
+    {
+      name: '操作',
+      index: 'id',
+      className: tableCss.actions,
+      render(_, __, data) {
+        return <>
+          <Button size='sm' variant="outline" onClick={() => setEditUser(data)}>修改</Button>
+          <Doll69If display={data.id !== currentUser?.id}>
+            <DeleteButton size='sm' onClick={() => removeUser(data)} />
+          </Doll69If>
+        </>
+      },
+    },
+  ]
   return <>
     <TablePage
       label={<PageName name='用户管理' isLoading={isFetching} onRefresh={refetchList} />}
@@ -122,49 +160,12 @@ const Users: React.FC = () => {
         </div>
       }
     >
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Email</TableHead>
-            <TableHead>昵称</TableHead>
-            <TableHead>状态</TableHead>
-            <TableHead className={tableCss.date}>创建时间</TableHead>
-            <TableHead className={tableCss.actions}>操作</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <Doll69If display={isFetching}>
-            {
-              Array(pageSize).fill(undefined).map(() => <TableRow>
-                <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-                <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-                <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-                <TableCell className={tableCss.date}><Skeleton className="h-4 w-full" /></TableCell>
-              </TableRow>)
-            }
-          </Doll69If>
-          <Doll69If display={!isFetching && isSuccess}>
-            {
-              list.map((item, index) => {
-                return <TableRow key={index}>
-                  <TableCell>{item.email}</TableCell>
-                  <TableCell>{item.nickname}</TableCell>
-                  <TableCell>{item.status ? '可用' : '不可用'}</TableCell>
-                  <TableCell className={tableCss.date}>
-                    <TableDateCell date={item.createdAt} />
-                  </TableCell>
-                  <TableCell className={tableCss.actions}>
-                    <Button size='sm' variant="outline" onClick={() => setEditUser(item)}>修改</Button>
-                    <Doll69If display={item.id !== currentUser?.id}>
-                      <DeleteButton size='sm' onClick={() => removeUser(item)} />
-                    </Doll69If>
-                  </TableCell>
-                </TableRow>
-              })
-            }
-          </Doll69If>
-        </TableBody>
-      </Table>
+      <MappingTable
+        sourceData={list}
+        options={tableOptions}
+        isLoading={isFetching}
+        pageSize={pageSize}
+      />
     </TablePage>
     <Sheet open={isOpenSheet}>
       <SheetContent headerClose={false}>

@@ -1,7 +1,7 @@
+import SHA1 from "crypto-js/sha1"
 import { API_BASE_URL } from "@/constant"
 import { setAuthorization } from "@/store/authorization"
 import type { ApiResBody } from "@/types/api.type"
-import SHA1 from "crypto-js/sha1"
 
 export async function signIn (formData: FormData) {
   const body = Object.fromEntries([...formData.entries()])

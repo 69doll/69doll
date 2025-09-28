@@ -1,5 +1,5 @@
-import TablePage from "@/components/Page/TablePage";
 import type React from "react";
+import TablePage from "@/components/Page/TablePage";
 
 const Product: React.FC = () => {
   return (<>

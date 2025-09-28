@@ -1,11 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
+import type React from "react";
+import { Doll69If } from "shared";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUserList, getUserListCacheKeys } from "@/request/user";
 import { hasAuthorization } from "@/store/authorization";
-import { useQuery } from "@tanstack/react-query";
-import type React from "react";
-import { Doll69If } from "shared";
 
 const Users: React.FC = () => {
   const { data, isFetching, isSuccess } = useQuery({

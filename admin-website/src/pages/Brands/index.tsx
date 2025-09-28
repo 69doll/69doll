@@ -2,35 +2,35 @@ import type React from "react"
 import { useMemo, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Doll69If } from "shared"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table"
-import { Skeleton } from "../../components/ui/skeleton"
 import { Button } from "../../components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../../components/ui/sheet"
 import { Label } from "../../components/ui/label"
 import { Input } from "../../components/ui/input"
-import {
-  createBrand,
-  deleteBrand,
-  getBrandList,
-  getBrandListCacheKeys,
-  updateBrand,
-  type Brand,
-} from "@/request/brand"
 import TablePage, { type TablePageOnValueChange } from "../../components/Page/TablePage"
 import TableDateCell from "../../components/Table/TableDateCell"
 import tableCss from "../../styles/table.module.scss"
 import UploadImageArea from "../../components/UploadArea/UploadImageArea"
 import Image from "../../components/Image"
 import DeleteButton from "../../components/Button/DeleteButton"
+import {
+  type Brand,
+  createBrand,
+  deleteBrand,
+  getBrandList,
+  getBrandListCacheKeys,
+  updateBrand,
+} from "@/request/brand"
 import PageName from "@/components/Page/PageName"
 import { hasAuthorization } from "@/store/authorization"
+import type { MappingTableOptions } from "@/components/Table/MappingTable"
+import MappingTable from "@/components/Table/MappingTable"
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
 const Brands: React.FC = () => {
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(SUPPORT_PAGE_SIZE[0])
-  const { data, isFetching, isSuccess, refetch: refetchList } = useQuery({
+  const { data, isFetching, refetch: refetchList } = useQuery({
     queryKey: getBrandListCacheKeys({ pageSize, pageNum }),
     queryFn: () => getBrandList({ pageSize, pageNum }),
     enabled: hasAuthorization(),
@@ -87,6 +87,43 @@ const Brands: React.FC = () => {
     }
   })
 
+  const tableOptions: MappingTableOptions<Brand> = [
+    {
+      name: '品牌图',
+      index: 'logo',
+      className: tableCss.icon,
+      render (value) {
+        return <Image src={value} />
+      },
+    },
+    {
+      name: '品牌名',
+      index: 'name',
+      render (_, __, data) {
+        return `${data.name} (ID:${data.id})`
+      },
+    },
+    {
+      name: '创建时间',
+      index: 'createdAt',
+      className: tableCss.date,
+      render (value) {
+        return <TableDateCell date={value} />
+      },
+    },
+    {
+      name: '操作',
+      index: 'id',
+      className: tableCss.actions,
+      render (_, __, data) {
+        return <>
+          <Button size='sm' variant="outline" onClick={() => setEditBrand(data)}>修改</Button>
+          <DeleteButton size='sm' onClick={() => removeBrand(data)} />
+        </>
+      },
+    },
+  ]
+
   return (<>
     <TablePage
       label={<PageName name='品牌管理' isLoading={isFetching} onRefresh={refetchList} />}
@@ -102,46 +139,12 @@ const Brands: React.FC = () => {
       pageSizes={SUPPORT_PAGE_SIZE}
       onValueChange={onPageChange}
     >
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className={tableCss.icon}>品牌图</TableHead>
-            <TableHead>品牌名</TableHead>
-            <TableHead className={tableCss.date}>创建时间</TableHead>
-            <TableHead className={tableCss.actions}>操作</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <Doll69If display={isFetching}>
-            {
-              Array(15).fill(undefined).map(() => <TableRow>
-                <TableCell><Skeleton className={tableCss.icon} /></TableCell>
-                <TableCell><Skeleton className="h-4 w-full" /></TableCell>
-                <TableCell className={tableCss.date}><Skeleton className="h-4 w-full" /></TableCell>
-              </TableRow>)
-            }
-          </Doll69If>
-          <Doll69If display={!isFetching && isSuccess}>
-            {
-              list.map((item, index) => {
-                return <TableRow key={index}>
-                  <TableCell className={tableCss.icon}>
-                    <Image src={item.logo} />
-                  </TableCell>
-                  <TableCell>{item.name}(ID:{item.id})</TableCell>
-                  <TableCell className={tableCss.date}>
-                    <TableDateCell date={item.createdAt} />
-                  </TableCell>
-                  <TableCell className={tableCss.actions}>
-                    <Button size='sm' variant="outline" onClick={() => setEditBrand(item)}>修改</Button>
-                    <DeleteButton size='sm' onClick={() => removeBrand(item)} />
-                  </TableCell>
-                </TableRow>
-              })
-            }
-          </Doll69If>
-        </TableBody>
-      </Table>
+      <MappingTable
+        options={tableOptions}
+        sourceData={list}
+        isLoading={isFetching}
+        pageSize={pageSize}
+      />
     </TablePage>
     <Sheet open={isOpenSheet}>
       <SheetContent headerClose={false}>

@@ -1,8 +1,8 @@
 import type React from "react";
 import { Loader2Icon } from "lucide-react";
 import { Doll69If } from "shared";
-import css from './PageName.module.scss'
 import { useMemo } from "react";
+import css from './PageName.module.scss'
 
 interface PageNameProps {
   name: string,

@@ -1,8 +1,8 @@
-import { getCurrentUser, getCurrentUserCacheKeys, type User } from "@/request/user";
 import { useQuery } from "@tanstack/react-query";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { type User, getCurrentUser, getCurrentUserCacheKeys } from "@/request/user";
 
 const Context = createContext<[User | undefined, React.Dispatch<React.SetStateAction<User>>]>(undefined!)
 

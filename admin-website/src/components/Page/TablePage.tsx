@@ -1,9 +1,9 @@
 import type React from "react";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination";
 import { Doll69If } from "shared";
 import { Select, SelectItem } from "@radix-ui/react-select";
-import { SelectContent, SelectTrigger, SelectValue } from "../ui/select";
 import { useMemo } from "react";
+import { SelectContent, SelectTrigger, SelectValue } from "../ui/select";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination";
 import css from './TablePage.module.scss'
 import type { PageProps } from "./Page";
 import Page from "./Page";

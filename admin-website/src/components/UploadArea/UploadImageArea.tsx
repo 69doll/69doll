@@ -2,12 +2,12 @@ import type React from "react";
 import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Doll69If } from "shared";
-import { uploadImage } from "@/request/image";
 import Image from "../Image";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Skeleton } from "../ui/skeleton";
 import css from "./UploadImageArea.module.scss";
+import { uploadImage } from "@/request/image";
 
 interface UploadImageAreaProps {
   src?: string,

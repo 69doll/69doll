@@ -1,7 +1,7 @@
+import SHA1 from 'crypto-js/sha1'
 import { API_BASE_URL } from '@/constant'
 import { getAuthorization } from '@/store/authorization'
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from '@/types/api.type'
-import SHA1 from 'crypto-js/sha1'
 
 export interface User {
   createdAt: string,

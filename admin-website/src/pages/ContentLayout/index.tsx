@@ -1,5 +1,4 @@
 import { Link, Outlet } from "react-router-dom"
-import { useCurrentUser } from "@/Context/CurrentUser"
 import { Doll69If } from "shared"
 import {
   Sidebar,
@@ -12,11 +11,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarSeparator,
 } from "../../components/ui/sidebar"
 import Logo from "../../components/Logo"
 import SidebarFooterContent from "./components/SideFooterContent"
 import './root.scss'
 import css from './style.module.scss'
+import { useCurrentUser } from "@/Context/CurrentUser"
 
 const menuList = [
   {
@@ -72,30 +73,32 @@ const ContentLayout = () => {
         <SidebarHeader>
           <Logo />
         </SidebarHeader>
-        <Doll69If display={!!currentUser}>
+        <SidebarSeparator />
         <SidebarContent>
-          {
-            menuList.map((group, gIndex) => {
-              return <SidebarGroup key={`group-${gIndex}`}>
-                <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
-                <SidebarGroupContent>
-                  {
-                    group.list.map((item, index) => <SidebarMenu key={index}>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to={item.path}>
-                            { item.name }
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>)
-                  }
-                </SidebarGroupContent>
-              </SidebarGroup>
-            })
-          }
+          <Doll69If display={!!currentUser}>
+            {
+              menuList.map((group, gIndex) => {
+                return <SidebarGroup key={`group-${gIndex}`}>
+                  <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
+                  <SidebarGroupContent>
+                    {
+                      group.list.map((item, index) => <SidebarMenu key={index}>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton asChild>
+                            <Link to={item.path}>
+                              { item.name }
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </SidebarMenu>)
+                    }
+                  </SidebarGroupContent>
+                </SidebarGroup>
+              })
+            }
+          </Doll69If>
         </SidebarContent>
-        </Doll69If>
+        <SidebarSeparator />
         <SidebarFooter>
           <SidebarFooterContent />
         </SidebarFooter>

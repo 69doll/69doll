@@ -1,8 +1,8 @@
 import type React from "react"
-import css from './Page.module.scss'
 import { Doll69If } from "shared"
 import { Separator } from "../ui/separator"
 import { SidebarTrigger } from "../ui/sidebar"
+import css from './Page.module.scss'
 
 export interface PageProps {
   label: React.ReactNode,

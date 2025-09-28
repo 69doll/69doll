@@ -1,8 +1,8 @@
 import React from 'react'
 import {
+  RouterProvider,
   createBrowserRouter,
   redirect,
-  RouterProvider,
 } from 'react-router-dom'
 import Root from './pages/Root'
 import ContentLayout from './pages/ContentLayout'

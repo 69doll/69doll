@@ -1,5 +1,5 @@
-import { useCurrentUser } from "@/Context/CurrentUser"
 import { useMemo } from "react"
+import { useCurrentUser } from "@/Context/CurrentUser"
 
 export default function SidebarFooterContent() {
   const currentUser = useCurrentUser()
