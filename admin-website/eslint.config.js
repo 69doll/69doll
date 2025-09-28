@@ -23,7 +23,8 @@ export default tseslint.config([
       globals: globals.browser,
     },
     rules: {
-      "sort-imports": ["error"]
+      "sort-imports": ["error"],
+      "import/order": ["error"],
     },
   },
 ])
