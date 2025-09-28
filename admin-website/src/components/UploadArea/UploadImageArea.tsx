@@ -1,31 +1,40 @@
 import type React from "react";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Doll69If } from "shared";
 import Image from "../Image";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { Skeleton } from "../ui/skeleton";
 import css from "./UploadImageArea.module.scss";
 import { uploadImage } from "@/request/image";
 
 interface UploadImageAreaProps {
-  src?: string,
-  onChange?: (urlOrId: string) => any
   multiple?: boolean,
   accept?: string,
-  name?: string,
+  onChange?: (id: string) => any,
+  onFormChange?: (obj: { name: string, value: string }) => any,
 }
 
-const UploadImageArea: React.FC<UploadImageAreaProps> = ({
-  src,
-  onChange,
+const UploadImageArea: React.FC<Omit<React.ComponentProps<'input'>, 'onChange'> & UploadImageAreaProps> = ({
   multiple = false,
   accept = 'image/*',
-  name,
+  onChange,
+  onFormChange,
+  ...inputProps
 }) => {
-  const element = useRef<HTMLInputElement>(null)
+  const { defaultValue, value, disabled, name } = inputProps
+  const imageInputElement = useRef<HTMLInputElement>(null)
   const [key, setKey] = useState<string>()
+  const currentSrc = useMemo(() => {
+    return (key ?? value ?? defaultValue) as string
+  }, [key, value, defaultValue])
+  useEffect(() => {
+    if (currentSrc) {
+      onChange?.(currentSrc)
+      name && onFormChange?.({ name, value: currentSrc })
+    }
+
+  }, [currentSrc])
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (file?: File) => {
       if (!file) return
@@ -34,47 +43,43 @@ const UploadImageArea: React.FC<UploadImageAreaProps> = ({
     onSuccess: (data) => {
       if (data?.code !== 200) return
       setKey(data.data.keys[0])
-      onChange?.(data.data.keys[0])
-    },
-    onSettled: () => {
-      if (!element?.current) return
-      element.current.value = null as any
     },
   })
   const handleUploadClick = (e: React.MouseEvent) => {
-    element?.current?.click()
+    if (!imageInputElement?.current) return
+    imageInputElement.current.value = null as any
+    imageInputElement.current.click()
     e.preventDefault()
   }
   return <>
-    <div>
-      <Doll69If display={!!src || isPending}>
-        <div className={css.uploadImageArea}>
-          <Doll69If display={isPending}>
-            <Skeleton className="size-[100px]" />
-          </Doll69If>
-          <Doll69If display={!!src && !isPending}>
-            <Image src={src} />
-          </Doll69If>
-        </div>
-      </Doll69If>
-      <Doll69If display={!isPending}>
+    <div className={css.uploadImageArea}>
+      <div className={css.image}>
+        <Doll69If display={!!currentSrc || isPending}>
+          <div className={css.imageWrapper}>
+            <Doll69If display={isPending}>
+              <Skeleton />
+            </Doll69If>
+            <Doll69If display={!!currentSrc && !isPending}>
+              <Image src={currentSrc} cdn={true} />
+            </Doll69If>
+          </div>
+        </Doll69If>
+      </div>
+      <Doll69If display={!isPending && !disabled}>
         <Button
           className={css.uploadButton}
           variant="outline"
           onClick={(e) => handleUploadClick(e)}
         >上传图片</Button>
       </Doll69If>
-      <Input
+      <input
         className="hidden"
-        ref={element}
+        ref={imageInputElement}
         type="file"
         multiple={multiple}
         accept={accept}
         onChange={(e) => mutateAsync(e.target.files?.[0])}
       />
-      <Doll69If display={!!name}>
-        <Input className="hidden" name={name} value={key} />
-      </Doll69If>
     </div>
   </>
 }

@@ -163,10 +163,12 @@ const Brands: React.FC = () => {
       onCancel={() => setEditBrand(undefined)}
     >
       <form className="grid auto-rows-min gap-6 px-4" onChange={(a) => onFormChange(a.target as any)}>
-        <div className="grid gap-3">
-          <Label htmlFor="user-id">ID</Label>
-          <Input id="user-id" defaultValue={editBrand?.id} disabled={true} name='id' />
-        </div>
+        <Doll69If display={isEdit}>
+          <div className="grid gap-3">
+            <Label htmlFor="user-id">ID</Label>
+            <Input id="user-id" defaultValue={editBrand?.id} disabled={true} name='id' />
+          </div>
+        </Doll69If>
         <div className="grid gap-3">
           <Label htmlFor="user-name">品牌图</Label>
           <UploadImageArea

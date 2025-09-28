@@ -14,7 +14,6 @@ export async function uploadImage (file: File) {
     method: 'POST',
     body: formData,
     headers: {
-      'Content-Type': 'application/json',
       Authorization: getAuthorization()!,
     },
   })
