@@ -1,10 +1,10 @@
+import path from "path"
 import {
   presetIcons,
   presetWind3,
   transformerCompileClass,
   transformerDirectives,
 } from 'unocss'
-import path from "path"
 import TailwindcssPlugin from "@tailwindcss/vite"
 import { defineConfig } from 'vite'
 import ReactPlugin from '@vitejs/plugin-react'
@@ -14,10 +14,6 @@ import UnoCSSPlugin from 'unocss/vite'
 export default defineConfig({
   server: {
     port: 5174,
-    proxy: {
-      // '/api/admin/auth': 'https://proxy.69doll.arylo.cc/http://admin.69doll.veda-studios.com',
-      // '/api': 'http://admin.69doll.veda-studios.com',
-    }
   },
   plugins: [
     ReactPlugin(),

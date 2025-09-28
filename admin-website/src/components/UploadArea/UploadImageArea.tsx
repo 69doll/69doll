@@ -73,7 +73,7 @@ const UploadImageArea: React.FC<UploadImageAreaProps> = ({
         onChange={(e) => mutateAsync(e.target.files?.[0])}
       />
       <Doll69If display={!!name}>
-        <Input name={name} value={key} />
+        <Input className="hidden" name={name} value={key} />
       </Doll69If>
     </div>
   </>

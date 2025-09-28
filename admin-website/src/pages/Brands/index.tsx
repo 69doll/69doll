@@ -3,7 +3,6 @@ import { useMemo, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Doll69If } from "shared"
 import { Button } from "../../components/ui/button"
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../../components/ui/sheet"
 import { Label } from "../../components/ui/label"
 import { Input } from "../../components/ui/input"
 import TablePage, { type TablePageOnValueChange } from "../../components/Page/TablePage"
@@ -24,6 +23,7 @@ import PageName from "@/components/Page/PageName"
 import { hasAuthorization } from "@/store/authorization"
 import type { MappingTableOptions } from "@/components/Table/MappingTable"
 import MappingTable from "@/components/Table/MappingTable"
+import SideSheet from "@/components/SideSheet"
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
@@ -53,7 +53,9 @@ const Brands: React.FC = () => {
       [name]: value,
     })
   }
-  const isOpenSheet = useMemo(() => !!editBrand, [editBrand])
+  const isAdd = useMemo(() => editBrand && !editBrand?.id, [editBrand])
+  const isEdit = useMemo(() => editBrand && !!editBrand?.id, [editBrand])
+  const isOpenSheet = useMemo(() => isAdd || isEdit, [isAdd, isEdit])
   const { mutateAsync: addBrand } = useMutation({
     mutationFn: (brandInfo: Parameters<typeof createBrand>[0]) => createBrand(brandInfo),
     onSuccess: async ({ code }) => {
@@ -146,50 +148,38 @@ const Brands: React.FC = () => {
         pageSize={pageSize}
       />
     </TablePage>
-    <Sheet open={isOpenSheet}>
-      <SheetContent headerClose={false}>
-        <SheetHeader>
-          <Doll69If display={!editBrand?.id}>
-            <SheetTitle>添加品牌</SheetTitle>
-            <SheetDescription>
-              添加一个品牌
-            </SheetDescription>
-          </Doll69If>
-          <Doll69If display={editBrand?.id}>
-            <SheetTitle>修改品牌信息</SheetTitle>
-            <SheetDescription>
-              当前正在修改品牌[{`${list.find(({id}) => id === editBrand?.id)?.name}(ID:${editBrand?.id})`}]的信息
-            </SheetDescription>
-          </Doll69If>
-        </SheetHeader>
-        <form className="grid auto-rows-min gap-6 px-4" onChange={(a) => onFormChange(a.target as any)}>
-          <div className="grid gap-3">
-            <Label htmlFor="user-id">ID</Label>
-            <Input id="user-id" defaultValue={editBrand?.id} disabled={true} name='id' />
-          </div>
-          <div className="grid gap-3">
-            <Label htmlFor="user-name">品牌图</Label>
-            <UploadImageArea
-              name='logo'
-              src={editBrand?.logo}
-            />
-          </div>
-          <div className="grid gap-3">
-            <Label htmlFor="user-name">品牌名</Label>
-            <Input id="user-name" defaultValue={editBrand?.name} name='name' />
-          </div>
-        </form>
-        <SheetFooter>
-          <Doll69If display={!editBrand?.id}>
-            <Button type="submit" variant="outline" onClick={() => add()}>立即添加</Button>
-          </Doll69If>
-          <Doll69If display={editBrand?.id}>
-            <Button type="submit" variant="outline" onClick={() => save()}>立即修改</Button>
-          </Doll69If>
-          <Button variant="outline" onClick={() => setEditBrand(undefined)}>关闭</Button>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+    <SideSheet
+      open={isOpenSheet}
+      title={<>
+        <Doll69If display={isAdd}>添加品牌</Doll69If>
+        <Doll69If display={isEdit}>修改品牌信息</Doll69If>
+      </>}
+      description={<>
+        <Doll69If display={isAdd}>添加一个品牌</Doll69If>
+        <Doll69If display={isEdit}>当前正在修改品牌[{`${list.find(({id}) => id === editBrand?.id)?.name} (ID:${editBrand?.id})`}]的信息</Doll69If>
+      </>}
+      actionLabel={isAdd ? '立即添加' : '立即修改'}
+      onAction={() => isAdd ? add() : save()}
+      onCancel={() => setEditBrand(undefined)}
+    >
+      <form className="grid auto-rows-min gap-6 px-4" onChange={(a) => onFormChange(a.target as any)}>
+        <div className="grid gap-3">
+          <Label htmlFor="user-id">ID</Label>
+          <Input id="user-id" defaultValue={editBrand?.id} disabled={true} name='id' />
+        </div>
+        <div className="grid gap-3">
+          <Label htmlFor="user-name">品牌图</Label>
+          <UploadImageArea
+            name='logo'
+            src={editBrand?.logo}
+          />
+        </div>
+        <div className="grid gap-3">
+          <Label htmlFor="user-name">品牌名</Label>
+          <Input id="user-name" defaultValue={editBrand?.name} name='name' />
+        </div>
+      </form>
+    </SideSheet>
   </>)
 }
 

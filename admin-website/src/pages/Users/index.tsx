@@ -7,7 +7,6 @@ import DeleteButton from "../../components/Button/DeleteButton"
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "../../components/ui/sheet"
 import TableDateCell from "../../components/Table/TableDateCell"
 import tableCss from '../../styles/table.module.scss'
 import { type User, UserType, createUser, deleteUser, getUserList, getUserListCacheKeys, updateUser } from "../../request/user"
@@ -17,6 +16,7 @@ import { useCurrentUser, useRefreshCurrentUser } from "@/Context/CurrentUser"
 import PageName from "@/components/Page/PageName"
 import { hasAuthorization } from "@/store/authorization"
 import MappingTable, { type MappingTableOptions } from "@/components/Table/MappingTable"
+import SideSheet from "@/components/SideSheet"
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
@@ -62,7 +62,9 @@ const Users: React.FC = () => {
       [name]: value,
     })
   }
-  const isOpenSheet = useMemo(() => !!editUser, [editUser])
+  const isAdd = useMemo(() => editUser && !editUser?.id, [editUser])
+  const isEdit = useMemo(() => editUser && !!editUser?.id, [editUser])
+  const isOpenSheet = useMemo(() => isAdd || isEdit, [isAdd, isEdit])
 
   const currentUser = useCurrentUser()
   const refreshCurrentUser = useRefreshCurrentUser()
@@ -84,9 +86,10 @@ const Users: React.FC = () => {
     mutationFn: (userInfo: User) => updateUser(userInfo.id, userInfo),
     onSuccess: async ({ code }) => {
       if (code === 200) {
+        const isCurrentUser = editUser.id === currentUser?.id
         setEditUser(undefined)
         await refetchList()
-        await refreshCurrentUser()
+        isCurrentUser && refreshCurrentUser()
       }
     }
   })
@@ -167,65 +170,53 @@ const Users: React.FC = () => {
         pageSize={pageSize}
       />
     </TablePage>
-    <Sheet open={isOpenSheet}>
-      <SheetContent headerClose={false}>
-        <SheetHeader>
-          <Doll69If display={!editUser?.id}>
-            <SheetTitle>添加用户</SheetTitle>
-            <SheetDescription>
-              添加一个{userType === UserType.APP ? '普通用户' : '管理员'}
-            </SheetDescription>
-          </Doll69If>
-          <Doll69If display={editUser?.id}>
-            <SheetTitle>修改用户信息</SheetTitle>
-            <SheetDescription>
-              当前正在修改用户[{`${editUser?.email}`}]的信息
-            </SheetDescription>
-          </Doll69If>
-        </SheetHeader>
-        <form className="grid auto-rows-min gap-6 px-4" onChange={(a) => onFormChange(a.target as any)}>
+    <SideSheet
+      open={isOpenSheet}
+      title={<>
+        <Doll69If display={isAdd}>添加用户</Doll69If>
+        <Doll69If display={isEdit}>修改分类信息</Doll69If>
+      </>}
+      description={<>
+        <Doll69If display={isAdd}>添加一个{userType === UserType.APP ? '普通用户' : '管理员'}</Doll69If>
+        <Doll69If display={isEdit}>当前正在修改用户[{`${editUser?.email}`}]的信息</Doll69If>
+      </>}
+      actionLabel={isAdd ? '立即添加' : '立即修改'}
+      onAction={() => isAdd ? add() : save()}
+      onCancel={() => setEditUser(undefined)}
+    >
+      <form className="grid auto-rows-min gap-6 px-4" onChange={(a) => onFormChange(a.target as any)}>
+        <div className="grid gap-3">
+          <Label htmlFor="user-id">ID</Label>
+          <Input id="user-id" defaultValue={editUser?.id} disabled={true} name='id' />
+        </div>
+        <div className="grid gap-3">
+          <Label htmlFor="user-email">Email</Label>
+          <Input id="user-email" defaultValue={editUser?.email} disabled={!!editUser?.id} name='email' />
+        </div>
+        <div className="grid gap-3">
+          <Label htmlFor="user-nickname">昵称</Label>
+          <Input id="user-nickname" defaultValue={editUser?.nickname} name='nickname' />
+        </div>
+        <Doll69If display={!editUser?.id}>
           <div className="grid gap-3">
-            <Label htmlFor="user-id">ID</Label>
-            <Input id="user-id" defaultValue={editUser?.id} disabled={true} name='id' />
+            <Label htmlFor="user-password">密码</Label>
+            <Input id="user-password" defaultValue={editUser?.rawPassword} name='rawPassword' type='password' />
           </div>
-          <div className="grid gap-3">
-            <Label htmlFor="user-email">Email</Label>
-            <Input id="user-email" defaultValue={editUser?.email} disabled={!!editUser?.id} name='email' />
-          </div>
-          <div className="grid gap-3">
-            <Label htmlFor="user-nickname">昵称</Label>
-            <Input id="user-nickname" defaultValue={editUser?.nickname} name='nickname' />
-          </div>
-          <Doll69If display={!editUser?.id}>
-            <div className="grid gap-3">
-              <Label htmlFor="user-password">密码</Label>
-              <Input id="user-password" defaultValue={editUser?.rawPassword} name='rawPassword' type='password' />
-            </div>
-          </Doll69If>
-          <div className="grid gap-3">
-            <Label htmlFor="user-id">状态</Label>
-            <Select defaultValue={editUser?.status.toString()} disabled={!!editUser?.id} name='status'>
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="true">可用</SelectItem>
-                <SelectItem value="false">不可用</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </form>
-        <SheetFooter>
-          <Doll69If display={!editUser?.id}>
-            <Button type="submit" variant="outline" onClick={() => add()}>立即添加</Button>
-          </Doll69If>
-          <Doll69If display={editUser?.id}>
-            <Button type="submit" variant="outline" onClick={() => save()}>立即修改</Button>
-          </Doll69If>
-          <Button variant="outline" onClick={() => setEditUser(undefined)}>关闭</Button>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        </Doll69If>
+        <div className="grid gap-3">
+          <Label htmlFor="user-id">状态</Label>
+          <Select defaultValue={editUser?.status.toString()} disabled={!!editUser?.id} name='status'>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="true">可用</SelectItem>
+              <SelectItem value="false">不可用</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </form>
+    </SideSheet>
   </>
 }
 

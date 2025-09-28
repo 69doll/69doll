@@ -25,7 +25,7 @@ interface MappingTableProps<V extends Record<string, any>> {
 function MappingTable <V extends Record<string, any>>({ sourceData, options, isLoading, pageSize }: MappingTableProps<V>) {
   const hasLoadingParma = typeof isLoading === 'boolean'
   const list = useMemo<V[]>(() => {
-    if (!!isLoading) return Array(pageSize ?? 15).fill(undefined)
+    if (isLoading) return Array(pageSize ?? 15).fill(undefined)
     return sourceData
   }, [isLoading, sourceData, pageSize])
   return <Table>
