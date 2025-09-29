@@ -1,13 +1,15 @@
+import { checkRes } from "./common"
 import { API_BASE_URL } from "@/constant"
 import { getAuthorization } from "@/store/authorization"
 import type { ApiResBody } from "@/types/api.type"
+import type { ID } from "@/types/bean"
 
 export interface Category {
   createdAt: string,
-  id: number,
+  id: ID,
   level: number,
   name: string,
-  parentId: number,
+  parentId: ID,
   path: string,
   updatedAt: string,
 }
@@ -37,6 +39,7 @@ export const getCategoryAllList = async (options?: Partial<CategoryListOptions>)
       Authorization: getAuthorization()!,
     },
   })
+  await checkRes(res)
   return await res.json() as CategoryList
 }
 
@@ -56,6 +59,7 @@ export async function createCategory (body: AddCategoryInfo) {
     },
     body: JSON.stringify(body),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 
@@ -75,6 +79,7 @@ export async function updateCategory (id: number, body: UpdateCategory) {
     },
     body: JSON.stringify({ ...body, id }),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 
@@ -92,6 +97,7 @@ export async function deleteCategory (id: number) {
     },
     body: JSON.stringify({ id }),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 

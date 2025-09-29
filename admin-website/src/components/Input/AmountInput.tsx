@@ -1,5 +1,5 @@
-import { Input } from "@/components/ui/input";
 import { useMemo } from "react";
+import { Input } from "@/components/ui/input";
 
 const AmountInput = (props: React.ComponentProps<"input">) => {
   const { value, defaultValue } = props

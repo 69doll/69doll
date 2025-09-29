@@ -1,7 +1,10 @@
 import type React from "react";
 import { useIsFetching, useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import { Doll69If } from "shared";
+import { cloneDeep } from 'es-toolkit/compat'
 import tableCss from "../../styles/table.module.scss"
+import BrandName from "./components/BrandName";
 import TablePage from "@/components/Page/TablePage";
 import { createComponent, deleteComponent, getComponentList, getComponentListCacheKeys, updateComponent, type Component } from "@/request/component";
 import PageName from "@/components/Page/PageName";
@@ -11,9 +14,7 @@ import Image from "@/components/Image";
 import { hasAuthorization } from "@/store/authorization";
 import type { MappingTableOptions } from "@/components/Table/MappingTable";
 import MappingTable from "@/components/Table/MappingTable";
-import BrandName from "./components/BrandName";
 import { Button } from "@/components/ui/button";
-import { Doll69If } from "shared";
 import SideSheet from "@/components/SideSheet";
 import DeleteButton from "@/components/Button/DeleteButton";
 import { Label } from "@/components/ui/label";
@@ -22,7 +23,6 @@ import UploadImageArea from "@/components/UploadArea/UploadImageArea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getBrandAllList, getBrandAllListCacheKeys } from "@/request/brand";
 import AmountInput from "@/components/Input/AmountInput";
-import { cloneDeep } from 'es-toolkit/compat'
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 

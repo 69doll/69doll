@@ -1,3 +1,4 @@
+import { checkRes } from "./common"
 import { getAuthorization } from "@/store/authorization"
 import type { ApiResBody } from "@/types/api.type"
 
@@ -17,6 +18,7 @@ export async function uploadImage (file: File) {
       Authorization: getAuthorization()!,
     },
   })
+  await checkRes(res)
   const data = await res.json() as UploadImage
   return data
 }

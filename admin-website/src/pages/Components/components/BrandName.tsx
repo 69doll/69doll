@@ -1,9 +1,9 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import type { ID } from "@/request/bean";
-import { getBrandAllList, getBrandAllListCacheKeys } from "@/request/brand";
 import { useQuery } from "@tanstack/react-query";
 import type React from "react";
 import { Doll69If } from "shared";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { ID } from "@/types/bean";
+import { getBrandAllList, getBrandAllListCacheKeys } from "@/request/brand";
 
 const BrandName: React.FC<{ id: ID }> = ({ id }) => {
   const { data, isFetching } = useQuery({

@@ -33,7 +33,6 @@ const UploadImageArea: React.FC<Omit<React.ComponentProps<'input'>, 'onChange'> 
       onChange?.(currentSrc)
       name && onFormChange?.({ name, value: currentSrc })
     }
-
   }, [currentSrc])
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (file?: File) => {

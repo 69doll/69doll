@@ -1,10 +1,12 @@
+import { checkRes } from "./common"
 import { API_BASE_URL } from "@/constant"
 import { getAuthorization } from "@/store/authorization"
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from "@/types/api.type"
+import type { ID } from "@/types/bean"
 
 export interface Brand {
   createdAt: string,
-  id: number,
+  id: ID,
   logo: string,
   name: string,
   updatedAt: string,
@@ -35,6 +37,7 @@ export const getBrandAllList = async (options?: Partial<BrandAllListOptions>) =>
       Authorization: getAuthorization()!,
     },
   })
+  await checkRes(res)
   return await res.json() as BrandAllList
 }
 
@@ -67,6 +70,7 @@ export const getBrandList = async (options?: Partial<ApiReqPage<BrandListOptions
       Authorization: getAuthorization()!,
     },
   })
+  await checkRes(res)
   return await res.json() as BrandList
 }
 
@@ -86,6 +90,7 @@ export async function createBrand (body: AddBrandInfo) {
     },
     body: JSON.stringify(body),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 
@@ -105,6 +110,7 @@ export async function updateBrand (id: number, body: UpdateBrand) {
     },
     body: JSON.stringify({ ...body, id }),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 
@@ -122,6 +128,7 @@ export async function deleteBrand (id: number) {
     },
     body: JSON.stringify({ id }),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 

@@ -1,4 +1,5 @@
-import type { ID } from "./bean.d"
+import type { ID } from "../types/bean"
+import { checkRes } from "./common"
 import { API_BASE_URL } from "@/constant"
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from "@/types/api.type"
 import { getAuthorization } from "@/store/authorization"
@@ -45,6 +46,7 @@ export const getComponentAllList = async (options?: Partial<ComponentAllListOpti
       Authorization: getAuthorization()!,
     },
   })
+  await checkRes(res)
   return await res.json() as ComponentAllList
 }
 
@@ -79,6 +81,7 @@ export const getComponentList = async (options?: Partial<ApiReqPage<ComponentLis
       Authorization: getAuthorization()!,
     },
   })
+  await checkRes(res)
   return await res.json() as ComponentList
 }
 
@@ -98,6 +101,7 @@ export async function createComponent (body: AddComponentInfo) {
     },
     body: JSON.stringify(body),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 
@@ -117,6 +121,7 @@ export async function updateComponent (id: ID, body: UpdateComponent) {
     },
     body: JSON.stringify({ ...body, id }),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 
@@ -134,6 +139,7 @@ export async function deleteComponent (id: ID) {
     },
     body: JSON.stringify({ id }),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 

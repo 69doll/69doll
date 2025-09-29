@@ -1,12 +1,14 @@
 import SHA1 from 'crypto-js/sha1'
+import { checkRes } from './common'
 import { API_BASE_URL } from '@/constant'
 import { getAuthorization } from '@/store/authorization'
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from '@/types/api.type'
+import type { ID } from '@/types/bean'
 
 export interface User {
   createdAt: string,
   email: string,
-  id: number,
+  id: ID,
   nickname: string,
   status: boolean,
   updatedAt: string,
@@ -30,6 +32,7 @@ export async function getCurrentUser () {
       Authorization: getAuthorization()!,
     },
   })
+  await checkRes(res)
   return await res.json() as CurrentUser
 }
 
@@ -69,6 +72,7 @@ export async function getUserList (options?: Partial<UserListOptions>) {
       Authorization: getAuthorization()!,
     },
   })
+  await checkRes(res)
   return await res.json() as UserList
 }
 
@@ -94,6 +98,7 @@ export async function createUser (userInfo: AddUserInfo) {
       rawPassword: SHA1(userInfo.rawPassword).toString(),
     }),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 
@@ -113,6 +118,7 @@ export async function updateUser (id: number, userInfo: UpdateUserInfo) {
     },
     body: JSON.stringify({ ...userInfo, id }),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 
@@ -130,6 +136,7 @@ export async function deleteUser (id: number) {
     },
     body: JSON.stringify({ id }),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 
@@ -152,6 +159,7 @@ export async function resetUserPassword (id: number, passwordObj: { oldRawPasswo
       id,
     }),
   })
+  await checkRes(res)
   return await res.json() as ApiResBody
 }
 
