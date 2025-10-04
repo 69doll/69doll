@@ -24,12 +24,14 @@ import { hasAuthorization } from "@/store/authorization"
 import type { MappingTableOptions } from "@/components/Table/MappingTable"
 import MappingTable from "@/components/Table/MappingTable"
 import SideSheet from "@/components/SideSheet"
+import usePageNum from "@/hooks/usePageNum"
+import usePageSize from "@/hooks/usePageSize"
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
 const Brands: React.FC = () => {
-  const [pageNum, setPageNum] = useState(1)
-  const [pageSize, setPageSize] = useState(SUPPORT_PAGE_SIZE[0])
+  const [pageNum, setPageNum] = usePageNum()
+  const [pageSize, setPageSize] = usePageSize()
   const { data, isFetching, refetch: refetchList } = useQuery({
     queryKey: getBrandListCacheKeys({ pageSize, pageNum }),
     queryFn: () => getBrandList({ pageSize, pageNum }),

@@ -6,16 +6,16 @@ import {
 } from '@tanstack/react-query'
 import './index.css'
 import Router from './Router.tsx'
-import { CurrentUserProvider } from './Context/CurrentUser.tsx'
+import CurrentUserProvider from './Context/CurrentUser/CurrentUserProvider'
 
 const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <CurrentUserProvider>
     <QueryClientProvider client={queryClient}>
+    <CurrentUserProvider>
       <Router />
-    </QueryClientProvider>
     </CurrentUserProvider>
+    </QueryClientProvider>
   </StrictMode>,
 )

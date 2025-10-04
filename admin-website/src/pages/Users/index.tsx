@@ -12,11 +12,14 @@ import tableCss from '../../styles/table.module.scss'
 import { type User, UserType, createUser, deleteUser, getUserList, getUserListCacheKeys, updateUser } from "../../request/user"
 import TablePage, { type TablePageOnValueChange } from "@/components/Page/TablePage"
 import PageTabs from "@/components/Page/PageTabs"
-import { useCurrentUser, useRefreshCurrentUser } from "@/Context/CurrentUser"
 import PageName from "@/components/Page/PageName"
 import { hasAuthorization } from "@/store/authorization"
 import MappingTable, { type MappingTableOptions } from "@/components/Table/MappingTable"
 import SideSheet from "@/components/SideSheet"
+import useCurrentUser from "@/Context/CurrentUser/useCurrentUser"
+import useRefreshCurrentUser from "@/Context/CurrentUser/useRefreshCurrentUser"
+import usePageNum from "@/hooks/usePageNum"
+import usePageSize from "@/hooks/usePageSize"
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
@@ -27,8 +30,8 @@ const Users: React.FC = () => {
   ]
 
   const [userType, setUserType] = useState<UserType>(UserType.APP)
-  const [pageNum, setPageNum] = useState(1)
-  const [pageSize, setPageSize] = useState(SUPPORT_PAGE_SIZE[0])
+  const [pageNum, setPageNum] = usePageNum(1)
+  const [pageSize, setPageSize] = usePageSize(SUPPORT_PAGE_SIZE[0])
   const getUserListOpts = useMemo(() => ({ type: userType, pageNum, pageSize }), [pageNum, pageSize, userType])
   const queryKey = useMemo(() => getUserListCacheKeys(getUserListOpts), [getUserListOpts])
   const queryFn = useMemo(() => () => getUserList(getUserListOpts), [getUserListOpts])

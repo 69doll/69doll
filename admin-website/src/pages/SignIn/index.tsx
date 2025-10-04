@@ -6,7 +6,7 @@ import { Button } from "../../components/ui/button";
 import Logo from "../../components/Logo";
 import css from "./style.module.scss";
 import { signIn } from "@/request/auth";
-import { useRefreshCurrentUser } from "@/Context/CurrentUser";
+import useRefreshCurrentUser from "@/Context/CurrentUser/useRefreshCurrentUser";
 
 const SignIn: React.FC = () => {
   const nav = useNavigate()

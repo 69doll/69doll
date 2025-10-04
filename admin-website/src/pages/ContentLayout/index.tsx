@@ -17,7 +17,7 @@ import Logo from "../../components/Logo"
 import SidebarFooterContent from "./components/SideFooterContent"
 import './root.scss'
 import css from './style.module.scss'
-import { useCurrentUser } from "@/Context/CurrentUser"
+import useCurrentUser from "@/Context/CurrentUser/useCurrentUser"
 
 const menuList = [
   {

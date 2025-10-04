@@ -23,6 +23,8 @@ import UploadImageArea from "@/components/UploadArea/UploadImageArea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getBrandAllList, getBrandAllListCacheKeys } from "@/request/brand";
 import AmountInput from "@/components/Input/AmountInput";
+import usePageNum from "@/hooks/usePageNum";
+import usePageSize from "@/hooks/usePageSize";
 
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
@@ -35,8 +37,8 @@ const DEFAULT_COMPONENT: Omit<Component, 'id' | 'extra' | 'type' | 'createdAt' |
 }
 
 const Components: React.FC = () => {
-  const [pageNum, setPageNum] = useState(1)
-  const [pageSize, setPageSize] = useState(SUPPORT_PAGE_SIZE[0])
+  const [pageNum, setPageNum] = usePageNum()
+  const [pageSize, setPageSize] = usePageSize(SUPPORT_PAGE_SIZE[0])
   const isFetching = useIsFetching({ queryKey: getComponentListCacheKeys({ pageSize, pageNum }) })
   const isMutating = useIsMutating()
   const isLoading = useMemo(() => isFetching > 0 || isMutating > 0, [isFetching, isMutating])
