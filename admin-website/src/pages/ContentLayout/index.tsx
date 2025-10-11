@@ -30,7 +30,7 @@ const menuList = [
     ],
   },
   {
-    name: '数据管理',
+    name: '物料管理',
     list: [
       {
         path: 'products',
@@ -48,6 +48,11 @@ const menuList = [
         path: 'categories',
         name: '分类管理',
       },
+    ],
+  },
+  {
+    name: '数据管理',
+    list: [
       {
         path: 'images',
         name: '图片管理',
@@ -69,7 +74,7 @@ const ContentLayout = () => {
   const currentUser = useCurrentUser()
   return <>
     <SidebarProvider>
-      <Sidebar>
+      <Sidebar className="overflow-hidden">
         <SidebarHeader>
           <Logo />
         </SidebarHeader>

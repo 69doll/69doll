@@ -1,5 +1,5 @@
 import type React from "react"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Doll69If } from "shared"
 import { Button } from "../../components/ui/button"
@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import TableDateCell from "../../components/Table/TableDateCell"
 import tableCss from '../../styles/table.module.scss'
 import { type User, UserType, createUser, deleteUser, getUserList, getUserListCacheKeys, updateUser } from "../../request/user"
-import TablePage, { type TablePageOnValueChange } from "@/components/Page/TablePage"
+import TablePage from "@/components/Page/TablePage"
 import PageTabs from "@/components/Page/PageTabs"
 import PageName from "@/components/Page/PageName"
 import { hasAuthorization } from "@/store/authorization"
@@ -18,20 +18,20 @@ import MappingTable, { type MappingTableOptions } from "@/components/Table/Mappi
 import SideSheet from "@/components/SideSheet"
 import useCurrentUser from "@/Context/CurrentUser/useCurrentUser"
 import useRefreshCurrentUser from "@/Context/CurrentUser/useRefreshCurrentUser"
-import usePageNum from "@/hooks/usePageNum"
-import usePageSize from "@/hooks/usePageSize"
+import { useTablePageData } from "@/components/Page/TablePage.hook"
 
-const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
+const SUPPORT_PAGE_SIZES = [50, 100, 200]
 
 const Users: React.FC = () => {
+  const { pageNum, pageSize, setPageNum, useFooterData } = useTablePageData({ sizes: SUPPORT_PAGE_SIZES })
   const userTabs = [
     { name: '普通用户', value: UserType.APP },
     { name: '管理员', value: UserType.ADMIN },
   ]
-
   const [userType, setUserType] = useState<UserType>(UserType.APP)
-  const [pageNum, setPageNum] = usePageNum(1)
-  const [pageSize, setPageSize] = usePageSize(SUPPORT_PAGE_SIZE[0])
+  useEffect(() => {
+    setPageNum(1)
+  }, [userType])
   const getUserListOpts = useMemo(() => ({ type: userType, pageNum, pageSize }), [pageNum, pageSize, userType])
   const queryKey = useMemo(() => getUserListCacheKeys(getUserListOpts), [getUserListOpts])
   const queryFn = useMemo(() => () => getUserList(getUserListOpts), [getUserListOpts])
@@ -40,23 +40,7 @@ const Users: React.FC = () => {
     queryFn: queryFn,
     enabled: hasAuthorization(),
   })
-  const list = useMemo(() => {
-    return data?.data?.list ?? []
-  }, [data])
-  const totalNum = useMemo(() => {
-    return data?.data?.total ?? list.length
-  }, [data])
-  const totalPageNum = useMemo(() => {
-    return data?.data?.totalPage ?? 1
-  }, [data])
-  const onPageChange: TablePageOnValueChange = ({ pageNum: nextPageNum, pageSize: nextPageSize }) => {
-    if (nextPageSize && nextPageSize !== pageSize) {
-      setPageNum(1)
-      setPageSize(nextPageSize)
-    } else {
-      setPageNum(nextPageNum)
-    }
-  }
+  const { list, footerProps } = useFooterData(data)
 
   const [editUser, setEditUser] = useState<any>()
   const onFormChange = ({ name, value }: { name: string, value: any }) => {
@@ -148,13 +132,8 @@ const Users: React.FC = () => {
   ]
   return <>
     <TablePage
-      label={<PageName name='用户管理' isLoading={isFetching} onRefresh={refetchList} />}
-      pageNum={pageNum}
-      totalNum={totalNum}
-      totalPageNum={totalPageNum}
-      pageSize={pageSize}
-      pageSizes={SUPPORT_PAGE_SIZE}
-      onValueChange={onPageChange}
+      label={<PageName name='用户管理' isLoading={isFetching} onRefresh={() => refetchList()} />}
+      {...footerProps}
       header={
         <div className='w-full flex flex-row justify-between'>
           <PageTabs

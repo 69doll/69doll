@@ -3,6 +3,11 @@ import type { ApiResBody } from "@/types/api.type"
 import { setAuthorization } from "@/store/authorization"
 
 export async function checkRes (res: Response) {
+  if (res.status === 401) {
+    setAuthorization()
+    redirect('/signin')
+    return false
+  }
   if (res.status >= 400) return false
 
   const content = await res.text()
@@ -15,7 +20,7 @@ export async function checkRes (res: Response) {
   res.text = () => Promise.resolve(content)
 
   const obj = JSON.parse(content) as ApiResBody
-  if (obj.code === 409) {
+  if (obj.code === 401) {
     setAuthorization()
     redirect('/signin')
     return false

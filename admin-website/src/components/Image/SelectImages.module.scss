@@ -1,0 +1,22 @@
+.item {
+  --uno: border border-dashed border-gray-500 p-2;
+  &:hover {
+    --uno: border-solid;
+  }
+}
+
+.selected {
+  --uno: border p-2 border-solid border-green-500;
+}
+
+.dialog {
+  --uno: max-h-dvh flex flex-col;
+
+  > *:not(.items) {
+    --uno: shrink-0;
+  }
+
+  .items {
+    --uno: overflow-y-auto flex gap-1 flex-row flex-wrap shrink-1 pb-2;
+  }
+}

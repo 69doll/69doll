@@ -1,0 +1,32 @@
+.imageActions {
+  --uno: relative rounded-md overflow-hidden w-fit;
+
+  > *:not(.actions) {
+    --uno: min-w-[130px] min-h-[130px];
+  }
+}
+
+.actions {
+  --uno: absolute top-0 left-0 size-full hidden;
+  & {
+    --uno: bg-black/50 color-white text-[14px] cursor-pointer;
+  }
+  &:not(.imageActions:hover &) {
+    --uno: hidden;
+  }
+  & {
+    --uno: flex flex-col;
+  }
+  .actionBody {
+    --uno: flex-center grow-auto;
+  }
+  .actionFooter {
+    --uno: h-[40px] w-[calc(100%-8px)] flex-center mx-[4px] border-white border-t transition-all;
+  }
+  .actionBody, .actionFooter {
+    --uno: transition-all;
+    &:hover {
+      --uno: bg-black/100 w-full m-0;
+    }
+  }
+}

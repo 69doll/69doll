@@ -2,14 +2,14 @@ import type React from "react"
 import { useMemo, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Doll69If } from "shared"
+import { castArray } from "es-toolkit/compat"
 import { Button } from "../../components/ui/button"
 import { Label } from "../../components/ui/label"
 import { Input } from "../../components/ui/input"
-import TablePage, { type TablePageOnValueChange } from "../../components/Page/TablePage"
+import TablePage from "../../components/Page/TablePage"
 import TableDateCell from "../../components/Table/TableDateCell"
 import tableCss from "../../styles/table.module.scss"
-import UploadImageArea from "../../components/UploadArea/UploadImageArea"
-import Image from "../../components/Image"
+import Image from "../../components/Image/Image"
 import DeleteButton from "../../components/Button/DeleteButton"
 import {
   type Brand,
@@ -24,29 +24,19 @@ import { hasAuthorization } from "@/store/authorization"
 import type { MappingTableOptions } from "@/components/Table/MappingTable"
 import MappingTable from "@/components/Table/MappingTable"
 import SideSheet from "@/components/SideSheet"
-import usePageNum from "@/hooks/usePageNum"
-import usePageSize from "@/hooks/usePageSize"
+import SelectImages from "@/components/Image/SelectImages"
+import { useTablePageData } from "@/components/Page/TablePage.hook"
 
-const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
+const SUPPORT_PAGE_SIZES = [15, 25, 50, 100]
 
 const Brands: React.FC = () => {
-  const [pageNum, setPageNum] = usePageNum()
-  const [pageSize, setPageSize] = usePageSize()
+  const { pageNum, pageSize, useFooterData } = useTablePageData({ sizes: SUPPORT_PAGE_SIZES })
   const { data, isFetching, refetch: refetchList } = useQuery({
     queryKey: getBrandListCacheKeys({ pageSize, pageNum }),
     queryFn: () => getBrandList({ pageSize, pageNum }),
     enabled: hasAuthorization(),
   })
-  const list = useMemo(() => data?.data?.list ?? [], [data])
-  const totalPageNum = useMemo(() => data?.data?.totalPage ?? 1, [data])
-  const onPageChange: TablePageOnValueChange = ({ pageNum: nextPageNum, pageSize: nextPageSize }) => {
-    if (nextPageSize && nextPageSize !== pageSize) {
-      setPageNum(1)
-      setPageSize(nextPageSize)
-    } else {
-      setPageNum(nextPageNum)
-    }
-  }
+  const { list, footerProps } = useFooterData(data)
 
   const [editBrand, setEditBrand] = useState<any>()
   const onFormChange = ({ name, value }: { name: string, value: any }) => {
@@ -136,12 +126,7 @@ const Brands: React.FC = () => {
           <Button variant="outline" onClick={() => setEditBrand({ parentId: 0 })}>新增品牌</Button>
         </div>
       }
-      pageNum={pageNum}
-      totalNum={list.length}
-      totalPageNum={totalPageNum}
-      pageSize={pageSize}
-      pageSizes={SUPPORT_PAGE_SIZE}
-      onValueChange={onPageChange}
+      {...footerProps}
     >
       <MappingTable
         options={tableOptions}
@@ -173,9 +158,11 @@ const Brands: React.FC = () => {
         </Doll69If>
         <div className="grid gap-3">
           <Label htmlFor="user-name">品牌图</Label>
-          <UploadImageArea
-            name='logo'
-            src={editBrand?.logo}
+          <SelectImages
+            min={1}
+            max={1}
+            keys={castArray(editBrand?.logo)}
+            onChange={(keys) => onFormChange({ name: 'logo', value: keys[0] })}
           />
         </div>
         <div className="grid gap-3">

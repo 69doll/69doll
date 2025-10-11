@@ -2,15 +2,14 @@ import type React from "react";
 import { useIsFetching, useIsMutating, useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Doll69If } from "shared";
-import { cloneDeep } from 'es-toolkit/compat'
+import { castArray, cloneDeep } from 'es-toolkit/compat'
 import tableCss from "../../styles/table.module.scss"
 import BrandName from "./components/BrandName";
 import TablePage from "@/components/Page/TablePage";
 import { createComponent, deleteComponent, getComponentList, getComponentListCacheKeys, updateComponent, type Component } from "@/request/component";
 import PageName from "@/components/Page/PageName";
-import type { TablePageOnValueChange } from "@/components/Page/TablePage";
 import TableDateCell from "@/components/Table/TableDateCell";
-import Image from "@/components/Image";
+import Image from "@/components/Image/Image";
 import { hasAuthorization } from "@/store/authorization";
 import type { MappingTableOptions } from "@/components/Table/MappingTable";
 import MappingTable from "@/components/Table/MappingTable";
@@ -19,14 +18,13 @@ import SideSheet from "@/components/SideSheet";
 import DeleteButton from "@/components/Button/DeleteButton";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import UploadImageArea from "@/components/UploadArea/UploadImageArea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getBrandAllList, getBrandAllListCacheKeys } from "@/request/brand";
 import AmountInput from "@/components/Input/AmountInput";
-import usePageNum from "@/hooks/usePageNum";
-import usePageSize from "@/hooks/usePageSize";
+import SelectImages from "@/components/Image/SelectImages";
+import { useTablePageData } from "@/components/Page/TablePage.hook";
 
-const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
+const SUPPORT_PAGE_SIZES = [25, 50, 100]
 
 const DEFAULT_COMPONENT: Omit<Component, 'id' | 'extra' | 'type' | 'createdAt' | 'updatedAt'> = {
   name: '',
@@ -37,8 +35,7 @@ const DEFAULT_COMPONENT: Omit<Component, 'id' | 'extra' | 'type' | 'createdAt' |
 }
 
 const Components: React.FC = () => {
-  const [pageNum, setPageNum] = usePageNum()
-  const [pageSize, setPageSize] = usePageSize(SUPPORT_PAGE_SIZE[0])
+  const { pageNum, pageSize, useFooterData } = useTablePageData({ sizes: SUPPORT_PAGE_SIZES })
   const isFetching = useIsFetching({ queryKey: getComponentListCacheKeys({ pageSize, pageNum }) })
   const isMutating = useIsMutating()
   const isLoading = useMemo(() => isFetching > 0 || isMutating > 0, [isFetching, isMutating])
@@ -47,16 +44,7 @@ const Components: React.FC = () => {
     queryFn: () => getComponentList({ pageSize, pageNum }),
     enabled: hasAuthorization(),
   })
-  const list = useMemo(() => data?.data?.list ?? [], [data])
-  const totalPageNum = useMemo(() => data?.data?.totalPage ?? 1, [data])
-  const onPageChange: TablePageOnValueChange = ({ pageNum: nextPageNum, pageSize: nextPageSize }) => {
-    if (nextPageSize && nextPageSize !== pageSize) {
-      setPageNum(1)
-      setPageSize(nextPageSize)
-    } else {
-      setPageNum(nextPageNum)
-    }
-  }
+  const { list, footerProps } = useFooterData(data)
 
   const [editComponent, setEditComponent] = useState<any>()
   const onFormChange = ({ name, value }: { name: string, value: any }) => {
@@ -182,12 +170,7 @@ const Components: React.FC = () => {
           <Button variant="outline" onClick={() => setEditComponent(cloneDeep(DEFAULT_COMPONENT))}>新增配件</Button>
         </div>
       }
-      pageNum={pageNum}
-      totalNum={list.length}
-      totalPageNum={totalPageNum}
-      pageSize={pageSize}
-      pageSizes={SUPPORT_PAGE_SIZE}
-      onValueChange={onPageChange}
+      {...footerProps}
     >
       <MappingTable
         options={tableOptions}
@@ -240,9 +223,11 @@ const Components: React.FC = () => {
         </div>
         <div className="grid gap-3">
           <Label htmlFor="component-picture">配件图</Label>
-          <UploadImageArea
-            defaultValue={editComponent?.picture} name='picture'
-            onFormChange={({ name, value }) => onFormChange({ name, value })}
+          <SelectImages
+            min={1}
+            max={1}
+            keys={castArray(editComponent?.picture)}
+            onChange={(keys) => onFormChange({ name: 'picture', value: keys[0] })}
           />
         </div>
         <div className="grid gap-3">
