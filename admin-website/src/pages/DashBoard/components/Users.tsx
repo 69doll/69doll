@@ -4,13 +4,13 @@ import { Doll69If } from "shared";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getUserList, getUserListCacheKeys } from "@/request/user";
+import { getUserList, getUserListCacheKeys, UserType } from "@/request/user";
 import { hasAuthorization } from "@/store/authorization";
 
 const Users: React.FC = () => {
   const { data, isFetching, isSuccess } = useQuery({
-    queryKey: getUserListCacheKeys({ pageNum: 1 }),
-    queryFn: () => getUserList({ pageNum: 1 }),
+    queryKey: getUserListCacheKeys({ pageNum: 1, type: UserType.APP }),
+    queryFn: () => getUserList({ pageNum: 1, type: UserType.APP }),
     enabled: hasAuthorization(),
   })
   return <Card>

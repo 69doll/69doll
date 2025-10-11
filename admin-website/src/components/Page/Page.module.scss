@@ -7,7 +7,7 @@
 }
 
 .body {
-  --uno: p-[var(--layout-padding)];
+  --uno: p-[var(--layout-padding)] overflow-y-auto;
 }
 
 .header {

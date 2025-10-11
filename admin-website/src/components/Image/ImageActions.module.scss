@@ -22,6 +22,9 @@
   }
   .actionFooter {
     --uno: h-[40px] w-[calc(100%-8px)] flex-center mx-[4px] border-white border-t transition-all;
+    &:hover {
+      --uno: h-[50px];
+    }
   }
   .actionBody, .actionFooter {
     --uno: transition-all;

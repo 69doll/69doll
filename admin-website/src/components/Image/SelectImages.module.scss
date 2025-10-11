@@ -1,14 +1,3 @@
-.item {
-  --uno: border border-dashed border-gray-500 p-2;
-  &:hover {
-    --uno: border-solid;
-  }
-}
-
-.selected {
-  --uno: border p-2 border-solid border-green-500;
-}
-
 .dialog {
   --uno: max-h-dvh flex flex-col;
 
@@ -18,5 +7,15 @@
 
   .items {
     --uno: overflow-y-auto flex gap-1 flex-row flex-wrap shrink-1 pb-2;
+  }
+}
+
+.item {
+  --uno: border-[1px] border-dashed border-gray-500 p-[4px];
+  &:has(> *:hover) {
+    --uno: border-[2px] p-[3px] border-solid;
+  }
+  &.selected {
+    --uno: border-[3px] p-[2px] border-solid border-green-500;
   }
 }

@@ -1,18 +1,19 @@
 import { useMemo } from "react";
 import type { TableFooterOnValueChange } from "./TableFooter";
-import usePageNum from "@/hooks/usePageNum";
-import usePageSize from "@/hooks/usePageSize";
 import type { ApiResBodyPage } from "@/types/api.type";
+import useTableNum from "@/hooks/useTableNum";
+import useTableSize from "@/hooks/useTableSize";
 
 export interface UseTableFooterDataOptions {
   defaultSize?: number,
   sizes?: number[],
+  defaultNum?: number,
 }
 
 export const useTableFooterData = (opts: UseTableFooterDataOptions = {}) => {
-  const { defaultSize, sizes = [] } = opts
-  const [pageNum, setPageNum] = usePageNum()
-  const [pageSize, setPageSize] = usePageSize(defaultSize ?? sizes[0])
+  const { defaultSize, sizes = [], defaultNum } = opts
+  const [pageNum, setPageNum] = useTableNum(defaultNum)
+  const [pageSize, setPageSize] = useTableSize(defaultSize ?? sizes[0])
 
   return {
     pageNum,

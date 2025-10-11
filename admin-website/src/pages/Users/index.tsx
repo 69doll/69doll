@@ -20,7 +20,7 @@ import useCurrentUser from "@/Context/CurrentUser/useCurrentUser"
 import useRefreshCurrentUser from "@/Context/CurrentUser/useRefreshCurrentUser"
 import { useTablePageData } from "@/components/Page/TablePage.hook"
 
-const SUPPORT_PAGE_SIZES = [50, 100, 200]
+const SUPPORT_PAGE_SIZES = [25, 50, 100, 200]
 
 const Users: React.FC = () => {
   const { pageNum, pageSize, setPageNum, useFooterData } = useTablePageData({ sizes: SUPPORT_PAGE_SIZES })
