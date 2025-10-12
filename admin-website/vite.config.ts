@@ -27,6 +27,9 @@ export default defineConfig({
         transformerDirectives(),
         transformerCompileClass(),
       ],
+      shortcuts: {
+        'flex-center': 'flex justify-center items-center',
+      },
     }),
   ],
   resolve: {
