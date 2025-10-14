@@ -8,7 +8,7 @@ import { getUserList, getUserListCacheKeys, UserType } from "@/request/user";
 import { hasAuthorization } from "@/store/authorization";
 
 const Users: React.FC = () => {
-  const { data, isFetching, isSuccess } = useQuery({
+  const { data, isFetching, isFetched } = useQuery({
     queryKey: getUserListCacheKeys({ pageNum: 1, type: UserType.APP }),
     queryFn: () => getUserList({ pageNum: 1, type: UserType.APP }),
     enabled: hasAuthorization(),
@@ -23,7 +23,7 @@ const Users: React.FC = () => {
         <Doll69If display={isFetching}>
           <Skeleton className="h-[30px] w-[50px]" />
         </Doll69If>
-        <Doll69If display={!isFetching && isSuccess}>
+        <Doll69If display={!isFetching && isFetched}>
           <div className="h-[30px] leading-[30px] text-[30px]">
             { data?.data.total }
           </div>

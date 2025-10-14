@@ -12,12 +12,15 @@ import UploadImageArea from "./UploadImageArea";
 import css from './SelectImages.module.scss'
 import { getImageList, getImageListCacheKeys } from "@/request/image";
 import { cn } from "@/lib/utils";
+import { Eye } from "lucide-react";
 
 type DeletePopoverProps = {
   onChange: (keys: string[]) => any;
   min?: number;
   max?: number;
   keys: string[];
+  className?: string,
+  disabled?: boolean,
 }
 
 const SUPPORT_PAGE_SIZES = [25, 50, 100]
@@ -27,10 +30,12 @@ const SelectImages: React.FC<React.PropsWithChildren<DeletePopoverProps>> = ({
   min = 1,
   max = Infinity,
   keys = [],
+  className,
+  disabled,
 }) => {
   const currentKeys = useMemo(() => keys.filter(Boolean), [keys])
   const preview = useMemo(() => (key: string) => {
-    return <ImagePreviewDialog src={key}>查看</ImagePreviewDialog>
+    return <ImagePreviewDialog src={key}><Eye /></ImagePreviewDialog>
   }, [])
   const { pageNum, pageSize, useFooterData } = useTableFooterData({ sizes: SUPPORT_PAGE_SIZES })
   const { data, isFetching, refetch: refetchList } = useQuery({
@@ -76,7 +81,8 @@ const SelectImages: React.FC<React.PropsWithChildren<DeletePopoverProps>> = ({
           src={undefined!}
           actionBody={'选择'}
           onActionBody={() => setDialogOpen(true)}
-          className="size-[130px]"
+          className={cn("size-[130px]", className)}
+          disabled={disabled}
         />
       </Doll69If>
       {
@@ -87,43 +93,52 @@ const SelectImages: React.FC<React.PropsWithChildren<DeletePopoverProps>> = ({
             actionBody={preview(key)}
             actionFooter={'重新选择'}
             onActionFooter={() => setDialogOpen(true)}
-            className="size-[130px]"
+            className={cn("size-[130px]", className)}
+            disabled={disabled}
           />
         })
       }
     </Doll69If>
-    <Dialog open={isDialogOpen}>
-      <DialogContent className={css.dialog} showCloseButton={false}>
-        <DialogHeader>
-          <DialogTitle>选择图片</DialogTitle>
-          <DialogDescription>
-            {`已选择${selectedKeys.length}张图片`}
-          </DialogDescription>
-        </DialogHeader>
-        <UploadImageArea onChange={() => refetchList()} />
-        <div className={css.items}>
-          {
-            list.map((item) => {
-              return <div className={cn(css.item, selectedKeys.includes(item.key) && css.selected)}>
-                <ImageActions
-                  src={item.key}
-                  key={item.key}
-                  actionBody={preview(item.key)}
-                  actionFooter="选择"
-                  onActionFooter={() => selectImage(item.key)}
-                  className="size-[130px]"
-                />
-              </div>
-            })
-          }
-        </div>
-        <TableFooter {...footerProps} />
-        <DialogFooter>
-          <Button type="button" variant="secondary" onClick={() => onOkay()}>确认</Button>
-          <Button type="button" variant="secondary" onClick={() => onClose()}>关闭</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    {
+      !disabled && <>
+        <Dialog open={isDialogOpen}>
+          <DialogContent className={css.dialog} showCloseButton={false}>
+            <DialogHeader>
+              <DialogTitle>选择图片</DialogTitle>
+              <DialogDescription>
+                {`已选择${selectedKeys.length}张图片`}
+              </DialogDescription>
+            </DialogHeader>
+            <UploadImageArea onChange={() => refetchList()} />
+            <div className={css.items}>
+              {
+                list.map((item, index) => {
+                  return <div
+                    className={cn(css.item, selectedKeys.includes(item.key) && css.selected)}
+                    key={`image-${index}`}
+                  >
+                    <ImageActions
+                      src={item.key}
+                      key={item.key}
+                      actionBody={preview(item.key)}
+                      actionFooter="选择"
+                      onActionFooter={() => selectImage(item.key)}
+                      className="size-[130px]"
+                      resize={{ width: 130 }}
+                    />
+                  </div>
+                })
+              }
+            </div>
+            <TableFooter {...footerProps} />
+            <DialogFooter>
+              <Button type="button" variant="secondary" onClick={() => onOkay()}>确认</Button>
+              <Button type="button" variant="secondary" onClick={() => onClose()}>关闭</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </>
+    }
   </>
 }
 

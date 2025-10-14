@@ -1,10 +1,10 @@
 import type React from "react"
 
-interface IBannerProps {
+interface I69IfProps {
   display: boolean | string | number,
 }
 
-export const Doll69If: React.FC<React.PropsWithChildren<IBannerProps>> = ({ display, children }) => {
+export const Doll69If: React.FC<React.PropsWithChildren<I69IfProps>> = ({ display, children }) => {
   return <>
     { display ? children : undefined}
   </>

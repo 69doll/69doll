@@ -4,18 +4,20 @@ import {
   createBrowserRouter,
   redirect,
 } from 'react-router-dom'
-import Root from './pages/Root'
+import Root from './pages/Root/Root'
 import ContentLayout from './pages/ContentLayout'
 import { signOut } from './request/auth'
+import ModuleLoading from './components/Loading/ModuleLoading'
 
-const DashBoard = React.lazy(() => import('./pages/DashBoard'))
-const SignIn = React.lazy(() => import('./pages/SignIn'))
-const Users = React.lazy(() => import('./pages/Users'))
-const Categories = React.lazy(() => import('./pages/Categories'))
-const Brands = React.lazy(() => import('./pages/Brands'))
-const Product = React.lazy(() => import('./pages/Product'))
-const Images = React.lazy(() => import('./pages/Images'))
-const Components = React.lazy(() => import('./pages/Components'))
+const DashBoard = React.lazy(() => import('./pages/DashBoard/DashBoard'))
+const SignIn = React.lazy(() => import('./pages/SignIn/SignIn'))
+const Users = React.lazy(() => import('./pages/Users/Users'))
+const Categories = React.lazy(() => import('./pages/Categories/Categories'))
+const Brands = React.lazy(() => import('./pages/Brands/Brands'))
+const Product = React.lazy(() => import('./pages/Product/Product'))
+const Images = React.lazy(() => import('./pages/Images/Images'))
+const Components = React.lazy(() => import('./pages/Components/Components'))
+const Modules = React.lazy(() => import('./pages/Modules/Modules'))
 
 const routes = createBrowserRouter([
   {
@@ -29,35 +31,39 @@ const routes = createBrowserRouter([
         children: [
           {
             path: '/',
-            Component: DashBoard,
+            element: <ModuleLoading><DashBoard /></ModuleLoading>,
           },
           {
             path: '/dashboard',
-            Component: DashBoard,
+            element: <ModuleLoading><DashBoard /></ModuleLoading>,
           },
           {
             path: '/users',
-            Component: Users,
+            element: <ModuleLoading><Users /></ModuleLoading>,
           },
           {
             path: '/categories',
-            Component: Categories,
+            element: <ModuleLoading><Categories /></ModuleLoading>,
           },
           {
             path: '/brands',
-            Component: Brands,
+            element: <ModuleLoading><Brands /></ModuleLoading>,
           },
           {
             path: '/products',
-            Component: Product,
+            element: <ModuleLoading><Product /></ModuleLoading>,
           },
           {
             path: '/components',
-            Component: Components,
+            element: <ModuleLoading><Components /></ModuleLoading>,
           },
           {
             path: '/images',
-            Component: Images,
+            element: <ModuleLoading><Images /></ModuleLoading>,
+          },
+          {
+            path: '/modules',
+            element: <ModuleLoading><Modules /></ModuleLoading>,
           },
         ],
       },

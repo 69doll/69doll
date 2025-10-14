@@ -32,7 +32,7 @@ const SideSheet: React.FC<React.PropsWithChildren<SideSheetProps>> = ({
         {children}
         <SheetFooter>
           <Button type="submit" variant="outline" onClick={() => onAction?.()}>{actionLabel}</Button>
-          <Button variant="outline" onClick={() => onCancel?.()}>{cancelLabel ?? '关闭'}</Button>
+          <Button variant="ghost" onClick={() => onCancel?.()}>{cancelLabel ?? '关闭'}</Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>

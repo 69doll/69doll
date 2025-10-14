@@ -5,19 +5,19 @@ import { getCurrentUser, getCurrentUserCacheKeys, type User } from "@/request/us
 import { hasAuthorization } from "@/store/authorization"
 
 const CurrentUserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const { data, refetch, isSuccess, isLoading, isFetching } = useQuery({
+  const { data, refetch, isFetched, isLoading, isFetching } = useQuery({
     queryKey: getCurrentUserCacheKeys(),
     queryFn: () => getCurrentUser(),
     enabled: hasAuthorization(),
   })
   const [currentUser, setCurrentUser] = useState<User>(undefined!)
   useEffect(() => {
-    if (!isSuccess) return
+    if (!isFetched) return
     if (data?.code === 200) {
       setCurrentUser(data?.data)
       return
     }
-  }, [isSuccess, isFetching, isLoading])
+  }, [isFetched, isFetching, isLoading])
   return <CurrentUserContext.Provider
     value={{ user: currentUser, refresh: refetch }}
   >{children}</CurrentUserContext.Provider>

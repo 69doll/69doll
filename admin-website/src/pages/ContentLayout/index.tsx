@@ -60,6 +60,15 @@ const menuList = [
     ],
   },
   {
+    name: '页面管理',
+    list: [
+      {
+        path: 'modules',
+        name: '页面管理',
+      },
+    ],
+  },
+  {
     name: '系统管理',
     list: [
       {

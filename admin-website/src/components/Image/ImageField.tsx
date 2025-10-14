@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import DeletePopover from "../Popover/DeletePopover";
 import ImageActions from "./ImageActions";
 import ImagePreviewDialog from "./ImagePreviewDialog";
+import { Eye } from "lucide-react";
 
 type ImageFieldProps = Parameters<typeof getImageUrl>[1] & {
   src: string,
@@ -15,9 +16,13 @@ const ImageField: React.FC<ImageFieldProps> = ({
   onDelete,
   ...props
 }) => {
-  const actionBody = useMemo(() => (src: string) => <ImagePreviewDialog
-    src={src}
-  >查看</ImagePreviewDialog>, [])
+  const actionBody = useMemo(() => (src: string) => <>
+    <ImagePreviewDialog
+      src={src}
+    >
+      <Eye />
+    </ImagePreviewDialog>
+  </>, [])
 
   const { src } = props
   return <ImageActions

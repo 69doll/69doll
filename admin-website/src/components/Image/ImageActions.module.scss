@@ -1,20 +1,20 @@
 .imageActions {
-  --uno: relative rounded-md overflow-hidden w-fit;
+  --uno: relative rounded-md overflow-hidden min-size-[130px];
+}
 
-  > *:not(.actions) {
-    --uno: min-w-[130px] min-h-[130px];
-  }
+.image {
+  --uno: size-inherit;
 }
 
 .actions {
-  --uno: absolute top-0 left-0 size-full hidden;
+  --uno: absolute top-0 left-0 size-full;
   & {
     --uno: bg-black/50 color-white text-[14px] cursor-pointer;
   }
-  &:not(.imageActions:hover &) {
+  & {
     --uno: hidden;
   }
-  & {
+  .imageActions:hover & {
     --uno: flex flex-col;
   }
   .actionBody {
@@ -23,7 +23,7 @@
   .actionFooter {
     --uno: h-[40px] w-[calc(100%-8px)] flex-center mx-[4px] border-white border-t transition-all;
     &:hover {
-      --uno: h-[50px];
+      --uno: h-[40%];
     }
   }
   .actionBody, .actionFooter {
