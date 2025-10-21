@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Doll69If } from "shared";
 import { ArchiveX, ArrowDownIcon, ArrowUpIcon, HardDriveUpload, Plus, RefreshCcw, Save } from "lucide-react";
 import { castArray } from "es-toolkit/compat";
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import SelectImages from "@/components/Image/SelectImages";
-import { getPageModuleData, getPageModuleDataCacheKeys, MODULE_ENV } from "@/request/modules";
+import { getPageModuleData, getPageModuleDataCacheKeys, MODULE_ENV, updatePageModuleData, type PageModuleData } from "@/request/modules";
 import useTKDState from "@/hooks/useTKDState";
 import useList from "@/hooks/useList";
 import useIsQuerying from "@/hooks/useIsQuerying";
@@ -88,7 +88,24 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
     return isLoading || moduleEnv !== MODULE_ENV.DRAFT
   }, [isLoading, moduleEnv])
 
-  const appendButton = useMemo(() => ({ onChange }: { onChange?: (componentObj: object) => any }) => {
+  const { mutateAsync } = useMutation({
+    mutationFn: async (env: MODULE_ENV) => {
+      const body: PageModuleData<HomePageData[]> = {
+        ...data!,
+        data: list,
+        title: tkd.title!,
+        description: tkd.description!,
+        keywords: tkd.keywords!,
+      }
+      await updatePageModuleData(body, page, env)
+    },
+  })
+  const deploy = async (env: MODULE_ENV) => {
+    await mutateAsync(env)
+    env !== MODULE_ENV.DRAFT && changeModuleEnv(env)
+  }
+
+  const appendButton = useCallback(({ onChange }: { onChange?: (componentObj: object) => any }) => {
     const hasBanner = list.some((item) => item.component === COMPONENT.BANNER)
     const componentList = [
       {
@@ -143,12 +160,12 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
         !isFetching && <>
           <div className="flex gap-2">
             <Doll69If display={moduleEnv === MODULE_ENV.DRAFT}>
-              <Button size='sm' variant="outline" disabled={disabledEdit} onClick={() => refreshData()}><RefreshCcw />重新加载</Button>
-              <Button size='sm' variant="outline" disabled={disabledEdit}><HardDriveUpload />保存并发布到预览环境</Button>
-              <Button size='sm' variant="outline" disabled={disabledEdit}><Save />保存草稿</Button>
+              <Button size='sm' variant="outline" disabled={isLoading} onClick={() => refreshData()}><RefreshCcw />重新加载</Button>
+              <Button size='sm' variant="outline" disabled={isLoading} onClick={() => deploy(MODULE_ENV.STAGING)}><HardDriveUpload />发布到预览环境</Button>
+              <Button size='sm' variant="outline" disabled={isLoading} onClick={() => deploy(MODULE_ENV.DRAFT)}><Save />保存草稿</Button>
             </Doll69If>
             <Doll69If display={moduleEnv === MODULE_ENV.STAGING}>
-              <Button size='sm' variant="outline" disabled={disabledEdit}><HardDriveUpload />发布到生成环境</Button>
+              <Button size='sm' variant="outline" disabled={isLoading} onClick={() => deploy(MODULE_ENV.PRODUCTION)}><HardDriveUpload />发布到生产环境</Button>
             </Doll69If>
           </div>
         </>

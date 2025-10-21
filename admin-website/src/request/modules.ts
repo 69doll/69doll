@@ -17,6 +17,8 @@ export interface PageModuleData<O = unknown> {
   description: string,
   keywords: string,
   title: string,
+  updatedAt: number,
+  createdAt: number,
 }
 
 export const getPageModuleDataCacheKeys = (page: string, env: MODULE_ENV, lang: string = 'en-us') => {
@@ -37,3 +39,25 @@ export const getPageModuleData = async <O = unknown>(page: string, env: MODULE_E
 }
 
 // #endregion Get Page Data
+
+// #region Update Page Data
+
+export async function updatePageModuleData <O = unknown>(body: PageModuleData<O>, page: string, env: MODULE_ENV, lang: string = 'en-us') {
+  const url = new URL(`/${env}/${lang}/${page}`, dataDomain)
+  const content = Object.assign(
+    { createdAt: Date.now() },
+    body,
+    { updatedAt: Date.now() },
+  )
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: getAuthorization()!,
+    },
+    body: JSON.stringify(content),
+  })
+  return await res.text()
+}
+
+// #endregion Update Page Data
