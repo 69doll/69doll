@@ -2,7 +2,7 @@ import type React from "react";
 import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Doll69If } from "shared";
-import ImageField from "../../components/Image/ImageField";
+import { Eye } from "lucide-react";
 import PageTabs from "@/components/Page/PageTabs";
 import TablePage from "@/components/Page/TablePage";
 import PageName from "@/components/Page/PageName";
@@ -13,6 +13,9 @@ import UploadImageArea from "@/components/Image/UploadImageArea";
 import { Separator } from "@/components/ui/separator";
 import TableFooter from "@/components/Table/TableFooter";
 import { useTablePageData } from "@/components/Page/TablePage.hook";
+import { useImagePreviewDialogRef } from "@/components/Image/ImagePreviewDialog.hook";
+import ImagePreviewDialog from "@/components/Image/ImagePreviewDialog";
+import ImageActions from "@/components/Image/ImageActions";
 
 const ImageType = {
   LIST: 'LIST',
@@ -24,6 +27,7 @@ type ImageType = typeof ImageType[keyof typeof ImageType]
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
 const Image: React.FC = () => {
+  const imagePreviewDialogRef = useImagePreviewDialogRef()
   const imageTabs = [
     { name: '图片素材管理', value: ImageType.LIST },
     { name: '图片配置管理', value: ImageType.CONSTANT },
@@ -77,12 +81,13 @@ const Image: React.FC = () => {
                     <Skeleton className="size-[130px]" />
                   </Doll69If>
                   <Doll69If display={!isFetching}>
-                    <ImageField
+                    <ImageActions
                       className="size-[130px]"
                       src={imageObj?.key}
-                      cdn={true}
-                      resize={{ width: 130 }}
-                      onDelete={() => mutateAsync(imageObj?.key)}
+                      actionBody={<Eye />}
+                      onActionBody={() => imagePreviewDialogRef.current?.open(imageObj?.key)}
+                      actionFooter={'删除'}
+                      onActionFooter={() => mutateAsync(imageObj?.key)}
                     />
                     <TableFooter />
                   </Doll69If>
@@ -93,6 +98,7 @@ const Image: React.FC = () => {
         </div>
       </Doll69If>
     </TablePage>
+    <ImagePreviewDialog ref={imagePreviewDialogRef} />
   </>)
 }
 

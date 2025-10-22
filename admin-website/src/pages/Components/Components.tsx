@@ -3,13 +3,13 @@ import { useIsFetching, useIsMutating, useMutation, useQuery } from "@tanstack/r
 import { useMemo, useState } from "react";
 import { Doll69If } from "shared";
 import { castArray, cloneDeep } from 'es-toolkit/compat'
+import { Eye } from "lucide-react";
 import tableCss from "../../styles/table.module.scss"
 import BrandName from "./components/BrandName";
 import TablePage from "@/components/Page/TablePage";
 import { createComponent, deleteComponent, getComponentList, getComponentListCacheKeys, updateComponent, type Component } from "@/request/component";
 import PageName from "@/components/Page/PageName";
 import TableDateCell from "@/components/Table/TableDateCell";
-import Image from "@/components/Image/Image";
 import { hasAuthorization } from "@/store/authorization";
 import type { MappingTableOptions } from "@/components/Table/MappingTable";
 import MappingTable from "@/components/Table/MappingTable";
@@ -21,8 +21,12 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getBrandAllList, getBrandAllListCacheKeys } from "@/request/brand";
 import AmountInput from "@/components/Input/AmountInput";
-import SelectImages from "@/components/Image/SelectImages";
 import { useTablePageData } from "@/components/Page/TablePage.hook";
+import ImageActions from "@/components/Image/ImageActions";
+import SelectImagesDialog from "@/components/Image/SelectImagesDialog";
+import { useSelectImagesDialogRef } from "@/components/Image/SelectImagesDialog.hook";
+import { useImagePreviewDialogRef } from "@/components/Image/ImagePreviewDialog.hook";
+import ImagePreviewDialog from "@/components/Image/ImagePreviewDialog";
 
 const SUPPORT_PAGE_SIZES = [25, 50, 100]
 
@@ -109,7 +113,11 @@ const Components: React.FC = () => {
       index: 'picture',
       className: tableCss.icon,
       render(value) {
-        return <Image src={value} />
+        return <ImageActions
+          src={value}
+          actionBody={<Eye />}
+          onActionBody={() => imagePreviewDialogRef.current?.open(value)}
+        />
       },
     },
     {
@@ -161,6 +169,9 @@ const Components: React.FC = () => {
       },
     },
   ]
+
+  const selectImagesDialogRef = useSelectImagesDialogRef()
+  const imagePreviewDialogRef = useImagePreviewDialogRef()
 
   return (<>
     <TablePage
@@ -223,11 +234,13 @@ const Components: React.FC = () => {
         </div>
         <div className="grid gap-3">
           <Label htmlFor="component-picture">配件图</Label>
-          <SelectImages
-            min={1}
-            max={1}
-            keys={castArray(editComponent?.picture)}
-            onChange={(keys) => onFormChange({ name: 'picture', value: keys[0] })}
+          <ImageActions
+            className="size-[130px]"
+            src={editComponent?.picture}
+            actionBody={<><Eye /></>}
+            onActionBody={() => imagePreviewDialogRef.current?.open(editComponent?.picture)}
+            actionFooter={'选择图片'}
+            onActionFooter={() => selectImagesDialogRef.current?.open(castArray(editComponent?.picture)) }
           />
         </div>
         <div className="grid gap-3">
@@ -236,6 +249,13 @@ const Components: React.FC = () => {
         </div>
       </form>
     </SideSheet>
+    <SelectImagesDialog
+      ref={selectImagesDialogRef}
+      min={1}
+      max={1}
+      onChange={(keys) => onFormChange({ name: 'picture', value: keys[0] })}
+    />
+    <ImagePreviewDialog ref={imagePreviewDialogRef} />
   </>)
 }
 

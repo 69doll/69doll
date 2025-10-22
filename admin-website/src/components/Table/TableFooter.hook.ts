@@ -15,11 +15,17 @@ export const useTableFooterData = (opts: UseTableFooterDataOptions = {}) => {
   const [pageNum, setPageNum] = useTableNum(defaultNum)
   const [pageSize, setPageSize] = useTableSize(defaultSize ?? sizes[0])
 
+  const reset = () => {
+    setPageNum(defaultNum)
+    setPageSize(defaultSize ?? sizes[0])
+  }
+
   return {
     pageNum,
     pageSize,
     setPageNum,
     setPageSize,
+    reset,
     useFooterData: <D extends ApiResBodyPage<any[]>>(data?: D) => {
       const list = useMemo<D['data']['list']>(() => {
         return data?.data?.list ?? []

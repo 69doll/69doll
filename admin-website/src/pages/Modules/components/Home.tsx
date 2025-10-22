@@ -1,20 +1,24 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Doll69If } from "shared";
-import { ArchiveX, ArrowDownIcon, ArrowUpIcon, HardDriveUpload, Plus, RefreshCcw, Save } from "lucide-react";
+import { ArchiveX, ArrowDownIcon, ArrowUpIcon, Eye, HardDriveUpload, Plus, RefreshCcw, Save } from "lucide-react";
 import { castArray } from "es-toolkit/compat";
 import ModuleBreadcrumb from "./ModuleBreadcrumb";
 import TKDCard from "./TKDCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import SelectImages from "@/components/Image/SelectImages";
 import { getPageModuleData, getPageModuleDataCacheKeys, MODULE_ENV, updatePageModuleData, type PageModuleData } from "@/request/modules";
 import useTKDState from "@/hooks/useTKDState";
 import useList from "@/hooks/useList";
 import useIsQuerying from "@/hooks/useIsQuerying";
 import { Skeleton } from "@/components/ui/skeleton";
+import ImagePreviewDialog from "@/components/Image/ImagePreviewDialog";
+import { useImagePreviewDialogRef } from "@/components/Image/ImagePreviewDialog.hook";
+import { useSelectImagesDialogRef } from "@/components/Image/SelectImagesDialog.hook";
+import ImageActions from "@/components/Image/ImageActions";
+import SelectImagesDialog from "@/components/Image/SelectImagesDialog";
 
 interface HomeProps {
   currentPage: string,
@@ -63,6 +67,8 @@ const i18n = {
 } as const
 
 const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
+  const imagePreviewDialogRef = useImagePreviewDialogRef()
+  const selectImagesDialogRef = useSelectImagesDialogRef()
   const isLoading = useIsQuerying()
   const [tkd, setTKD, initTKD] = useTKDState()
   const [list, { init, moveUp, moveDown, removeAt, setAt, unshift, push }] = useList<HomePageData>()
@@ -83,6 +89,11 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
   }
   const changeValueByIndexByKey = (index: number, key: string, value: any) => {
     setAt(index, key, value)
+  }
+  const onSelectImage = useRef<((selectedKeys: string[]) => void)>(null);
+  const startSelectImages = (selectedKeys: string | string[], onChange: (selectedKeys: string[]) => void) => {
+    onSelectImage.current = onChange
+    selectImagesDialogRef.current?.open(castArray(selectedKeys))
   }
   const disabledEdit = useMemo(() => {
     return isLoading || moduleEnv !== MODULE_ENV.DRAFT
@@ -228,23 +239,42 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
                   {
                     itemObj.component === COMPONENT.BANNER && <>
                       <div className="flex flex-col gap-3">
-                        <SelectImages
-                          min={1}
-                          keys={itemObj.revealList.map((item) => item.imageUrl)}
-                          onChange={(list) => changeValueByIndexByKey(index, 'revealList', list.map((item) => ({ imageUrl: item })))}
-                          disabled={disabledEdit}
-                        />
+                        {
+                          (itemObj.revealList.length ? itemObj.revealList : Array(1).fill(undefined).map(() => ({ imageUrl: undefined }))).map((revealItem, rIndex) => {
+                            return <>
+                              <ImageActions
+                                src={revealItem.imageUrl}
+                                {...(revealItem.imageUrl ? {
+                                  actionBody: <Eye />,
+                                  onActionBody: () => imagePreviewDialogRef.current?.open(revealItem.imageUrl),
+                                  actionFooter: '选择图片',
+                                  onActionFooter: () => startSelectImages(revealItem.imageUrl, ([imageUrl]) => changeValueByIndexByKey(index, `revealList[${rIndex}]`, { imageUrl }))
+                                } : {
+                                  actionBody: '选择图片',
+                                  onActionBody: () => startSelectImages([], ([imageUrl]) => changeValueByIndexByKey(index, `revealList[${rIndex}]`, { imageUrl }))
+                                })}
+                              />
+                            </>
+                          })
+                        }
                         <div className="grid grid-flow-col">
                           {
                             itemObj.menuList.map((menuItem, mIndex) => {
-                              return <SelectImages
-                                key={mIndex}
-                                min={1}
-                                max={1}
-                                keys={[menuItem.imageUrl]}
-                                onChange={([value]) => changeValueByIndexByKey(index, `menuList[${mIndex}]`, { imageUrl: value })}
-                                disabled={disabledEdit}
-                              />
+                              return <>
+                                <ImageActions
+                                  key={mIndex}
+                                  src={menuItem.imageUrl}
+                                  {...(menuItem.imageUrl ? {
+                                    actionBody: <Eye />,
+                                    onActionBody: () => imagePreviewDialogRef.current?.open(menuItem.imageUrl),
+                                    actionFooter: '选择图片',
+                                    onActionFooter: () => startSelectImages(menuItem.imageUrl, ([value]) => changeValueByIndexByKey(index, `menuList[${mIndex}]`, { imageUrl: value }))
+                                  } : {
+                                    actionBody: '选择图片',
+                                    onActionBody: () => startSelectImages(menuItem.imageUrl, ([value]) => changeValueByIndexByKey(index, `menuList[${mIndex}]`, { imageUrl: value }))
+                                  })}
+                                />
+                              </>
                             })
                           }
                         </div>
@@ -257,13 +287,17 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
                   }
                   {
                     itemObj.component === COMPONENT.LARGE_AD && <>
-                      <SelectImages
-                        min={1}
-                        max={1}
-                        keys={castArray(itemObj.imageUrl)}
-                        onChange={([value]) => changeValueByIndexByKey(index, 'imageUrl', value)}
-                        className="w-full h-[300px]"
-                        disabled={disabledEdit}
+                      <ImageActions
+                        src={itemObj.imageUrl}
+                        {...(itemObj.imageUrl ? {
+                          actionBody: <Eye />,
+                          onActionBody: () => imagePreviewDialogRef.current?.open(itemObj.imageUrl),
+                          actionFooter: '选择图片',
+                          onActionFooter: () => startSelectImages(itemObj.imageUrl, ([value]) => changeValueByIndexByKey(index, 'imageUrl', value))
+                        } : {
+                          actionBody: '选择图片',
+                          onActionBody: () => startSelectImages(itemObj.imageUrl, ([value]) => changeValueByIndexByKey(index, 'imageUrl', value))
+                        })}
                       />
                     </>
                   }
@@ -274,6 +308,13 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
           {
             appendButton({ onChange: (obj) => push(obj as any) })
           }
+          <SelectImagesDialog
+            ref={selectImagesDialogRef}
+            min={1}
+            max={1}
+            onChange={(selectedKeys) => onSelectImage.current?.(selectedKeys)}
+          />
+          <ImagePreviewDialog ref={imagePreviewDialogRef} />
         </>
       }
     </div>

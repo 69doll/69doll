@@ -15,6 +15,7 @@ export type TableFooterProps = {
   pageSize?: number,
   pageSizes?: number[],
   onValueChange?: TableFooterOnValueChange,
+  disabled?: boolean,
 }
 
 const TableFooter: React.FC<TableFooterProps> = ({
@@ -24,6 +25,7 @@ const TableFooter: React.FC<TableFooterProps> = ({
   pageSize,
   pageSizes,
   onValueChange,
+  disabled,
 }) => {
   const defaultPageSize = useMemo(() => pageSize?.toString(), [pageSize])
   const pageSizeList = useMemo(() => pageSizes?.map((ps) => ps.toString()) ?? [], [pageSizes])
@@ -49,7 +51,11 @@ const TableFooter: React.FC<TableFooterProps> = ({
         </div>
       </Doll69If>
       <Doll69If display={!!pageSize && pageSizeList?.length >= 1}>
-        <Select defaultValue={defaultPageSize} onValueChange={(v) => changePageSize(v)}>
+        <Select
+          defaultValue={defaultPageSize}
+          onValueChange={(v) => changePageSize(v)}
+          disabled={disabled}
+        >
           <SelectTrigger>
             <SelectValue>{pageSize}</SelectValue>条/页
           </SelectTrigger>
@@ -95,7 +101,7 @@ const TableFooter: React.FC<TableFooterProps> = ({
               </PaginationItem>
             </Doll69If>
             <PaginationItem>
-              <PaginationNext href="#" onClick={() => pageNum && totalPageNum && pageNum < totalPageNum && setPageNum(pageNum + 1)}/>
+              <PaginationNext href="#" onClick={() => pageNum && totalPageNum && pageNum < totalPageNum && setPageNum(pageNum + 1)} />
             </PaginationItem>
           </PaginationContent>
         </Pagination>

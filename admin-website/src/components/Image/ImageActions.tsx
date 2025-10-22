@@ -1,12 +1,12 @@
 import type React from "react";
 import { Doll69If } from "shared";
+import { Skeleton } from "../ui/skeleton";
 import css from './ImageActions.module.scss'
 import Image, { type ImageProps } from "@/components/Image/Image";
 import { cn } from "@/lib/utils";
-import { Skeleton } from "../ui/skeleton";
 
 type ImageActionsProps = ImageProps & {
-  src: string,
+  src?: string,
   actionBody?: React.ReactNode,
   onActionBody?: (e: React.MouseEvent) => any,
   actionFooter?: React.ReactNode,

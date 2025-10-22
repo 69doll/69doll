@@ -5,8 +5,7 @@ interface TKDState {
   description: string,
   keywords: string,
 }
-interface initialTKDState extends TKDState {
-}
+type initialTKDState = TKDState
 
 export default function useTKDState (defaultValue?: initialTKDState) {
   const [title, setTitle] = useState(defaultValue?.title)
