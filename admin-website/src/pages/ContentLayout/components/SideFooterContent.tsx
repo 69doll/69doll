@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { LogOut } from "lucide-react"
-import { redirect } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Doll69If } from "shared"
 import useCurrentUser from "@/Context/CurrentUser/useCurrentUser"
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item"
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { setAuthorization } from "@/store/authorization"
 
 export default function SidebarFooterContent() {
+  const navigate = useNavigate()
   const currentUser = useCurrentUser()
   const nickname = useMemo(() => {
     return currentUser?.nickname
@@ -17,7 +18,7 @@ export default function SidebarFooterContent() {
   }, [currentUser])
   const signOut = () => {
     setAuthorization()
-    redirect('/signin')
+    navigate('/signin')
   }
   return <>
     <Doll69If display={!!currentUser}>

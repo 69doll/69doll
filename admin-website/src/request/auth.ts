@@ -3,9 +3,11 @@ import { API_BASE_URL } from "@/constant"
 import { setAuthorization } from "@/store/authorization"
 import type { ApiResBody } from "@/types/api.type"
 
-export async function signIn (formData: FormData) {
-  const body = Object.fromEntries([...formData.entries()])
-  body.password = SHA1(body.password as string).toString()
+export async function signIn ({ email, password }: { email: string, password: string }) {
+  const body = {
+    email,
+    password: SHA1(password).toString()
+  }
 
   const url = new URL('/api/admin/auth/login', API_BASE_URL)
   const res = await fetch(url, {

@@ -1,18 +1,20 @@
 import React, { useEffect, useImperativeHandle } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Eye } from "lucide-react";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { useTableFooterData } from "../Table/TableFooter.hook";
 import TableFooter from "../Table/TableFooter";
 import { Button } from "../ui/button";
+import ModuleLoading from "../Loading/ModuleLoading";
 import ImageActions from "./ImageActions";
 import UploadImageArea from "./UploadImageArea";
 import css from './SelectImagesDialog.module.scss'
-import ImagePreviewDialog from "./ImagePreviewDialog";
-import { useImagePreviewDialogRef } from "./ImagePreviewDialog.hook";
 import { getImageList, getImageListCacheKeys } from "@/request/image";
 import { cn } from "@/lib/utils";
 import useList from "@/hooks/useList";
+import useImagePreview from "@/Context/ImagePreview/useImagePreview";
+import useCurrentUser from "@/Context/CurrentUser/useCurrentUser";
+
+const Dialog = React.lazy(() => import('@/components/Dialog/Dialog'))
 
 export type SelectImagesDialogProps = {
   onChange: (keys: string[]) => any;
@@ -32,6 +34,8 @@ const SelectImagesDialog = React.forwardRef<SelectImagesDialogRef, SelectImagesD
   min = 1,
   max = Infinity,
 }, ref) => {
+  const currentUser = useCurrentUser()
+  const imagePreview = useImagePreview()
   const [isOpen, setIsOpen] = React.useState(false)
   const [selectedKeys, { init: setSelectedKeys }] = useList<string>()
   const closeDialog = () => {
@@ -55,6 +59,7 @@ const SelectImagesDialog = React.forwardRef<SelectImagesDialogRef, SelectImagesD
     queryKey: getImageListCacheKeys({ pageNum, pageSize }),
     queryFn: () => getImageList({ pageNum, pageSize }),
     enabled: false,
+    gcTime: 5 * 60 * 1000, // 5 min
   })
   const { list, footerProps } = useFooterData(data)
   const selectImage = (key: string) => {
@@ -80,48 +85,44 @@ const SelectImagesDialog = React.forwardRef<SelectImagesDialogRef, SelectImagesD
     }
   }, [isOpen])
 
-  const imagePreviewDialogRef = useImagePreviewDialogRef()
-
-  if (!isOpen) return <></>
+  if (!isOpen || !currentUser) return <></>
   return <>
-    <Dialog open={true}>
-      <DialogContent className={css.dialog} showCloseButton={false}>
-        <DialogHeader>
-          <DialogTitle>选择图片</DialogTitle>
-          <DialogDescription>
-            {`已选择${selectedKeys.length}张图片`}
-          </DialogDescription>
-        </DialogHeader>
-        <UploadImageArea onChange={() => refetchList()} />
-        <div className={css.items}>
-          {
-            list.map((item, index) => {
-              return <div
-                className={cn(css.item, selectedKeys.includes(item.key) && css.selected)}
-                key={`image-${index}`}
-              >
-                <ImageActions
-                  src={item.key}
-                  key={item.key}
-                  actionBody={<Eye />}
-                  onActionBody={() => imagePreviewDialogRef.current?.open(item.key)}
-                  actionFooter="选择"
-                  onActionFooter={() => selectImage(item.key)}
-                  className="size-[130px]"
-                  resize={{ width: 130 }}
-                />
-              </div>
-            })
-          }
-        </div>
-        <TableFooter {...footerProps} disabled={isFetching} />
-        <DialogFooter>
-          <Button type="button" variant="secondary" onClick={() => save()}>确认</Button>
-          <Button type="button" variant="secondary" onClick={() => closeDialog()}>关闭</Button>
-        </DialogFooter>
-      </DialogContent>
+    <ModuleLoading fullScreen={true}>
+    <Dialog
+      title='选择图片'
+      description={`已选择${selectedKeys.length}张图片`}
+      className={css.dialog}
+      showCloseButton={false}
+      footer={<>
+        <Button type="button" variant="secondary" onClick={() => save()}>确认</Button>
+        <Button type="button" variant="secondary" onClick={() => closeDialog()}>关闭</Button>
+      </>}
+    >
+      <UploadImageArea onChange={() => refetchList()} />
+      <div className={css.items}>
+        {
+          list.map((item, index) => {
+            return <div
+              className={cn(css.item, selectedKeys.includes(item.key) && css.selected)}
+              key={`image-${index}`}
+            >
+              <ImageActions
+                src={item.key}
+                key={item.key}
+                actionBody={<Eye />}
+                onActionBody={() => imagePreview(item.key)}
+                actionFooter="选择"
+                onActionFooter={() => selectImage(item.key)}
+                className="size-[130px]"
+                resize={{ width: 130 }}
+              />
+            </div>
+          })
+        }
+      </div>
+      <TableFooter {...footerProps} disabled={isFetching} />
     </Dialog>
-    <ImagePreviewDialog ref={imagePreviewDialogRef} />
+    </ModuleLoading>
   </>
 })
 

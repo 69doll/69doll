@@ -2,10 +2,14 @@ import { redirect } from "react-router-dom"
 import type { ApiResBody } from "@/types/api.type"
 import { setAuthorization } from "@/store/authorization"
 
+export function redirectSignInPage () {
+  setAuthorization()
+  redirect('/signin')
+}
+
 export async function checkRes (res: Response) {
   if (res.status === 401) {
-    setAuthorization()
-    redirect('/signin')
+    redirectSignInPage()
     return false
   }
   if (res.status >= 400) return false
@@ -21,8 +25,7 @@ export async function checkRes (res: Response) {
 
   const obj = JSON.parse(content) as ApiResBody
   if (obj.code === 401) {
-    setAuthorization()
-    redirect('/signin')
+    redirectSignInPage()
     return false
   }
   res.json = () => Promise.resolve(obj)

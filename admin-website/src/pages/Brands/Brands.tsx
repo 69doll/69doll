@@ -26,16 +26,15 @@ import MappingTable from "@/components/Table/MappingTable"
 import SideSheet from "@/components/SideSheet"
 import { useTablePageData } from "@/components/Page/TablePage.hook"
 import ImageActions from "@/components/Image/ImageActions"
-import ImagePreviewDialog from "@/components/Image/ImagePreviewDialog"
-import { useImagePreviewDialogRef } from "@/components/Image/ImagePreviewDialog.hook"
 import SelectImagesDialog from "@/components/Image/SelectImagesDialog"
 import { useSelectImagesDialogRef } from "@/components/Image/SelectImagesDialog.hook"
+import useImagePreview from "@/Context/ImagePreview/useImagePreview"
 
 const SUPPORT_PAGE_SIZES = [15, 25, 50, 100]
 
 const Brands: React.FC = () => {
   const selectImagesDialogRef = useSelectImagesDialogRef()
-  const imagePreviewDialogRef = useImagePreviewDialogRef()
+  const imagePreview = useImagePreview()
   const { pageNum, pageSize, useFooterData } = useTablePageData({ sizes: SUPPORT_PAGE_SIZES })
   const { data, isFetching, refetch: refetchList } = useQuery({
     queryKey: getBrandListCacheKeys({ pageSize, pageNum }),
@@ -96,7 +95,7 @@ const Brands: React.FC = () => {
         return <ImageActions
           src={value}
           actionBody={<Eye />}
-          onActionBody={() => imagePreviewDialogRef.current?.open(value)}
+          onActionBody={() => imagePreview(value)}
         />
       },
     },
@@ -173,7 +172,7 @@ const Brands: React.FC = () => {
             src={editBrand?.logo}
             {...(editBrand?.logo ? {
               actionBody: <Eye />,
-              onActionBody: () => imagePreviewDialogRef.current?.open(editBrand?.logo),
+              onActionBody: () => imagePreview(editBrand?.logo),
               actionFooter: '选择图片',
               onActionFooter: () => selectImagesDialogRef.current?.open(castArray(editBrand?.logo))
             } : {
@@ -194,7 +193,6 @@ const Brands: React.FC = () => {
         onChange={(keys) => onFormChange({ name: 'logo', value: keys[0] })}
       />
     </SideSheet>
-    <ImagePreviewDialog ref={imagePreviewDialogRef} />
   </>)
 }
 

@@ -5,7 +5,6 @@ import { Doll69If } from "shared";
 import { castArray, cloneDeep } from 'es-toolkit/compat'
 import { Eye } from "lucide-react";
 import tableCss from "../../styles/table.module.scss"
-import BrandName from "./components/BrandName";
 import TablePage from "@/components/Page/TablePage";
 import { createComponent, deleteComponent, getComponentList, getComponentListCacheKeys, updateComponent, type Component } from "@/request/component";
 import PageName from "@/components/Page/PageName";
@@ -25,8 +24,8 @@ import { useTablePageData } from "@/components/Page/TablePage.hook";
 import ImageActions from "@/components/Image/ImageActions";
 import SelectImagesDialog from "@/components/Image/SelectImagesDialog";
 import { useSelectImagesDialogRef } from "@/components/Image/SelectImagesDialog.hook";
-import { useImagePreviewDialogRef } from "@/components/Image/ImagePreviewDialog.hook";
-import ImagePreviewDialog from "@/components/Image/ImagePreviewDialog";
+import useImagePreview from "@/Context/ImagePreview/useImagePreview";
+import BrandName from "@/components/Brand/BrandName";
 
 const SUPPORT_PAGE_SIZES = [25, 50, 100]
 
@@ -39,6 +38,7 @@ const DEFAULT_COMPONENT: Omit<Component, 'id' | 'extra' | 'type' | 'createdAt' |
 }
 
 const Components: React.FC = () => {
+  const imagePreview = useImagePreview()
   const { pageNum, pageSize, useFooterData } = useTablePageData({ sizes: SUPPORT_PAGE_SIZES })
   const isFetching = useIsFetching({ queryKey: getComponentListCacheKeys({ pageSize, pageNum }) })
   const isMutating = useIsMutating()
@@ -116,7 +116,7 @@ const Components: React.FC = () => {
         return <ImageActions
           src={value}
           actionBody={<Eye />}
-          onActionBody={() => imagePreviewDialogRef.current?.open(value)}
+          onActionBody={() => imagePreview(value)}
         />
       },
     },
@@ -171,7 +171,6 @@ const Components: React.FC = () => {
   ]
 
   const selectImagesDialogRef = useSelectImagesDialogRef()
-  const imagePreviewDialogRef = useImagePreviewDialogRef()
 
   return (<>
     <TablePage
@@ -238,7 +237,7 @@ const Components: React.FC = () => {
             className="size-[130px]"
             src={editComponent?.picture}
             actionBody={<><Eye /></>}
-            onActionBody={() => imagePreviewDialogRef.current?.open(editComponent?.picture)}
+            onActionBody={() => imagePreview(editComponent?.picture)}
             actionFooter={'选择图片'}
             onActionFooter={() => selectImagesDialogRef.current?.open(castArray(editComponent?.picture)) }
           />
@@ -255,7 +254,6 @@ const Components: React.FC = () => {
       max={1}
       onChange={(keys) => onFormChange({ name: 'picture', value: keys[0] })}
     />
-    <ImagePreviewDialog ref={imagePreviewDialogRef} />
   </>)
 }
 

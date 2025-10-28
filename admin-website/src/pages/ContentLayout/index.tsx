@@ -1,128 +1,55 @@
-import { Link, Outlet } from "react-router-dom"
+import React from "react"
+import { Outlet } from "react-router-dom"
 import { Doll69If } from "shared"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup, SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarProvider,
   SidebarSeparator,
 } from "../../components/ui/sidebar"
 import Logo from "../../components/Logo"
-import SidebarFooterContent from "./components/SideFooterContent"
 import './root.scss'
 import css from './style.module.scss'
 import useCurrentUser from "@/Context/CurrentUser/useCurrentUser"
+import ModuleLoading from "@/components/Loading/ModuleLoading"
 
-const menuList = [
-  {
-    name: '总览',
-    list: [
-      {
-        path: '/dashboard',
-        name: '仪表盘',
-      },
-    ],
-  },
-  {
-    name: '物料管理',
-    list: [
-      {
-        path: 'products',
-        name: '产品管理',
-      },
-      {
-        path: 'components',
-        name: '配件管理',
-      },
-      {
-        path: 'brands',
-        name: '品牌管理',
-      },
-      {
-        path: 'categories',
-        name: '分类管理',
-      },
-    ],
-  },
-  {
-    name: '数据管理',
-    list: [
-      {
-        path: 'images',
-        name: '图片管理',
-      },
-    ],
-  },
-  {
-    name: '页面管理',
-    list: [
-      {
-        path: 'modules',
-        name: '页面管理',
-      },
-    ],
-  },
-  {
-    name: '系统管理',
-    list: [
-      {
-        path: 'users',
-        name: '用户管理',
-      }
-    ],
-  },
-]
+const ImagePreviewProvider = React.lazy(() => import("@/Context/ImagePreview/ImagePreviewProvider"))
+const SideContent = React.lazy(() => import('./components/SideContent'))
+const SideFooterContent = React.lazy(() => import('./components/SideFooterContent'))
 
 const ContentLayout = () => {
   const currentUser = useCurrentUser()
   return <>
+    <ImagePreviewProvider>
     <SidebarProvider>
       <Sidebar className="overflow-hidden">
         <SidebarHeader>
           <Logo />
         </SidebarHeader>
         <SidebarSeparator />
-        <SidebarContent>
-          <Doll69If display={!!currentUser}>
-            {
-              menuList.map((group, gIndex) => {
-                return <SidebarGroup key={`group-${gIndex}`}>
-                  <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
-                  <SidebarGroupContent>
-                    {
-                      group.list.map((item, index) => <SidebarMenu key={index}>
-                        <SidebarMenuItem>
-                          <SidebarMenuButton asChild>
-                            <Link to={item.path}>
-                              { item.name }
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      </SidebarMenu>)
-                    }
-                  </SidebarGroupContent>
-                </SidebarGroup>
-              })
-            }
-          </Doll69If>
-        </SidebarContent>
-        <SidebarSeparator />
-        <SidebarFooter>
-          <SidebarFooterContent />
-        </SidebarFooter>
-      </Sidebar>
-      <main className={css.contentLayout}>
         <Doll69If display={!!currentUser}>
-          <Outlet />
+          <ModuleLoading>
+            <SidebarContent>
+              <SideContent />
+            </SidebarContent>
+            <SidebarSeparator />
+            <SidebarFooter>
+              <SideFooterContent />
+            </SidebarFooter>
+          </ModuleLoading>
         </Doll69If>
-      </main>
+      </Sidebar>
+      <Doll69If display={!!currentUser}>
+        <ModuleLoading className="h-dvh">
+          <main className={css.contentLayout}>
+            <Outlet />
+          </main>
+        </ModuleLoading>
+      </Doll69If>
     </SidebarProvider>
+    </ImagePreviewProvider>
   </>
 }
 

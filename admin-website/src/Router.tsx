@@ -5,16 +5,16 @@ import {
   redirect,
 } from 'react-router-dom'
 import Root from './pages/Root/Root'
-import ContentLayout from './pages/ContentLayout'
 import { signOut } from './request/auth'
-import ModuleLoading from './components/Loading/ModuleLoading'
 
+const ContentLayout = React.lazy(() => import('./pages/ContentLayout'))
 const DashBoard = React.lazy(() => import('./pages/DashBoard/DashBoard'))
 const SignIn = React.lazy(() => import('./pages/SignIn/SignIn'))
 const Users = React.lazy(() => import('./pages/Users/Users'))
 const Categories = React.lazy(() => import('./pages/Categories/Categories'))
 const Brands = React.lazy(() => import('./pages/Brands/Brands'))
 const Product = React.lazy(() => import('./pages/Product/Product'))
+const ProductDetail = React.lazy(() => import('./pages/Product/ProductDetail'))
 const Images = React.lazy(() => import('./pages/Images/Images'))
 const Components = React.lazy(() => import('./pages/Components/Components'))
 const Modules = React.lazy(() => import('./pages/Modules/Modules'))
@@ -31,39 +31,43 @@ const routes = createBrowserRouter([
         children: [
           {
             path: '/',
-            element: <ModuleLoading><DashBoard /></ModuleLoading>,
+            Component: DashBoard,
           },
           {
             path: '/dashboard',
-            element: <ModuleLoading><DashBoard /></ModuleLoading>,
+            Component: DashBoard,
           },
           {
             path: '/users',
-            element: <ModuleLoading><Users /></ModuleLoading>,
+            Component: Users,
           },
           {
             path: '/categories',
-            element: <ModuleLoading><Categories /></ModuleLoading>,
+            Component: Categories,
           },
           {
             path: '/brands',
-            element: <ModuleLoading><Brands /></ModuleLoading>,
+            Component: Brands,
           },
           {
             path: '/products',
-            element: <ModuleLoading><Product /></ModuleLoading>,
+            Component: Product,
+          },
+          {
+            path: '/products/:productId',
+            Component: ProductDetail,
           },
           {
             path: '/components',
-            element: <ModuleLoading><Components /></ModuleLoading>,
+            Component: Components,
           },
           {
             path: '/images',
-            element: <ModuleLoading><Images /></ModuleLoading>,
+            Component: Images,
           },
           {
             path: '/modules',
-            element: <ModuleLoading><Modules /></ModuleLoading>,
+            Component: Modules,
           },
         ],
       },

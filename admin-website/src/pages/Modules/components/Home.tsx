@@ -14,11 +14,10 @@ import useTKDState from "@/hooks/useTKDState";
 import useList from "@/hooks/useList";
 import useIsQuerying from "@/hooks/useIsQuerying";
 import { Skeleton } from "@/components/ui/skeleton";
-import ImagePreviewDialog from "@/components/Image/ImagePreviewDialog";
-import { useImagePreviewDialogRef } from "@/components/Image/ImagePreviewDialog.hook";
 import { useSelectImagesDialogRef } from "@/components/Image/SelectImagesDialog.hook";
 import ImageActions from "@/components/Image/ImageActions";
 import SelectImagesDialog from "@/components/Image/SelectImagesDialog";
+import useImagePreview from "@/Context/ImagePreview/useImagePreview";
 
 interface HomeProps {
   currentPage: string,
@@ -67,7 +66,7 @@ const i18n = {
 } as const
 
 const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
-  const imagePreviewDialogRef = useImagePreviewDialogRef()
+  const imagePreview = useImagePreview()
   const selectImagesDialogRef = useSelectImagesDialogRef()
   const isLoading = useIsQuerying()
   const [tkd, setTKD, initTKD] = useTKDState()
@@ -191,7 +190,7 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
       {
         !isFetching && <>
           <TKDCard
-            {...tkd as any}
+            {...tkd}
             onChange={(key, value) => setTKD(key, value)}
             disabled={disabledEdit}
           />
@@ -246,7 +245,7 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
                                 src={revealItem.imageUrl}
                                 {...(revealItem.imageUrl ? {
                                   actionBody: <Eye />,
-                                  onActionBody: () => imagePreviewDialogRef.current?.open(revealItem.imageUrl),
+                                  onActionBody: () => imagePreview(revealItem.imageUrl),
                                   actionFooter: '选择图片',
                                   onActionFooter: () => startSelectImages(revealItem.imageUrl, ([imageUrl]) => changeValueByIndexByKey(index, `revealList[${rIndex}]`, { imageUrl }))
                                 } : {
@@ -266,7 +265,7 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
                                   src={menuItem.imageUrl}
                                   {...(menuItem.imageUrl ? {
                                     actionBody: <Eye />,
-                                    onActionBody: () => imagePreviewDialogRef.current?.open(menuItem.imageUrl),
+                                    onActionBody: () => imagePreview(menuItem.imageUrl),
                                     actionFooter: '选择图片',
                                     onActionFooter: () => startSelectImages(menuItem.imageUrl, ([value]) => changeValueByIndexByKey(index, `menuList[${mIndex}]`, { imageUrl: value }))
                                   } : {
@@ -291,7 +290,7 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
                         src={itemObj.imageUrl}
                         {...(itemObj.imageUrl ? {
                           actionBody: <Eye />,
-                          onActionBody: () => imagePreviewDialogRef.current?.open(itemObj.imageUrl),
+                          onActionBody: () => imagePreview(itemObj.imageUrl),
                           actionFooter: '选择图片',
                           onActionFooter: () => startSelectImages(itemObj.imageUrl, ([value]) => changeValueByIndexByKey(index, 'imageUrl', value))
                         } : {
@@ -314,7 +313,6 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
             max={1}
             onChange={(selectedKeys) => onSelectImage.current?.(selectedKeys)}
           />
-          <ImagePreviewDialog ref={imagePreviewDialogRef} />
         </>
       }
     </div>

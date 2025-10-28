@@ -13,9 +13,8 @@ import UploadImageArea from "@/components/Image/UploadImageArea";
 import { Separator } from "@/components/ui/separator";
 import TableFooter from "@/components/Table/TableFooter";
 import { useTablePageData } from "@/components/Page/TablePage.hook";
-import { useImagePreviewDialogRef } from "@/components/Image/ImagePreviewDialog.hook";
-import ImagePreviewDialog from "@/components/Image/ImagePreviewDialog";
 import ImageActions from "@/components/Image/ImageActions";
+import useImagePreview from "@/Context/ImagePreview/useImagePreview";
 
 const ImageType = {
   LIST: 'LIST',
@@ -27,7 +26,7 @@ type ImageType = typeof ImageType[keyof typeof ImageType]
 const SUPPORT_PAGE_SIZE = [15, 25, 50, 100]
 
 const Image: React.FC = () => {
-  const imagePreviewDialogRef = useImagePreviewDialogRef()
+  const imagePreview = useImagePreview()
   const imageTabs = [
     { name: '图片素材管理', value: ImageType.LIST },
     { name: '图片配置管理', value: ImageType.CONSTANT },
@@ -85,7 +84,7 @@ const Image: React.FC = () => {
                       className="size-[130px]"
                       src={imageObj?.key}
                       actionBody={<Eye />}
-                      onActionBody={() => imagePreviewDialogRef.current?.open(imageObj?.key)}
+                      onActionBody={() => imagePreview(imageObj?.key)}
                       actionFooter={'删除'}
                       onActionFooter={() => mutateAsync(imageObj?.key)}
                     />
@@ -98,7 +97,6 @@ const Image: React.FC = () => {
         </div>
       </Doll69If>
     </TablePage>
-    <ImagePreviewDialog ref={imagePreviewDialogRef} />
   </>)
 }
 

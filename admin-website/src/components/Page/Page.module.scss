@@ -2,7 +2,10 @@
   --uno: h-dvh m-[calc(0px-var(--layout-padding))];
   & {
     --uno: grid grid-flow-row;
-    grid-template-rows: 50px auto 60px;
+    grid-template-rows: 50px auto;
+  }
+  &:has(> .footer) {
+    grid-template-rows: 50px auto  60px;
   }
 }
 

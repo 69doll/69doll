@@ -1,7 +1,7 @@
 import SHA1 from 'crypto-js/sha1'
-import { checkRes } from './common'
+import { checkRes, redirectSignInPage } from './common'
 import { API_BASE_URL } from '@/constant'
-import { getAuthorization } from '@/store/authorization'
+import { getAuthorization, hasAuthorization } from '@/store/authorization'
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from '@/types/api.type'
 import type { ID } from '@/types/bean'
 
@@ -25,6 +25,7 @@ interface CurrentUser {
 export const getCurrentUserCacheKeys = () => ['current_user']
 
 export async function getCurrentUser () {
+  if (!hasAuthorization()) redirectSignInPage()
   const url = new URL('/api/admin/user/current_user', API_BASE_URL)
   const res = await fetch(url, {
     headers: {

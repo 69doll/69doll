@@ -12,6 +12,7 @@ const Users: React.FC = () => {
     queryKey: getUserListCacheKeys({ pageNum: 1, type: UserType.APP }),
     queryFn: () => getUserList({ pageNum: 1, type: UserType.APP }),
     enabled: hasAuthorization(),
+    gcTime: 30 * 1000, // 30 seconds
   })
   return <Card>
     <CardHeader>
