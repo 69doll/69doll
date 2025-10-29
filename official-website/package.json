@@ -40,6 +40,7 @@
     "typescript-eslint": "^8.39.1",
     "unocss": "^66.4.2",
     "vite": "^7.1.2",
+    "vite-bundle-analyzer": "^1.2.3",
     "vite-react-ssg": "^0.8.8"
   }
 }

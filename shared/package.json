@@ -10,5 +10,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "vite-bundle-analyzer": "^1.2.3"
+  }
 }

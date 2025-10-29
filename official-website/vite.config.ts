@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import ReactPlugin from '@vitejs/plugin-react'
 import UnoCSSPlugin from 'unocss/vite'
 import { presetWind3, presetIcons, transformerDirectives } from 'unocss'
+import { analyzer as AnalyzerPlugin } from 'vite-bundle-analyzer'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,6 +11,11 @@ export default defineConfig({
   },
   plugins: [
     ReactPlugin(),
+    AnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: true,
+      enabled: !process.env.CI,
+    }),
     UnoCSSPlugin({
       presets: [
         presetWind3(),

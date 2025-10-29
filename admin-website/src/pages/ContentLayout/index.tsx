@@ -1,4 +1,4 @@
-import React from "react"
+import { lazy } from "react"
 import { Outlet } from "react-router-dom"
 import { Doll69If } from "shared"
 import {
@@ -15,9 +15,9 @@ import css from './style.module.scss'
 import useCurrentUser from "@/Context/CurrentUser/useCurrentUser"
 import ModuleLoading from "@/components/Loading/ModuleLoading"
 
-const ImagePreviewProvider = React.lazy(() => import("@/Context/ImagePreview/ImagePreviewProvider"))
-const SideContent = React.lazy(() => import('./components/SideContent'))
-const SideFooterContent = React.lazy(() => import('./components/SideFooterContent'))
+const ImagePreviewProvider = lazy(() => import("@/Context/ImagePreview/ImagePreviewProvider"))
+const SideContent = lazy(() => import('./components/SideContent'))
+const SideFooterContent = lazy(() => import('./components/SideFooterContent'))
 
 const ContentLayout = () => {
   const currentUser = useCurrentUser()

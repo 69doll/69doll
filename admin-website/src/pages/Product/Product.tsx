@@ -8,7 +8,6 @@ import tableCss from "../../styles/table.module.scss"
 import TablePage from "@/components/Page/TablePage";
 import { getProductList, getProductListCacheKeys, type SPU } from "@/request/product";
 import { useTablePageData } from "@/components/Page/TablePage.hook";
-import { hasAuthorization } from "@/store/authorization";
 import MappingTable, { type MappingTableOptions } from "@/components/Table/MappingTable";
 import PageName from "@/components/Page/PageName";
 import ImageActions from "@/components/Image/ImageActions";
@@ -25,7 +24,6 @@ const Product: React.FC = () => {
   const { data, isFetching, refetch: refetchList } = useQuery({
     queryKey: getProductListCacheKeys({ pageSize, pageNum}),
     queryFn: () => getProductList({ pageSize, pageNum}),
-    enabled: hasAuthorization(),
   })
   const { list, footerProps } = useFooterData(data)
   const tableOptions: MappingTableOptions<SPU> = [

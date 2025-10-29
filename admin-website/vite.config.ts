@@ -9,6 +9,7 @@ import TailwindcssPlugin from "@tailwindcss/vite"
 import { defineConfig } from 'vite'
 import ReactPlugin from '@vitejs/plugin-react'
 import UnoCSSPlugin from 'unocss/vite'
+import { analyzer as AnalyzerPlugin } from 'vite-bundle-analyzer'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,6 +17,11 @@ export default defineConfig({
     port: 5174,
   },
   plugins: [
+    AnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: true,
+      enabled: !process.env.CI,
+    }),
     ReactPlugin(),
     TailwindcssPlugin(),
     UnoCSSPlugin({
@@ -36,5 +42,20 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    modulePreload: {
+      polyfill: true,
+    },
+    rollupOptions: {
+      output: {
+        manualChunks (id) {
+          if (id.includes('node_modules/es-toolkit')) return 'utils-chunk'
+          if (id.includes('node_modules/crypto-js')) return 'crypto-chunk'
+          if (id.includes('node_modules/dayjs')) return 'dayjs-chunk'
+          if (id.includes('Doll69If')) return '69if-chunk'
+        },
+      }
+    }
   },
 })

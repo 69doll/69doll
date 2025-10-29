@@ -1,23 +1,23 @@
-import React from 'react'
 import {
   RouterProvider,
   createBrowserRouter,
   redirect,
 } from 'react-router-dom'
+import { lazy } from 'react'
 import Root from './pages/Root/Root'
 import { signOut } from './request/auth'
 
-const ContentLayout = React.lazy(() => import('./pages/ContentLayout'))
-const DashBoard = React.lazy(() => import('./pages/DashBoard/DashBoard'))
-const SignIn = React.lazy(() => import('./pages/SignIn/SignIn'))
-const Users = React.lazy(() => import('./pages/Users/Users'))
-const Categories = React.lazy(() => import('./pages/Categories/Categories'))
-const Brands = React.lazy(() => import('./pages/Brands/Brands'))
-const Product = React.lazy(() => import('./pages/Product/Product'))
-const ProductDetail = React.lazy(() => import('./pages/Product/ProductDetail'))
-const Images = React.lazy(() => import('./pages/Images/Images'))
-const Components = React.lazy(() => import('./pages/Components/Components'))
-const Modules = React.lazy(() => import('./pages/Modules/Modules'))
+const ContentLayout = lazy(() => import('./pages/ContentLayout'))
+const DashBoard = lazy(() => import('./pages/DashBoard/DashBoard'))
+const SignIn = lazy(() => import('./pages/SignIn/SignIn'))
+const Users = lazy(() => import('./pages/Users/Users'))
+const Categories = lazy(() => import('./pages/Categories/Categories'))
+const Brands = lazy(() => import('./pages/Brands/Brands'))
+const Product = lazy(() => import('./pages/Product/Product'))
+const ProductDetail = lazy(() => import('./pages/Product/ProductDetail'))
+const Images = lazy(() => import('./pages/Images/Images'))
+const Components = lazy(() => import('./pages/Components/Components'))
+const Modules = lazy(() => import('./pages/Modules/Modules'))
 
 const routes = createBrowserRouter([
   {

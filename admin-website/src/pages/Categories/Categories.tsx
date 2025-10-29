@@ -19,7 +19,6 @@ import tableCss from '../../styles/table.module.scss'
 import DeleteButton from "../../components/Button/DeleteButton"
 import TablePage from "../../components/Page/TablePage"
 import PageName from "@/components/Page/PageName"
-import { hasAuthorization } from "@/store/authorization"
 import type { MappingTableOptions } from "@/components/Table/MappingTable"
 import type { OneOf } from "@/types/common"
 import MappingTable from "@/components/Table/MappingTable"
@@ -29,7 +28,7 @@ const Categories: React.FC = () => {
   const { data, isFetching, refetch: refetchCategoryList } = useQuery({
     queryKey: getCategoryAllListCacheKeys(),
     queryFn: () => getCategoryAllList(),
-    enabled: hasAuthorization(),
+    gcTime: 5 * 60 * 1000, // 5 min
   })
   const list = useMemo(() => {
     const currentList = data?.data ?? []

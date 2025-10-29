@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { CircleX, Eye, EyeClosed } from "lucide-react";
 import { Doll69If } from "shared";
+import { toast } from "sonner";
 import { Button } from "../../components/ui/button";
 import Logo from "../../components/Logo";
 import css from "./style.module.scss";
@@ -18,7 +19,6 @@ import useFormItemState from "@/hooks/useFormItemState";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
 import useIsQuerying from "@/hooks/useIsQuerying";
 import { Spinner } from "@/components/ui/spinner";
-import { toast } from "sonner";
 
 const SignIn: React.FC = () => {
   const isQuerying = useIsQuerying()
