@@ -38,7 +38,7 @@ const ProductDetail: React.FC = () => {
   const [skus, { init: setSkus, setAt }] = useList<SKU>()
   useEffect(() => {
     if (!isFetched) return
-    setSpu(data?.spu!)
+    data?.spu && setSpu(data.spu)
     setSkus(data?.skus ?? [])
     initTKD(JSON.parse(data?.spu.seoConfig ?? '{}'))
   }, [isFetched])

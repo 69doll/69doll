@@ -166,7 +166,7 @@ const Users: React.FC = () => {
       onAction={() => isAdd ? add() : save()}
       onCancel={() => setEditUser(undefined)}
     >
-      <form className="grid auto-rows-min gap-6 px-4" onChange={(a) => onFormChange(a.target as any)}>
+      <form className="grid auto-rows-min gap-6 px-4" onChange={(a) => onFormChange(a.target as HTMLInputElement)}>
         <div className="grid gap-3">
           <Label htmlFor="user-id">ID</Label>
           <Input id="user-id" defaultValue={editUser?.id} disabled={true} name='id' />
