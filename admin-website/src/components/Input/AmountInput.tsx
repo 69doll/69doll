@@ -1,5 +1,10 @@
 import { useMemo } from "react";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+} from "@/components/ui/input-group";
 
 const AmountInput = (props: React.ComponentProps<"input">) => {
   const { value, defaultValue } = props
@@ -10,10 +15,14 @@ const AmountInput = (props: React.ComponentProps<"input">) => {
     return NaN
   }, [value, defaultValue ])
   return <>
-    <div>
-      <Input {...props} />
-      <span>{(amount / 100).toFixed(2)}</span>
-    </div>
+    <InputGroup>
+      <InputGroupInput {...props} />
+      <InputGroupAddon align='block-end'>
+        <InputGroupText className="text-muted-foreground text-xs">
+          {(amount / 100).toFixed(2)}
+        </InputGroupText>
+      </InputGroupAddon>
+    </InputGroup>
   </>
 }
 

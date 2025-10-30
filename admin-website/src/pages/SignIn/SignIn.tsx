@@ -2,7 +2,6 @@ import type React from "react";
 import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { CircleX, Eye, EyeClosed } from "lucide-react";
 import { Doll69If } from "shared";
 import { toast } from "sonner";
 import { Button } from "../../components/ui/button";
@@ -16,9 +15,9 @@ import { getRememberUser, hasRememberUser, setRememberUser } from "@/store/remem
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import useFormItemState from "@/hooks/useFormItemState";
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
 import useIsQuerying from "@/hooks/useIsQuerying";
 import { Spinner } from "@/components/ui/spinner";
+import ActionInput, { ActionInputActions } from "@/components/Input/ActionInput";
 
 const SignIn: React.FC = () => {
   const isQuerying = useIsQuerying()
@@ -68,79 +67,38 @@ const SignIn: React.FC = () => {
     }
   }
 
-  const inputIconProps = {
-    variant: 'ghost',
-    size: 'icon-xs',
-  } as const
-
   return <>
     <form action={login} className={css.container}>
       <Logo />
       <FormWrapper>
         <FormItem label="账号" errors={emailErrors}>
-          <InputGroup>
-            <InputGroupInput
-              placeholder="账号"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={isQuerying}
-              aria-invalid={!!emailErrors.length}
-              tabIndex={1}
-            />
-            <Doll69If display={email}>
-              <InputGroupAddon align='inline-end'>
-                <InputGroupButton
-                  {...inputIconProps}
-                  onClick={() => setEmail('')}
-                >
-                  <CircleX />
-                </InputGroupButton>
-              </InputGroupAddon>
-            </Doll69If>
-          </InputGroup>
+          <ActionInput
+            placeholder="账号"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={isQuerying}
+            aria-invalid={!!emailErrors.length}
+            tabIndex={1}
+            actions={email ? ActionInputActions.Clear(() => setEmail('')) : []}
+          />
         </FormItem>
         <FormItem label="密码" errors={passwordErrors}>
-          <InputGroup>
-            <InputGroupInput
-              placeholder="密码"
-              name="password"
-              type={passwordInputType}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={isQuerying}
-              aria-invalid={!!passwordErrors.length}
-              tabIndex={2}
-              onKeyDown={(e) => e.key === 'Enter' && login()}
-            />
-            <Doll69If display={password}>
-              <InputGroupAddon align='inline-end'>
-                {
-                  passwordInputType === 'password' ? <>
-                    <InputGroupButton
-                      {...inputIconProps}
-                      onClick={() => setPasswordInputType('text')}
-                    >
-                      <EyeClosed />
-                    </InputGroupButton>
-                  </> : <>
-                    <InputGroupButton
-                      {...inputIconProps}
-                      onClick={() => setPasswordInputType('password')}
-                    >
-                      <Eye />
-                    </InputGroupButton>
-                  </>
-                }
-                <InputGroupButton
-                  {...inputIconProps}
-                  onClick={() => setPassword('')}
-                >
-                  <CircleX />
-                </InputGroupButton>
-              </InputGroupAddon>
-            </Doll69If>
-          </InputGroup>
+          <ActionInput
+            placeholder="密码"
+            name="password"
+            type={passwordInputType}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={isQuerying}
+            aria-invalid={!!passwordErrors.length}
+            tabIndex={2}
+            onKeyDown={(e) => e.key === 'Enter' && login()}
+            actions={password ? [
+              passwordInputType === 'password' ? ActionInputActions.EyeClosed(() => setPasswordInputType('text')) : ActionInputActions.Eye(() => setPasswordInputType('password')),
+              ActionInputActions.Clear(() => setPassword(''))
+            ] : []}
+          />
         </FormItem>
       </FormWrapper>
       <Label htmlFor="remember">
