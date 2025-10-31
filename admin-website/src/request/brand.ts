@@ -1,6 +1,6 @@
-import { checkRes } from "./common"
+import { checkRes, redirectSignInPage } from "./common"
 import { API_BASE_URL } from "@/constant"
-import { getAuthorization } from "@/store/authorization"
+import { getAuthorization, hasAuthorization } from "@/store/authorization"
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from "@/types/api.type"
 import type { ID } from "@/types/bean"
 
@@ -28,6 +28,7 @@ export const getBrandAllListCacheKeys = (options?: Partial<BrandAllListOptions>)
 }
 
 export const getBrandAllList = async (options?: Partial<BrandAllListOptions>) => {
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL('/api/admin/brand/list', API_BASE_URL)
   options?.id && url.searchParams.set('id', options.id.toString())
   options?.name && url.searchParams.set('name', options.name)
@@ -59,6 +60,7 @@ export const getBrandListCacheKeys = (options?: Partial<ApiReqPage<BrandListOpti
 }
 
 export const getBrandList = async (options?: Partial<ApiReqPage<BrandListOptions>>) => {
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL('/api/admin/brand/page', API_BASE_URL)
   options?.pageNum && url.searchParams.set('pageNum', options.pageNum.toString())
   options?.pageSize && url.searchParams.set('pageSize', options.pageSize.toString())

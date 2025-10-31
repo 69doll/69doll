@@ -51,7 +51,7 @@ export const getProductListCacheKeys = (options?: Partial<ProductListOptions>) =
 }
 
 export async function getProductList (options?: Partial<ProductListOptions>) {
-  if (!hasAuthorization()) redirectSignInPage()
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL('/api/admin/product/page', API_BASE_URL)
   options?.name && url.searchParams.set('name', options.name)
   options?.pageNum && url.searchParams.set('pageNum', options.pageNum.toString())
@@ -81,7 +81,7 @@ export const getProductDetailCacheKeys = (id: ID) => {
 }
 
 export async function getProductDetail (id: ID) {
-  if (!hasAuthorization()) redirectSignInPage()
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL(`/api/admin/product/detail/${id}`, API_BASE_URL)
   const res = await fetch(url, {
     headers: {

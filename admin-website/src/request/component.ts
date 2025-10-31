@@ -1,8 +1,8 @@
 import type { ID } from "../types/bean"
-import { checkRes } from "./common"
+import { checkRes, redirectSignInPage } from "./common"
 import { API_BASE_URL } from "@/constant"
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from "@/types/api.type"
-import { getAuthorization } from "@/store/authorization"
+import { getAuthorization, hasAuthorization } from "@/store/authorization"
 
 export interface Component {
   brandId: ID,
@@ -35,6 +35,7 @@ export const getComponentAllListCacheKeys = (options?: Partial<ComponentAllListO
 }
 
 export const getComponentAllList = async (options?: Partial<ComponentAllListOptions>) => {
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL('/api/admin/doll_component/list', API_BASE_URL)
   options?.brandId && url.searchParams.set('brandId', options.brandId.toString())
   options?.id && url.searchParams.set('id', options.id.toString())
@@ -68,6 +69,7 @@ export const getComponentListCacheKeys = (options?: Partial<ApiReqPage<Component
 }
 
 export const getComponentList = async (options?: Partial<ApiReqPage<ComponentListOptions>>) => {
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL('/api/admin/doll_component/page', API_BASE_URL)
   options?.pageNum && url.searchParams.set('pageNum', options.pageNum.toString())
   options?.pageSize && url.searchParams.set('pageSize', options.pageSize.toString())

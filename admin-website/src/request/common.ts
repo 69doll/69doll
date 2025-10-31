@@ -2,9 +2,12 @@ import { redirect } from "react-router-dom"
 import type { ApiResBody } from "@/types/api.type"
 import { setAuthorization } from "@/store/authorization"
 
-export function redirectSignInPage () {
+export function redirectSignInPage (throwErr = false) {
   setAuthorization()
   redirect('/signin')
+  if (throwErr) {
+    throw new Error('Invalid Error')
+  }
 }
 
 export async function checkRes (res: Response) {

@@ -25,7 +25,7 @@ interface CurrentUser {
 export const getCurrentUserCacheKeys = () => ['current_user']
 
 export async function getCurrentUser () {
-  if (!hasAuthorization()) redirectSignInPage()
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL('/api/admin/user/current_user', API_BASE_URL)
   const res = await fetch(url, {
     headers: {
@@ -63,6 +63,7 @@ export const getUserListCacheKeys = (options?: Partial<UserListOptions>) => {
 }
 
 export async function getUserList (options?: Partial<UserListOptions>) {
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL('/api/admin/user/page', API_BASE_URL)
   options?.type && url.searchParams.set('type', options.type)
   options?.pageNum && url.searchParams.set('pageNum', options.pageNum.toString())

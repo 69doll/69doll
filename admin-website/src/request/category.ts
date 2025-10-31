@@ -1,6 +1,6 @@
-import { checkRes } from "./common"
+import { checkRes, redirectSignInPage } from "./common"
 import { API_BASE_URL } from "@/constant"
-import { getAuthorization } from "@/store/authorization"
+import { getAuthorization, hasAuthorization } from "@/store/authorization"
 import type { ApiResBody } from "@/types/api.type"
 import type { ID } from "@/types/bean"
 
@@ -30,6 +30,7 @@ export const getCategoryAllListCacheKeys = (options?: Partial<CategoryListOption
 }
 
 export const getCategoryAllList = async (options?: Partial<CategoryListOptions>) => {
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL('/api/admin/category/list', API_BASE_URL)
   options?.name && url.searchParams.set('name', options.name)
   options?.parentId && url.searchParams.set('parentId', options.parentId.toString())

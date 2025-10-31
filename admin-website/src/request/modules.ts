@@ -1,4 +1,5 @@
-import { getAuthorization } from '@/store/authorization'
+import { redirectSignInPage } from './common'
+import { getAuthorization, hasAuthorization } from '@/store/authorization'
 
 export const MODULE_ENV = {
   PRODUCTION: 'production',
@@ -27,6 +28,7 @@ export const getPageModuleDataCacheKeys = (page: string, env: MODULE_ENV, lang: 
 }
 
 export const getPageModuleData = async <O = unknown>(page: string, env: MODULE_ENV, lang: string = 'en-us') => {
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL(`/${env}/${lang}/${page}`, dataDomain)
   const res = await fetch(url, {
     headers: {

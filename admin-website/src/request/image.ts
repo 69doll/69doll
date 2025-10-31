@@ -1,7 +1,7 @@
 import { castArray } from "es-toolkit/compat"
-import { checkRes } from "./common"
+import { checkRes, redirectSignInPage } from "./common"
 import { API_BASE_URL } from "@/constant"
-import { getAuthorization } from "@/store/authorization"
+import { getAuthorization, hasAuthorization } from "@/store/authorization"
 import type { ApiReqPage, ApiResBody, ApiResBodyPage } from "@/types/api.type"
 import type { ID } from "@/types/bean"
 
@@ -55,6 +55,7 @@ export const getImageListCacheKeys = (options?: Partial<ImageListOptions>) => {
 }
 
 export async function getImageList (options?: Partial<ImageListOptions>) {
+  if (!hasAuthorization()) redirectSignInPage(true)
   const url = new URL('/api/admin/image/page', API_BASE_URL)
   options?.pageNum && url.searchParams.set('pageNum', options.pageNum.toString())
   options?.pageSize && url.searchParams.set('pageSize', options.pageSize.toString())
