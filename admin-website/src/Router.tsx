@@ -19,6 +19,8 @@ const ProductDetail = lazy(() => import('./pages/Product/ProductDetail'))
 const Images = lazy(() => import('./pages/Images/Images'))
 const Components = lazy(() => import('./pages/Components/Components'))
 const Modules = lazy(() => import('./pages/Modules/Modules'))
+const Orders = lazy(() => import('./pages/Orders/Orders'))
+const OrderDetail = lazy(() => import('./pages/Orders/OrderDetail'))
 
 const routes = createBrowserRouter([
   {
@@ -73,6 +75,14 @@ const routes = createBrowserRouter([
           {
             path: '/modules',
             Component: Modules,
+          },
+          {
+            path: '/orders',
+            Component: Orders,
+          },
+          {
+            path: '/orders/:id',
+            Component: OrderDetail,
           },
         ],
       },

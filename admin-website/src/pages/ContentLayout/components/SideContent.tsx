@@ -18,6 +18,10 @@ const menuList = [
     name: '物料管理',
     list: [
       {
+        path: 'orders',
+        name: '订单管理',
+      },
+      {
         path: 'products',
         name: '产品管理',
       },
