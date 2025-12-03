@@ -22,8 +22,8 @@ export default function OrderDetailPage() {
   const navigate = useNavigate();
 
   const { data: res, isLoading, isFetched } = useQuery({
-    queryKey: getOrderDetailCacheKeys(id!),
-    queryFn: () => getOrderDetail(id!),
+    queryKey: getOrderDetailCacheKeys(Number(id!)),
+    queryFn: () => getOrderDetail(Number(id!)),
     enabled: !!id,
   });
 
@@ -81,12 +81,12 @@ export default function OrderDetailPage() {
                 <CardTitle>订单条目</CardTitle>
               </CardHeader>
               <CardContent>
-                <MappingTable options={orderLinesTableOptions} sourceData={order?.orderLines} isLoading={isLoading} />
+                <MappingTable options={orderLinesTableOptions} sourceData={order?.orderLines ?? []} isLoading={isLoading} />
               </CardContent>
             </Card>
           </div>
           <div className="lg:col-span-1 grid gap-6">
-             <Card>
+            <Card>
               <CardHeader>
                 <CardTitle>客户与配送</CardTitle>
               </CardHeader>
@@ -109,5 +109,5 @@ export default function OrderDetailPage() {
         </div>
       </Doll69If>
     </Page>
-  );
+  )
 }
