@@ -35,7 +35,7 @@ const ProductDetail: React.FC = () => {
   const [tkd, setTKD, initTKD] = useTKDState()
   const data = useMemo(() => res?.data, [res])
   const [spu, setSpu] = useState<SPU>(originData?.spu ?? {})
-  const [skus, { init: setSkus, setAt }] = useList<SKU>()
+  const [skus, { init: setSkus, setAtByKey }] = useList<SKU>()
   useEffect(() => {
     if (!isFetched) return
     data?.spu && setSpu(data.spu)
@@ -154,7 +154,7 @@ const ProductDetail: React.FC = () => {
                         >
                           <Input
                             value={sku.name}
-                            onChange={(e) => setAt(index, 'name', e.target.value)}
+                            onChange={(e) => setAtByKey(index, 'name', e.target.value)}
                             disabled={isFetching}
                           />
                         </FormItem>

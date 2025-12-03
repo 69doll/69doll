@@ -1,4 +1,5 @@
-import React, { useMemo } from "react";
+import type React from "react";
+import { useMemo, Suspense } from "react";
 import { cn } from "@/lib/utils";
 
 interface ModuleLoadingProps {
@@ -19,10 +20,10 @@ const ModuleLoading: React.FC<React.PropsWithChildren<ModuleLoadingProps>> = ({
         {hint}
       </div>
     </>
-  }, [className])
-  return <React.Suspense fallback={fallbackComp}>
+  }, [className, hint])
+  return <Suspense fallback={fallbackComp}>
     {children}
-  </React.Suspense>
+  </Suspense>
 }
 
 export default ModuleLoading

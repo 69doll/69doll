@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import type React from "react";
+import { lazy, Suspense , useEffect, useMemo } from "react";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
-import { useEffect, useMemo } from "react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
-import Image from "../Image/Image";
 import type { ID } from "@/types/bean";
 import { getBrandAllList, getBrandAllListCacheKeys } from "@/request/brand";
 import { Skeleton } from "@/components/ui/skeleton";
+
+const Image = lazy(() => import("../Image/Image"))
 
 const BrandName: React.FC<{ id: ID }> = ({ id }) => {
   const [ref, entry] = useIntersectionObserver({
@@ -20,6 +21,7 @@ const BrandName: React.FC<{ id: ID }> = ({ id }) => {
     enabled: false,
     select: (res) => res.data,
     gcTime: 30 * 1000, // 30 seconds
+    staleTime: 5 * 60 * 1000, // 5min
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -36,7 +38,9 @@ const BrandName: React.FC<{ id: ID }> = ({ id }) => {
           <HoverCardTrigger>{data?.name}</HoverCardTrigger>
           {
             data?.logo ? <HoverCardContent>
-              <Image resize={{ width: 130 }} src={data?.logo} />
+              <Suspense fallback={<Skeleton className="size-[130px]" />}>
+                <Image resize={{ width: 130 }} src={data?.logo} />
+              </Suspense>
             </HoverCardContent> :
             undefined
           }

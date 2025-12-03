@@ -1,6 +1,7 @@
 import type React from "react";
 import { Doll69If } from "shared";
 import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
+import css from './FormItem.module.scss'
 import { cn } from "@/lib/utils";
 
 interface FormItemProps {
@@ -21,7 +22,7 @@ const FormItem: React.FC<React.PropsWithChildren<FormItemProps>> = ({
 }) => {
   return <>
     <Field className={cn("max-w-sm", className)}>
-      <FieldLabel>{label}</FieldLabel>
+      <FieldLabel className={css.label}>{label}</FieldLabel>
       <Doll69If display={!!description}>
         <FieldDescription>{description}</FieldDescription>
       </Doll69If>

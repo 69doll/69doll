@@ -70,7 +70,7 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
   const selectImagesDialogRef = useSelectImagesDialogRef()
   const isLoading = useIsQuerying()
   const [tkd, setTKD, initTKD] = useTKDState()
-  const [list, { init, moveUp, moveDown, removeAt, setAt, unshift, push }] = useList<HomePageData>()
+  const [list, { init, moveUp, moveDown, removeAt, setAtByKey, unshift, push }] = useList<HomePageData>()
   const [moduleEnv, setModuleEnv] = useState<MODULE_ENV>(MODULE_ENV.DRAFT)
   const { data, isFetching, refetch: refreshData } = useQuery({
     queryKey: getPageModuleDataCacheKeys(page, moduleEnv),
@@ -87,7 +87,7 @@ const Home: React.FC<HomeProps> = ({ currentPage, page }) => {
     refreshData()
   }
   const changeValueByIndexByKey = (index: number, key: string, value: any) => {
-    setAt(index, key, value)
+    setAtByKey(index, key, value)
   }
   const onSelectImage = useRef<((selectedKeys: string[]) => void)>(null);
   const startSelectImages = (selectedKeys: string | string[], onChange: (selectedKeys: string[]) => void) => {

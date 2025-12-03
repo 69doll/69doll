@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import type React from "react";
+import { useState, lazy } from "react";
 import PageTabs from "@/components/Page/PageTabs";
 import PageName from "@/components/Page/PageName";
 import Page from "@/components/Page/Page";
@@ -10,7 +11,7 @@ const MODULE_PAGE = {
 
 type MODULE_PAGE = typeof MODULE_PAGE[keyof typeof MODULE_PAGE]
 
-const Home = React.lazy(() => import('./components/Home'))
+const Home = lazy(() => import('./components/Home'))
 
 const Modules: React.FC = () => {
   const isQuerying = useIsQuerying()

@@ -12,6 +12,7 @@ const DashBoard = lazy(() => import('./pages/DashBoard/DashBoard'))
 const SignIn = lazy(() => import('./pages/SignIn/SignIn'))
 const Users = lazy(() => import('./pages/Users/Users'))
 const Categories = lazy(() => import('./pages/Categories/Categories'))
+const CategoryDetail = lazy(() => import('./pages/Categories/CategoryDetail'))
 const Brands = lazy(() => import('./pages/Brands/Brands'))
 const Product = lazy(() => import('./pages/Product/Product'))
 const ProductDetail = lazy(() => import('./pages/Product/ProductDetail'))
@@ -44,6 +45,10 @@ const routes = createBrowserRouter([
           {
             path: '/categories',
             Component: Categories,
+          },
+          {
+            path: '/categories/:categoryId',
+            Component: CategoryDetail,
           },
           {
             path: '/brands',

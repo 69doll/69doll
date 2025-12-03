@@ -1,0 +1,12 @@
+[required],
+[aria-required="true"],
+[data-slot="input-group"] > [required] {
+  &:not([disabled]):not([data-disabled]) {
+    .label:has(~ &) {
+      &::after {
+        --uno: inline color-red-500;
+        content: '*';
+      }
+    }
+  }
+}

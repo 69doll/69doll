@@ -15,6 +15,12 @@ import { analyzer as AnalyzerPlugin } from 'vite-bundle-analyzer'
 export default defineConfig({
   server: {
     port: 5174,
+    proxy: {
+      '/api': 'https://admin-69doll.veda-studios.com',
+      // '/api': 'https://admin.69doll.arylo.cc',
+      // '/api': 'https://proxy.69doll.arylo.cc/https://admin.69doll.arylo.cc',
+      // '/api': 'https://proxy.69doll.arylo.cc/https://admin-69doll.veda-studios.com',
+    },
   },
   plugins: [
     AnalyzerPlugin({

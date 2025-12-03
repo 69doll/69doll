@@ -1,6 +1,20 @@
+import type { URL } from "url"
 import { redirect } from "react-router-dom"
 import type { ApiResBody } from "@/types/api.type"
-import { setAuthorization } from "@/store/authorization"
+import { getAuthorization, setAuthorization } from "@/store/authorization"
+
+export function getDefaultHeaders () {
+  return {
+    'Content-Type': 'application/json',
+    Authorization: getAuthorization()!,
+  }
+}
+
+export function setUrlSearchParams (url: URL, search: Record<string, string | number> = {}) {
+  Object.entries(search).forEach(([key, value]) => {
+    typeof value !== 'undefined' && url.searchParams.set(key, String(value))
+  })
+}
 
 export function redirectSignInPage (throwErr = false) {
   setAuthorization()

@@ -1,0 +1,3866 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "admin",
+    "title": "admin",
+    "contact": {}
+  },
+  "host": "example.com",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "admin-auth-controller",
+      "description": "Admin Auth Controller"
+    },
+    {
+      "name": "admin-aws-s-3-controller",
+      "description": "Admin Aws S 3 Controller"
+    },
+    {
+      "name": "admin-brand-controller",
+      "description": "Admin Brand Controller"
+    },
+    {
+      "name": "admin-category-attribute-controller",
+      "description": "Admin Category Attribute Controller"
+    },
+    {
+      "name": "admin-category-controller",
+      "description": "Admin Category Controller"
+    },
+    {
+      "name": "admin-doll-component-category-controller",
+      "description": "Admin Doll Component Category Controller"
+    },
+    {
+      "name": "admin-doll-component-controller",
+      "description": "Admin Doll Component Controller"
+    },
+    {
+      "name": "admin-image-controller",
+      "description": "Admin Image Controller"
+    },
+    {
+      "name": "admin-order-controller",
+      "description": "Admin Order Controller"
+    },
+    {
+      "name": "admin-product-controller",
+      "description": "Admin Product Controller"
+    },
+    {
+      "name": "admin-user-controller",
+      "description": "Admin User Controller"
+    }
+  ],
+  "paths": {
+    "/api/admin/auth/login": {
+      "post": {
+        "tags": [
+          "admin-auth-controller"
+        ],
+        "summary": "login",
+        "operationId": "loginUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLoginRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«UserTokenInfo»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/aws/s3/upload": {
+      "post": {
+        "tags": [
+          "admin-aws-s-3-controller"
+        ],
+        "summary": "upload",
+        "operationId": "uploadUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "files",
+            "description": "files",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "file"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«S3UploadResponse»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/brand/create": {
+      "post": {
+        "tags": [
+          "admin-brand-controller"
+        ],
+        "summary": "create",
+        "operationId": "createUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BrandCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/brand/delete": {
+      "delete": {
+        "tags": [
+          "admin-brand-controller"
+        ],
+        "summary": "delete",
+        "operationId": "deleteUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BrandDeleteRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/brand/list": {
+      "get": {
+        "tags": [
+          "admin-brand-controller"
+        ],
+        "summary": "list",
+        "operationId": "listUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«List«BrandInfo»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/brand/page": {
+      "get": {
+        "tags": [
+          "admin-brand-controller"
+        ],
+        "summary": "page",
+        "operationId": "pageUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pageNum",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«CommonPage«BrandInfo»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/brand/update": {
+      "put": {
+        "tags": [
+          "admin-brand-controller"
+        ],
+        "summary": "update",
+        "operationId": "updateUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BrandUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/category/create": {
+      "post": {
+        "tags": [
+          "admin-category-controller"
+        ],
+        "summary": "create",
+        "operationId": "createUsingPOST_2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategoryCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/category/delete": {
+      "delete": {
+        "tags": [
+          "admin-category-controller"
+        ],
+        "summary": "delete",
+        "operationId": "deleteUsingDELETE_2",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategoryDeleteRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/category/list": {
+      "get": {
+        "tags": [
+          "admin-category-controller"
+        ],
+        "summary": "list",
+        "operationId": "listUsingGET_1",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "parentId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«List«CategoryInfo»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/category/update": {
+      "put": {
+        "tags": [
+          "admin-category-controller"
+        ],
+        "summary": "update",
+        "operationId": "updateUsingPUT_2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategoryUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/category_attribute/create": {
+      "post": {
+        "tags": [
+          "admin-category-attribute-controller"
+        ],
+        "summary": "create",
+        "operationId": "createUsingPOST_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategoryAttributeCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/category_attribute/delete": {
+      "delete": {
+        "tags": [
+          "admin-category-attribute-controller"
+        ],
+        "summary": "delete",
+        "operationId": "deleteUsingDELETE_1",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategoryAttributeDeleteRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/category_attribute/list_by_category_id": {
+      "get": {
+        "tags": [
+          "admin-category-attribute-controller"
+        ],
+        "summary": "listByCategoryId",
+        "operationId": "listByCategoryIdUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«List«CategoryAttributeInfo»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/category_attribute/update": {
+      "put": {
+        "tags": [
+          "admin-category-attribute-controller"
+        ],
+        "summary": "update",
+        "operationId": "updateUsingPUT_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategoryAttributeUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/doll_component/create": {
+      "post": {
+        "tags": [
+          "admin-doll-component-controller"
+        ],
+        "summary": "create",
+        "operationId": "createUsingPOST_4",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DollComponentCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/doll_component/delete": {
+      "delete": {
+        "tags": [
+          "admin-doll-component-controller"
+        ],
+        "summary": "delete",
+        "operationId": "deleteUsingDELETE_4",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DollComponentDeleteRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/doll_component/list": {
+      "get": {
+        "tags": [
+          "admin-doll-component-controller"
+        ],
+        "summary": "list",
+        "operationId": "listUsingGET_3",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«List«DollComponentResponse»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/doll_component/page": {
+      "get": {
+        "tags": [
+          "admin-doll-component-controller"
+        ],
+        "summary": "page",
+        "operationId": "pageUsingGET_1",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pageNum",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«CommonPage«DollComponentResponse»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/doll_component/update": {
+      "put": {
+        "tags": [
+          "admin-doll-component-controller"
+        ],
+        "summary": "update",
+        "operationId": "updateUsingPUT_4",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DollComponentUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/doll_component_category/create": {
+      "post": {
+        "tags": [
+          "admin-doll-component-category-controller"
+        ],
+        "summary": "create",
+        "operationId": "createUsingPOST_3",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DollComponentCategoryCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/doll_component_category/delete": {
+      "delete": {
+        "tags": [
+          "admin-doll-component-category-controller"
+        ],
+        "summary": "delete",
+        "operationId": "deleteUsingDELETE_3",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DollComponentCategoryDeleteRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/doll_component_category/list": {
+      "get": {
+        "tags": [
+          "admin-doll-component-category-controller"
+        ],
+        "summary": "list",
+        "operationId": "listUsingGET_2",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "parentId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«List«DollComponentCategoryInfo»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/doll_component_category/update": {
+      "put": {
+        "tags": [
+          "admin-doll-component-category-controller"
+        ],
+        "summary": "update",
+        "operationId": "updateUsingPUT_3",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DollComponentCategoryUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/image/batch_delete": {
+      "delete": {
+        "tags": [
+          "admin-image-controller"
+        ],
+        "summary": "delete",
+        "operationId": "deleteUsingDELETE_5",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ImageBatchDeleteRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/image/page": {
+      "get": {
+        "tags": [
+          "admin-image-controller"
+        ],
+        "summary": "page",
+        "operationId": "pageUsingGET_2",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "key",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pageNum",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«CommonPage«ImageInfo»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/image/upload": {
+      "post": {
+        "tags": [
+          "admin-image-controller"
+        ],
+        "summary": "upload",
+        "operationId": "uploadUsingPOST_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "files",
+            "description": "files",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "file"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«S3UploadResponse»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/order/detail/{id}": {
+      "get": {
+        "tags": [
+          "admin-order-controller"
+        ],
+        "summary": "detail",
+        "operationId": "detailUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«OrderDetailInfo»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/order/page": {
+      "get": {
+        "tags": [
+          "admin-order-controller"
+        ],
+        "summary": "page",
+        "operationId": "pageUsingGET_3",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "endTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageNum",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«CommonPage«OrderPageInfo»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/order/shipping": {
+      "post": {
+        "tags": [
+          "admin-order-controller"
+        ],
+        "summary": "shipping",
+        "operationId": "shippingUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrderShippingRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«OrderShippingResult»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/product/create": {
+      "post": {
+        "tags": [
+          "admin-product-controller"
+        ],
+        "summary": "create",
+        "operationId": "createUsingPOST_5",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProductCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/product/delete": {
+      "delete": {
+        "tags": [
+          "admin-product-controller"
+        ],
+        "summary": "delete",
+        "operationId": "deleteUsingDELETE_6",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProductDeleteRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/product/detail/{id}": {
+      "get": {
+        "tags": [
+          "admin-product-controller"
+        ],
+        "summary": "detail",
+        "operationId": "detailUsingGET_1",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«ProductDetailResponse»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/product/page": {
+      "get": {
+        "tags": [
+          "admin-product-controller"
+        ],
+        "summary": "page",
+        "operationId": "pageUsingGET_4",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pageNum",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«CommonPage«ProductSearchResponse»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/product/update": {
+      "put": {
+        "tags": [
+          "admin-product-controller"
+        ],
+        "summary": "update",
+        "operationId": "updateUsingPUT_5",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProductUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/user/create": {
+      "post": {
+        "tags": [
+          "admin-user-controller"
+        ],
+        "summary": "create",
+        "operationId": "createUsingPOST_6",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/user/current_user": {
+      "get": {
+        "tags": [
+          "admin-user-controller"
+        ],
+        "summary": "currentUser",
+        "operationId": "currentUserUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«UserDetailInfo»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/user/delete": {
+      "delete": {
+        "tags": [
+          "admin-user-controller"
+        ],
+        "summary": "delete",
+        "operationId": "deleteUsingDELETE_7",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDeleteRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/user/page": {
+      "get": {
+        "tags": [
+          "admin-user-controller"
+        ],
+        "summary": "page",
+        "operationId": "pageUsingGET_5",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "nickname",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pageNum",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«CommonPage«UserPageResponse»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/user/reset_password": {
+      "post": {
+        "tags": [
+          "admin-user-controller"
+        ],
+        "summary": "resetPassword",
+        "operationId": "resetPasswordUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserPasswordResetRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/admin/user/update": {
+      "put": {
+        "tags": [
+          "admin-user-controller"
+        ],
+        "summary": "update",
+        "operationId": "updateUsingPUT_6",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResult«boolean»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Authorization": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "BrandCreateRequest": {
+      "type": "object",
+      "properties": {
+        "logo": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "BrandCreateRequest"
+    },
+    "BrandDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "BrandDeleteRequest"
+    },
+    "BrandInfo": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "BrandInfo"
+    },
+    "BrandUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "BrandUpdateRequest"
+    },
+    "CategoryAttributeCreateRequest": {
+      "type": "object",
+      "properties": {
+        "categoryId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "customizable": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "salable": {
+          "type": "boolean"
+        },
+        "searchable": {
+          "type": "boolean"
+        },
+        "valuesJson": {
+          "type": "string"
+        }
+      },
+      "title": "CategoryAttributeCreateRequest"
+    },
+    "CategoryAttributeDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "CategoryAttributeDeleteRequest"
+    },
+    "CategoryAttributeInfo": {
+      "type": "object",
+      "properties": {
+        "categoryId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "customizable": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "salable": {
+          "type": "boolean"
+        },
+        "searchable": {
+          "type": "boolean"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "valuesJson": {
+          "type": "string"
+        }
+      },
+      "title": "CategoryAttributeInfo"
+    },
+    "CategoryAttributeUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "categoryId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "customizable": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "salable": {
+          "type": "boolean"
+        },
+        "searchable": {
+          "type": "boolean"
+        },
+        "valuesJson": {
+          "type": "string"
+        }
+      },
+      "title": "CategoryAttributeUpdateRequest"
+    },
+    "CategoryCreateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "CategoryCreateRequest"
+    },
+    "CategoryDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "CategoryDeleteRequest"
+    },
+    "CategoryInfo": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "level": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "path": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "CategoryInfo"
+    },
+    "CategoryUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "CategoryUpdateRequest"
+    },
+    "CommonPage«BrandInfo»": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BrandInfo"
+          }
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "CommonPage«BrandInfo»"
+    },
+    "CommonPage«DollComponentResponse»": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DollComponentResponse"
+          }
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "CommonPage«DollComponentResponse»"
+    },
+    "CommonPage«ImageInfo»": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImageInfo"
+          }
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "CommonPage«ImageInfo»"
+    },
+    "CommonPage«OrderPageInfo»": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderPageInfo"
+          }
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "CommonPage«OrderPageInfo»"
+    },
+    "CommonPage«ProductSearchResponse»": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProductSearchResponse"
+          }
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "CommonPage«ProductSearchResponse»"
+    },
+    "CommonPage«UserPageResponse»": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserPageResponse"
+          }
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "CommonPage«UserPageResponse»"
+    },
+    "CommonResult«CommonPage«BrandInfo»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/CommonPage«BrandInfo»"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«CommonPage«BrandInfo»»"
+    },
+    "CommonResult«CommonPage«DollComponentResponse»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/CommonPage«DollComponentResponse»"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«CommonPage«DollComponentResponse»»"
+    },
+    "CommonResult«CommonPage«ImageInfo»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/CommonPage«ImageInfo»"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«CommonPage«ImageInfo»»"
+    },
+    "CommonResult«CommonPage«OrderPageInfo»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/CommonPage«OrderPageInfo»"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«CommonPage«OrderPageInfo»»"
+    },
+    "CommonResult«CommonPage«ProductSearchResponse»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/CommonPage«ProductSearchResponse»"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«CommonPage«ProductSearchResponse»»"
+    },
+    "CommonResult«CommonPage«UserPageResponse»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/CommonPage«UserPageResponse»"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«CommonPage«UserPageResponse»»"
+    },
+    "CommonResult«List«BrandInfo»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BrandInfo"
+          }
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«List«BrandInfo»»"
+    },
+    "CommonResult«List«CategoryAttributeInfo»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CategoryAttributeInfo"
+          }
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«List«CategoryAttributeInfo»»"
+    },
+    "CommonResult«List«CategoryInfo»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CategoryInfo"
+          }
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«List«CategoryInfo»»"
+    },
+    "CommonResult«List«DollComponentCategoryInfo»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DollComponentCategoryInfo"
+          }
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«List«DollComponentCategoryInfo»»"
+    },
+    "CommonResult«List«DollComponentResponse»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DollComponentResponse"
+          }
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«List«DollComponentResponse»»"
+    },
+    "CommonResult«OrderDetailInfo»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/OrderDetailInfo"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«OrderDetailInfo»"
+    },
+    "CommonResult«OrderShippingResult»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/OrderShippingResult"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«OrderShippingResult»"
+    },
+    "CommonResult«ProductDetailResponse»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/ProductDetailResponse"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«ProductDetailResponse»"
+    },
+    "CommonResult«S3UploadResponse»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/S3UploadResponse"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«S3UploadResponse»"
+    },
+    "CommonResult«UserDetailInfo»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/UserDetailInfo"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«UserDetailInfo»"
+    },
+    "CommonResult«UserTokenInfo»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/UserTokenInfo"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«UserTokenInfo»"
+    },
+    "CommonResult«boolean»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResult«boolean»"
+    },
+    "DollComponentCategoryCreateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "DollComponentCategoryCreateRequest"
+    },
+    "DollComponentCategoryDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "DollComponentCategoryDeleteRequest"
+    },
+    "DollComponentCategoryInfo": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "level": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "path": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "DollComponentCategoryInfo"
+    },
+    "DollComponentCategoryUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "DollComponentCategoryUpdateRequest"
+    },
+    "DollComponentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "brandId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "extra": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "sn": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "DollComponentCreateRequest"
+    },
+    "DollComponentDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "DollComponentDeleteRequest"
+    },
+    "DollComponentResponse": {
+      "type": "object",
+      "properties": {
+        "brandId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "sn": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "DollComponentResponse"
+    },
+    "DollComponentUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "brandId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "extra": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "sn": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "DollComponentUpdateRequest"
+    },
+    "ImageBatchDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "ImageBatchDeleteRequest"
+    },
+    "ImageInfo": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "ImageInfo"
+    },
+    "OrderDetailInfo": {
+      "type": "object",
+      "properties": {
+        "confirmAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "orderLines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderLineInfo"
+          }
+        },
+        "payAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "shippingAddress": {
+          "type": "string"
+        },
+        "shippingAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string"
+        },
+        "summary": {
+          "$ref": "#/definitions/OrderSummaryInfo"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "OrderDetailInfo"
+    },
+    "OrderLineInfo": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "customizationConfig": {
+          "type": "string"
+        },
+        "extra": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "product": {
+          "$ref": "#/definitions/ProductData"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "skuId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "skuImage": {
+          "type": "string"
+        },
+        "skuName": {
+          "type": "string"
+        },
+        "spuId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "status": {
+          "type": "string"
+        },
+        "summary": {
+          "$ref": "#/definitions/OrderLineSummaryInfo"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "OrderLineInfo"
+    },
+    "OrderLineSummaryInfo": {
+      "type": "object",
+      "properties": {
+        "originalTotalAmount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalAmount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalItems": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "OrderLineSummaryInfo"
+    },
+    "OrderPageInfo": {
+      "type": "object",
+      "properties": {
+        "confirmAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "orderLines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderLineInfo"
+          }
+        },
+        "payAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "shippingAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string"
+        },
+        "summary": {
+          "$ref": "#/definitions/OrderSummaryInfo"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "OrderPageInfo"
+    },
+    "OrderShippingParam": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "trackingNo": {
+          "type": "string"
+        }
+      },
+      "title": "OrderShippingParam"
+    },
+    "OrderShippingRequest": {
+      "type": "object",
+      "properties": {
+        "orderShippingParams": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderShippingParam"
+          }
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "OrderShippingRequest"
+    },
+    "OrderShippingResult": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "boolean"
+        }
+      },
+      "title": "OrderShippingResult"
+    },
+    "OrderSummaryInfo": {
+      "type": "object",
+      "properties": {
+        "originalTotalAmount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalAmount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalItems": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "OrderSummaryInfo"
+    },
+    "ProductCreateRequest": {
+      "type": "object",
+      "properties": {
+        "skus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SkuParam"
+          }
+        },
+        "spu": {
+          "$ref": "#/definitions/SpuParam"
+        }
+      },
+      "title": "ProductCreateRequest"
+    },
+    "ProductData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "images": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "originalPrice": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "spuId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "ProductData"
+    },
+    "ProductDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "ProductDeleteRequest"
+    },
+    "ProductDetailResponse": {
+      "type": "object",
+      "properties": {
+        "skus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SkuInfo"
+          }
+        },
+        "spu": {
+          "$ref": "#/definitions/SpuInfo"
+        }
+      },
+      "title": "ProductDetailResponse"
+    },
+    "ProductSearchResponse": {
+      "type": "object",
+      "properties": {
+        "brandId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "categoryId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "mainImage": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "sn": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "ProductSearchResponse"
+    },
+    "ProductUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "skus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SkuParam"
+          }
+        },
+        "spu": {
+          "$ref": "#/definitions/SpuParam"
+        }
+      },
+      "title": "ProductUpdateRequest"
+    },
+    "S3UploadResponse": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "S3UploadResponse"
+    },
+    "SkuInfo": {
+      "type": "object",
+      "properties": {
+        "attributesConfig": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "customizationConfig": {
+          "type": "string"
+        },
+        "extra": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "images": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "originalPrice": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "spuId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "SkuInfo"
+    },
+    "SkuParam": {
+      "type": "object",
+      "properties": {
+        "attributesConfig": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "customizationConfig": {
+          "type": "string"
+        },
+        "extra": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "images": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "originalPrice": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "spuId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "SkuParam"
+    },
+    "SpuInfo": {
+      "type": "object",
+      "properties": {
+        "brand": {
+          "$ref": "#/definitions/BrandInfo"
+        },
+        "category": {
+          "$ref": "#/definitions/CategoryInfo"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extra": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "mainImage": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "saleAttributesConfig": {
+          "type": "string"
+        },
+        "seoConfig": {
+          "type": "string"
+        },
+        "sn": {
+          "type": "string"
+        },
+        "specificationsConfig": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "SpuInfo"
+    },
+    "SpuParam": {
+      "type": "object",
+      "properties": {
+        "brandId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "categoryId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "description": {
+          "type": "string"
+        },
+        "extra": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "images": {
+          "type": "string"
+        },
+        "mainImage": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "saleAttributesConfig": {
+          "type": "string"
+        },
+        "seoConfig": {
+          "type": "string"
+        },
+        "sn": {
+          "type": "string"
+        },
+        "specificationsConfig": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "SpuParam"
+    },
+    "UserCreateRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "rawPassword": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "title": "UserCreateRequest"
+    },
+    "UserDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserDeleteRequest"
+    },
+    "UserDetailInfo": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "email": {
+          "type": "string"
+        },
+        "extra": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "status": {
+          "type": "boolean"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "UserDetailInfo"
+    },
+    "UserLoginRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "title": "UserLoginRequest"
+    },
+    "UserPageResponse": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "status": {
+          "type": "boolean"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "UserPageResponse"
+    },
+    "UserPasswordResetRequest": {
+      "type": "object",
+      "properties": {
+        "doubleConfirmNewRawPassword": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "newRawPassword": {
+          "type": "string"
+        },
+        "oldRawPassword": {
+          "type": "string"
+        }
+      },
+      "title": "UserPasswordResetRequest"
+    },
+    "UserTokenInfo": {
+      "type": "object",
+      "properties": {
+        "expireTime": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tokenValue": {
+          "type": "string"
+        }
+      },
+      "title": "UserTokenInfo"
+    },
+    "UserUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "nickname": {
+          "type": "string"
+        }
+      },
+      "title": "UserUpdateRequest"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { castArray } from "es-toolkit/compat";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
+import { Doll69If } from "shared";
 import {
   InputGroup,
   InputGroupAddon,
@@ -15,11 +16,15 @@ export interface ActionInputAction {
 const Clear = lazy(() => import('@/components/Icon/Clear'))
 const Eye = lazy(() => import('@/components/Icon/Eye'))
 const EyeClosed = lazy(() => import('@/components/Icon/EyeClosed'))
+const MinusCircle = lazy(() => import('@/components/Icon/MinusCircle'))
+const PlusCircle = lazy(() => import('@/components/Icon/PlusCircle'))
 
 export const ActionInputActions = {
   Clear: (onClick: ActionInputAction['onClick']): ActionInputAction => ({ icon: <Clear />, onClick }),
   Eye: (onClick: ActionInputAction['onClick']): ActionInputAction => ({ icon: <Eye />, onClick }),
   EyeClosed: (onClick: ActionInputAction['onClick']): ActionInputAction => ({ icon: <EyeClosed />, onClick }),
+  Minus: (onClick: ActionInputAction['onClick']): ActionInputAction => ({ icon: <MinusCircle />, onClick }),
+  Plus: (onClick: ActionInputAction['onClick']): ActionInputAction => ({ icon: <PlusCircle />, onClick }),
 } as const
 
 type ActionInputProps = React.ComponentProps<"input"> & {
@@ -34,19 +39,23 @@ const ActionInput = (props: ActionInputProps) => {
   return <>
     <InputGroup>
       <InputGroupInput {...inputProps} />
-      <InputGroupAddon align='inline-end'>
-        {
-          castArray(actions).map((actionObj) => {
-            return <InputGroupButton
-              variant='ghost'
-              size='icon-xs'
-              onClick={() => actionObj.onClick()}
-            >
-              {actionObj.icon}
-            </InputGroupButton>
-          })
-        }
-      </InputGroupAddon>
+      <Doll69If display={!(inputProps.disabled ?? false)}>
+        <InputGroupAddon align='inline-end'>
+          {
+            castArray(actions).map((actionObj, index) => {
+              return <Suspense key={`action-${index}`}>
+                <InputGroupButton
+                  variant='ghost'
+                  size='icon-xs'
+                  onClick={() => actionObj.onClick()}
+                >
+                  {actionObj.icon}
+                </InputGroupButton>
+              </Suspense>
+            })
+          }
+        </InputGroupAddon>
+      </Doll69If>
     </InputGroup>
   </>
 }

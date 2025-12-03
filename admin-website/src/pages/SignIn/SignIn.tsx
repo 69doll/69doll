@@ -14,36 +14,33 @@ import FormItem from "@/components/Form/FormItem";
 import { getRememberUser, hasRememberUser, setRememberUser } from "@/store/rememberEmail";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import useFormItemState from "@/hooks/useFormItemState";
 import useIsQuerying from "@/hooks/useIsQuerying";
 import { Spinner } from "@/components/ui/spinner";
 import ActionInput, { ActionInputActions } from "@/components/Input/ActionInput";
+import useErrors from "@/hooks/useErrors";
 
 const SignIn: React.FC = () => {
   const isQuerying = useIsQuerying()
   const nav = useNavigate()
   const refreshCurrentUser = useRefreshCurrentUser()
-  const [
-    email,
-    setEmail,
-    { errors: emailErrors, validate: emailValidate, appendError: appendEmailError },
-  ] = useFormItemState(getRememberUser() ?? '', {
-    validators: [
+  const [email, setEmail] = useState(getRememberUser() ?? '')
+  const [password, setPassword] = useState('')
+  const [remember, setRemember] = useState(hasRememberUser())
+  const [passwordInputType, setPasswordInputType] = useState<'password' | 'text'>('password')
+  const {
+    validate,
+    errorMap,
+    hasError,
+    setError,
+  } = useErrors({ email, password }, {
+    email: [
       (value) => !value ? '还没有填账号' : undefined,
       (value) => /\w+@\w+\.\w+/.test(value) ? undefined : '必须是邮箱地址',
     ],
-  })
-  const [
-    password,
-    setPassword,
-    { errors: passwordErrors, validate: passwordValidate, appendError: appendPasswordError },
-  ] = useFormItemState('', {
-    validators: [
+    password: [
       (value) => !value ? '还没有填密码' : undefined,
     ],
   })
-  const [remember, setRemember] = useState(hasRememberUser())
-  const [passwordInputType, setPasswordInputType] = useState<'password' | 'text'>('password')
   const { mutateAsync } = useMutation({
     mutationFn: signIn,
     async onSuccess (data) {
@@ -56,13 +53,13 @@ const SignIn: React.FC = () => {
         nav('/dashboard')
       }
       if (data.code === 400) {
-        appendEmailError('账号或密码有误')
-        appendPasswordError('账号或密码有误')
+        setError('email', '账号或密码有误')
+        setError('password', '账号或密码有误')
       }
     },
   })
   const login = async () => {
-    if ([emailValidate(), passwordValidate()].every(Boolean)) {
+    if (validate()) {
       await mutateAsync({ email, password })
     }
   }
@@ -71,19 +68,19 @@ const SignIn: React.FC = () => {
     <form action={login} className={css.container}>
       <Logo />
       <FormWrapper>
-        <FormItem label="账号" errors={emailErrors}>
+        <FormItem label="账号" errors={errorMap['email']}>
           <ActionInput
             placeholder="账号"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={isQuerying}
-            aria-invalid={!!emailErrors.length}
+            aria-invalid={hasError('email')}
             tabIndex={1}
             actions={email ? ActionInputActions.Clear(() => setEmail('')) : []}
           />
         </FormItem>
-        <FormItem label="密码" errors={passwordErrors}>
+        <FormItem label="密码" errors={errorMap['password']}>
           <ActionInput
             placeholder="密码"
             name="password"
@@ -91,7 +88,7 @@ const SignIn: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={isQuerying}
-            aria-invalid={!!passwordErrors.length}
+            aria-invalid={hasError('password')}
             tabIndex={2}
             onKeyDown={(e) => e.key === 'Enter' && login()}
             actions={password ? [

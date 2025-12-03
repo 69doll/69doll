@@ -31,12 +31,17 @@ export default function useList<O>(initialList: O[] = []) {
     clonedList.push(...items)
     setList(clonedList)
   }
-  function setAt (index: number, key: string, value: any) {
+  function setAtByKey (index: number, key: string, value: any) {
     if (typeof list[index] === 'object') {
       const clonedList = cloneDeep(list)
       setTool(clonedList[index] as any, key, value)
       setList(clonedList)
     }
+  }
+  function setAt (index: number, value: Partial<O>) {
+    const clonedList = cloneDeep(list)
+    setTool(clonedList, index, value)
+    setList(clonedList)
   }
 
   return [
@@ -46,6 +51,7 @@ export default function useList<O>(initialList: O[] = []) {
       moveUp,
       moveDown,
       setAt,
+      setAtByKey,
       removeAt,
       unshift,
       push,

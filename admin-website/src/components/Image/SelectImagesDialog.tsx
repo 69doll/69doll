@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle } from "react";
+import { forwardRef, lazy, useEffect, useImperativeHandle, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Eye } from "lucide-react";
 import { useTableFooterData } from "../Table/TableFooter.hook";
@@ -14,7 +14,7 @@ import useList from "@/hooks/useList";
 import useImagePreview from "@/Context/ImagePreview/useImagePreview";
 import useCurrentUser from "@/Context/CurrentUser/useCurrentUser";
 
-const Dialog = React.lazy(() => import('@/components/Dialog/Dialog'))
+const Dialog = lazy(() => import('@/components/Dialog/Dialog'))
 
 export type SelectImagesDialogProps = {
   onChange: (keys: string[]) => any;
@@ -29,14 +29,14 @@ export type SelectImagesDialogRef = {
 
 const SUPPORT_PAGE_SIZES = [25, 50, 100]
 
-const SelectImagesDialog = React.forwardRef<SelectImagesDialogRef, SelectImagesDialogProps>(({
+const SelectImagesDialog = forwardRef<SelectImagesDialogRef, SelectImagesDialogProps>(({
   onChange,
   min = 1,
   max = Infinity,
 }, ref) => {
   const currentUser = useCurrentUser()
   const imagePreview = useImagePreview()
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const [selectedKeys, { init: setSelectedKeys }] = useList<string>()
   const closeDialog = () => {
     setIsOpen(false)
@@ -59,7 +59,7 @@ const SelectImagesDialog = React.forwardRef<SelectImagesDialogRef, SelectImagesD
     queryKey: getImageListCacheKeys({ pageNum, pageSize }),
     queryFn: () => getImageList({ pageNum, pageSize }),
     enabled: false,
-    gcTime: 5 * 60 * 1000, // 5 min
+    gcTime: 30 * 1000, // 30 seconds
   })
   const { list, footerProps } = useFooterData(data)
   const selectImage = (key: string) => {

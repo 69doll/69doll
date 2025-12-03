@@ -1,3 +1,7 @@
+import type { UseQueryOptions } from "@tanstack/react-query";
+
+export type UseCustomQueryOptions<TData> = Omit<UseQueryOptions<TData>, 'queryKey' | 'queryFn'>
+
 export type ApiReqPage<O extends object = object> = {
   pageNum: number,
   pageSize: number,
